@@ -12,7 +12,6 @@ import pandas as pd
 import tables
 import toolz
 
-from ..utils.misc import column_map
 from ..utils.logutil import log_start_finish
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
@@ -1029,6 +1028,36 @@ def _columns_for_table(table_name):
     return {cname: col
             for (tname, cname), col in _COLUMNS.items()
             if tname == table_name}
+
+
+def column_map(tables, columns):
+    """
+    Take a list of tables and a list of column names and resolve which
+    columns come from which table.
+    Parameters
+    ----------
+    tables : sequence of _DataFrameWrapper or _TableFuncWrapper
+        Could also be sequence of modified pandas.DataFrames, the important
+        thing is that they have ``.name`` and ``.columns`` attributes.
+    columns : sequence of str
+        The column names of interest.
+    Returns
+    -------
+    col_map : dict
+        Maps table names to lists of column names.
+    """
+    if not columns:
+        return {t.name: None for t in tables}
+
+    columns = set(columns)
+    colmap = {
+        t.name: list(set(t.columns).intersection(columns)) for t in tables}
+    foundcols = toolz.reduce(
+        lambda x, y: x.union(y), (set(v) for v in colmap.values()))
+    if foundcols != columns:
+        raise RuntimeError('Not all required columns were found. '
+                           'Missing: {}'.format(list(columns - foundcols)))
+    return colmap
 
 
 def _memoize_function(f, name, cache_scope=_CS_FOREVER):
