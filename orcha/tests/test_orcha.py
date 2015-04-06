@@ -22,8 +22,10 @@ def teardown_function(func):
 @pytest.fixture
 def df():
     return pd.DataFrame(
-        {'a': [1, 2, 3],
-         'b': [4, 5, 6]},
+        [[1, 4],
+         [2, 5],
+         [3, 6]],
+        columns=['a', 'b'],
         index=['x', 'y', 'z'])
 
 
@@ -172,7 +174,10 @@ def test_table_copy(df):
         table2 = orcha.get_table(name)
 
         # to_frame will always return a copy.
-        pdt.assert_frame_equal(table.to_frame(), df)
+        if 'columns' in name:
+            assert_frames_equal(table.to_frame(), df)
+        else:
+            pdt.assert_frame_equal(table.to_frame(), df)
         assert table.to_frame() is not df
         pdt.assert_frame_equal(table.to_frame(), table.to_frame())
         assert table.to_frame() is not table.to_frame()
@@ -380,10 +385,13 @@ def test_column_map_none(fta, ftb):
 
 
 def test_column_map(fta, ftb):
-    assert orcha.column_map([fta, ftb], ['aa', 'by', 'bz']) == \
-        {'a': ['aa'], 'b': ['by', 'bz']}
-    assert orcha.column_map([fta, ftb], ['by', 'bz']) == \
-        {'a': [], 'b': ['by', 'bz']}
+    result = orcha.column_map([fta, ftb], ['aa', 'by', 'bz'])
+    assert result['a'] == ['aa']
+    assert sorted(result['b']) == ['by', 'bz']
+
+    result = orcha.column_map([fta, ftb], ['by', 'bz'])
+    assert result['a'] == []
+    assert sorted(result['b']) == ['by', 'bz']
 
 
 def test_models(df):
@@ -707,9 +715,9 @@ def test_clear_cache_all(df):
     orcha.eval_variable('x')
     orcha.get_injectable('y')('x')
 
-    assert orcha._TABLE_CACHE.keys() == ['table']
-    assert orcha._COLUMN_CACHE.keys() == [('table', 'z')]
-    assert orcha._INJECTABLE_CACHE.keys() == ['x']
+    assert list(orcha._TABLE_CACHE.keys()) == ['table']
+    assert list(orcha._COLUMN_CACHE.keys()) == [('table', 'z')]
+    assert list(orcha._INJECTABLE_CACHE.keys()) == ['x']
     assert orcha._MEMOIZED['y'].value.cache == {(('x',), None): 'xy'}
 
     orcha.clear_cache()
@@ -741,21 +749,21 @@ def test_clear_cache_scopes(df):
     orcha.eval_variable('x')
     orcha.get_injectable('y')('x')
 
-    assert orcha._TABLE_CACHE.keys() == ['table']
-    assert orcha._COLUMN_CACHE.keys() == [('table', 'z')]
-    assert orcha._INJECTABLE_CACHE.keys() == ['x']
+    assert list(orcha._TABLE_CACHE.keys()) == ['table']
+    assert list(orcha._COLUMN_CACHE.keys()) == [('table', 'z')]
+    assert list(orcha._INJECTABLE_CACHE.keys()) == ['x']
     assert orcha._MEMOIZED['y'].value.cache == {(('x',), None): 'xy'}
 
     orcha.clear_cache(scope='step')
 
-    assert orcha._TABLE_CACHE.keys() == ['table']
-    assert orcha._COLUMN_CACHE.keys() == [('table', 'z')]
+    assert list(orcha._TABLE_CACHE.keys()) == ['table']
+    assert list(orcha._COLUMN_CACHE.keys()) == [('table', 'z')]
     assert orcha._INJECTABLE_CACHE == {}
     assert orcha._MEMOIZED['y'].value.cache == {(('x',), None): 'xy'}
 
     orcha.clear_cache(scope='iteration')
 
-    assert orcha._TABLE_CACHE.keys() == ['table']
+    assert list(orcha._TABLE_CACHE.keys()) == ['table']
     assert orcha._COLUMN_CACHE == {}
     assert orcha._INJECTABLE_CACHE == {}
     assert orcha._MEMOIZED['y'].value.cache == {}
