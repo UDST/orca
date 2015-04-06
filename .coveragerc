@@ -1,0 +1,4 @@
+[run]
+omit =
+    urbansim/urbanchoice/pmat.py
+    urbansim/**/tests/*
