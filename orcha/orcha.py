@@ -12,7 +12,7 @@ import pandas as pd
 import tables
 import toolz
 
-from ..utils.logutil import log_start_finish
+from .utils.logutil import log_start_finish
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 logger = logging.getLogger(__name__)
