@@ -1,5 +1,5 @@
-Contributing to Orcha
-=====================
+Contributing to Orca
+====================
 
 Style
 -----

@@ -1,21 +1,21 @@
 import pandas as pd
 import pytest
 
-from .. import orcha
+from .. import orca
 from ..utils.testing import assert_frames_equal
 
 
 def setup_function(func):
-    orcha.clear_sim()
+    orca.clear_sim()
 
 
 def teardown_function(func):
-    orcha.clear_sim()
+    orca.clear_sim()
 
 
 @pytest.fixture
 def dfa():
-    return orcha.DataFrameWrapper('a', pd.DataFrame(
+    return orca.DataFrameWrapper('a', pd.DataFrame(
         {'a1': [1, 2, 3],
          'a2': [4, 5, 6],
          'a3': [7, 8, 9]},
@@ -24,7 +24,7 @@ def dfa():
 
 @pytest.fixture
 def dfz():
-    return orcha.DataFrameWrapper('z', pd.DataFrame(
+    return orca.DataFrameWrapper('z', pd.DataFrame(
         {'z1': [90, 91],
          'z2': [92, 93],
          'z3': [94, 95],
@@ -35,7 +35,7 @@ def dfz():
 
 @pytest.fixture
 def dfb():
-    return orcha.DataFrameWrapper('b', pd.DataFrame(
+    return orca.DataFrameWrapper('b', pd.DataFrame(
         {'b1': range(10, 15),
          'b2': range(15, 20),
          'a_id': ['ac', 'ac', 'ab', 'aa', 'ab'],
@@ -45,7 +45,7 @@ def dfb():
 
 @pytest.fixture
 def dfc():
-    return orcha.DataFrameWrapper('c', pd.DataFrame(
+    return orca.DataFrameWrapper('c', pd.DataFrame(
         {'c1': range(20, 30),
          'c2': range(30, 40),
          'b_id': ['ba', 'bd', 'bb', 'bc', 'bb', 'ba', 'bb', 'bc', 'bd', 'bb']},
@@ -54,50 +54,50 @@ def dfc():
 
 @pytest.fixture
 def dfg():
-    return orcha.DataFrameWrapper('g', pd.DataFrame(
+    return orca.DataFrameWrapper('g', pd.DataFrame(
         {'g1': [1, 2, 3]},
         index=['ga', 'gb', 'gc']))
 
 
 @pytest.fixture
 def dfh():
-    return orcha.DataFrameWrapper('h', pd.DataFrame(
+    return orca.DataFrameWrapper('h', pd.DataFrame(
         {'h1': range(10, 15),
          'g_id': ['ga', 'gb', 'gc', 'ga', 'gb']},
         index=['ha', 'hb', 'hc', 'hd', 'he']))
 
 
 def all_broadcasts():
-    orcha.broadcast('a', 'b', cast_index=True, onto_on='a_id')
-    orcha.broadcast('z', 'b', cast_index=True, onto_on='z_id')
-    orcha.broadcast('b', 'c', cast_index=True, onto_on='b_id')
-    orcha.broadcast('g', 'h', cast_index=True, onto_on='g_id')
+    orca.broadcast('a', 'b', cast_index=True, onto_on='a_id')
+    orca.broadcast('z', 'b', cast_index=True, onto_on='z_id')
+    orca.broadcast('b', 'c', cast_index=True, onto_on='b_id')
+    orca.broadcast('g', 'h', cast_index=True, onto_on='g_id')
 
 
 def test_recursive_getitem():
-    assert orcha._recursive_getitem({'a': {}}, 'a') == {'a': {}}
-    assert orcha._recursive_getitem(
+    assert orca._recursive_getitem({'a': {}}, 'a') == {'a': {}}
+    assert orca._recursive_getitem(
         {'a': {'b': {'c': {'d': {}, 'e': {}}}}}, 'e') == {'d': {}, 'e': {}}
 
     with pytest.raises(KeyError):
-        orcha._recursive_getitem({'a': {'b': {'c': {'d': {}, 'e': {}}}}}, 'f')
+        orca._recursive_getitem({'a': {'b': {'c': {'d': {}, 'e': {}}}}}, 'f')
 
 
 def test_dict_value_to_pairs():
-    assert sorted(orcha._dict_value_to_pairs({'c': {'a': 1, 'b': 2}}),
+    assert sorted(orca._dict_value_to_pairs({'c': {'a': 1, 'b': 2}}),
                   key=lambda d: next(iter(d))) == \
         [{'a': 1}, {'b': 2}]
 
 
 def test_is_leaf_node():
-    assert orcha._is_leaf_node({'b': {'a': {}}}) is False
-    assert orcha._is_leaf_node({'a': {}}) is True
+    assert orca._is_leaf_node({'b': {'a': {}}}) is False
+    assert orca._is_leaf_node({'a': {}}) is True
 
 
 def test_next_merge():
-    assert orcha._next_merge({'d': {'c': {}, 'b': {'a': {}}}}) == \
+    assert orca._next_merge({'d': {'c': {}, 'b': {'a': {}}}}) == \
         {'b': {'a': {}}}
-    assert orcha._next_merge({'b': {'a': {}, 'z': {}}}) == \
+    assert orca._next_merge({'b': {'a': {}, 'z': {}}}) == \
         {'b': {'a': {}, 'z': {}}}
 
 
@@ -105,13 +105,13 @@ def test_merge_tables_raises(dfa, dfz, dfb, dfg, dfh):
     all_broadcasts()
 
     with pytest.raises(RuntimeError):
-        orcha.merge_tables('b', [dfa, dfb, dfz, dfg, dfh])
+        orca.merge_tables('b', [dfa, dfb, dfz, dfg, dfh])
 
 
 def test_merge_tables1(dfa, dfz, dfb):
     all_broadcasts()
 
-    merged = orcha.merge_tables('b', [dfa, dfz, dfb])
+    merged = orca.merge_tables('b', [dfa, dfz, dfb])
 
     expected = pd.merge(
         dfa.to_frame(), dfb.to_frame(), left_index=True, right_on='a_id')
@@ -124,7 +124,7 @@ def test_merge_tables1(dfa, dfz, dfb):
 def test_merge_tables2(dfa, dfz, dfb, dfc):
     all_broadcasts()
 
-    merged = orcha.merge_tables(dfc, [dfa, dfz, dfb, dfc])
+    merged = orca.merge_tables(dfc, [dfa, dfz, dfb, dfc])
 
     expected = pd.merge(
         dfa.to_frame(), dfb.to_frame(), left_index=True, right_on='a_id')
@@ -139,7 +139,7 @@ def test_merge_tables2(dfa, dfz, dfb, dfc):
 def test_merge_tables_cols(dfa, dfz, dfb, dfc):
     all_broadcasts()
 
-    merged = orcha.merge_tables(
+    merged = orca.merge_tables(
         'c', [dfa, dfz, dfb, dfc], columns=['a1', 'b1', 'z1', 'c1'])
 
     expected = pd.DataFrame(
@@ -169,16 +169,16 @@ def test_merge_tables3():
          'c_id': ['c0', 'c1', 'c1', 'c0', 'c0', 'c2', 'c1', 'c2', 'c1', 'c2']},
         index=['d0', 'd1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'd8', 'd9'])
 
-    orcha.add_table('a', df_a)
-    orcha.add_table('b', df_b)
-    orcha.add_table('c', df_c)
-    orcha.add_table('d', df_d)
+    orca.add_table('a', df_a)
+    orca.add_table('b', df_b)
+    orca.add_table('c', df_c)
+    orca.add_table('d', df_d)
 
-    orcha.broadcast(cast='a', onto='b', cast_index=True, onto_on='a_id')
-    orcha.broadcast(cast='b', onto='d', cast_index=True, onto_on='b_id')
-    orcha.broadcast(cast='c', onto='d', cast_index=True, onto_on='c_id')
+    orca.broadcast(cast='a', onto='b', cast_index=True, onto_on='a_id')
+    orca.broadcast(cast='b', onto='d', cast_index=True, onto_on='b_id')
+    orca.broadcast(cast='c', onto='d', cast_index=True, onto_on='c_id')
 
-    df = orcha.merge_tables(target='d', tables=['a', 'b', 'c', 'd'])
+    df = orca.merge_tables(target='d', tables=['a', 'b', 'c', 'd'])
 
     expected = pd.merge(df_a, df_b, left_index=True, right_on='a_id')
     expected = pd.merge(expected, df_d, left_index=True, right_on='b_id')

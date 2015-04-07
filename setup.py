@@ -13,14 +13,14 @@ with open('README.rst', 'r') as f:
     long_description = f.read()
 
 setup(
-    name='orcha',
+    name='orca',
     version='1.0dev',
     description='A workflow orchestration tool with Pandas support',
     long_description=long_description,
     author='Synthicity',
     author_email='mdavis@synthicity.com',
     license='BSD',
-    url='https://github.com/synthicity/orcha',
+    url='https://github.com/synthicity/orca',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Programming Language :: Python :: 2',

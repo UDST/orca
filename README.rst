@@ -1,9 +1,9 @@
-Orcha
-=====
+Orca
+====
 
-Orcha (pronounced "orca") is a workflow orchestration tool
+Orca is a workflow orchestration tool
 that allows you to define dynamic data sources and explicitly
 connect them to processing functions.
-Orcha has many features for working with
+Orca has many features for working with
 `Pandas <http://pandas.pydata.org/>`__ data structures,
 but it can be used with anything.

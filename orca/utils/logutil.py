@@ -29,7 +29,7 @@ def log_start_finish(msg, logger, level=logging.DEBUG):
 
 def set_log_level(level):
     """
-    Set the logging level for Orcha.
+    Set the logging level for Orca.
 
     Parameters
     ----------
@@ -37,13 +37,13 @@ def set_log_level(level):
         A supporting logging level. Use logging constants like logging.DEBUG.
 
     """
-    logging.getLogger('orcha').setLevel(level)
+    logging.getLogger('orca').setLevel(level)
 
 
 def _add_log_handler(
         handler, level=None, fmt=None, datefmt=None, propagate=None):
     """
-    Add a logging handler to Orcha.
+    Add a logging handler to Orca.
 
     Parameters
     ----------
@@ -58,7 +58,7 @@ def _add_log_handler(
         An optional format string for formatting dates in the log
         messages.
     propagate : bool, optional
-        Whether the Orcha logger should propagate. If None the
+        Whether the Orca logger should propagate. If None the
         propagation will not be modified, otherwise it will be set
         to this value.
 
@@ -73,7 +73,7 @@ def _add_log_handler(
     if level is not None:
         handler.setLevel(level)
 
-    logger = logging.getLogger('orcha')
+    logger = logging.getLogger('orca')
     logger.addHandler(handler)
 
     if propagate is not None:
