@@ -15,7 +15,7 @@ with open('README.rst', 'r') as f:
 setup(
     name='orca',
     version='1.0dev',
-    description='A workflow orchestration tool with Pandas support',
+    description='A pipeline orchestration tool with Pandas support',
     long_description=long_description,
     author='Synthicity',
     author_email='mdavis@synthicity.com',
