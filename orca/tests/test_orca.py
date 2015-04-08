@@ -394,24 +394,24 @@ def test_column_map(fta, ftb):
     assert sorted(result['b']) == ['by', 'bz']
 
 
-def test_models(df):
+def test_workers(df):
     orca.add_table('test_table', df)
 
     df2 = df / 2
     orca.add_table('test_table2', df2)
 
-    @orca.model()
-    def test_model(test_table, test_column='test_table2.b'):
+    @orca.worker()
+    def test_worker(test_table, test_column='test_table2.b'):
         tt = test_table.to_frame()
         test_table['a'] = tt['a'] + tt['b']
         pdt.assert_series_equal(test_column, df2['b'])
 
     with pytest.raises(KeyError):
-        orca.get_model('asdf')
+        orca.get_worker('asdf')
 
-    model = orca.get_model('test_model')
-    assert model._tables_used() == set(['test_table', 'test_table2'])
-    model()
+    worker = orca.get_worker('test_worker')
+    assert worker._tables_used() == set(['test_table', 'test_table2'])
+    worker()
 
     table = orca.get_table('test_table')
     pdt.assert_frame_equal(
@@ -421,10 +421,10 @@ def test_models(df):
              'b': [4, 5, 6]},
             index=['x', 'y', 'z']))
 
-    assert orca.list_models() == ['test_model']
+    assert orca.list_workers() == ['test_worker']
 
 
-def test_model_run(df):
+def test_worker_run(df):
     orca.add_table('test_table', df)
 
     @orca.table()
@@ -439,17 +439,17 @@ def test_model_run(df):
         tf = table_func.to_frame(columns=['c'])
         return tt['a'] + tt['b'] + tf['c']
 
-    @orca.model()
-    def test_model1(year, test_table, table_func):
+    @orca.worker()
+    def test_worker1(year, test_table, table_func):
         tf = table_func.to_frame(columns=['new_col'])
         test_table[year] = tf['new_col'] + year
 
-    @orca.model('test_model2')
+    @orca.worker('test_worker2')
     def asdf(table='test_table'):
         tt = table.to_frame()
         table['a'] = tt['a'] ** 2
 
-    orca.run(models=['test_model1', 'test_model2'], years=[2000, 3000])
+    orca.run(workers=['test_worker1', 'test_worker2'], years=[2000, 3000])
 
     test_table = orca.get_table('test_table')
     assert_frames_equal(
@@ -461,7 +461,7 @@ def test_model_run(df):
              3000: [3012, 3017, 3024]},
             index=['x', 'y', 'z']))
 
-    m = orca.get_model('test_model1')
+    m = orca.get_worker('test_worker1')
     assert set(m._tables_used()) == {'test_table', 'table_func'}
 
 
@@ -579,13 +579,13 @@ def test_injectables_combined(df):
     def table():
         return df
 
-    @orca.model()
-    def model(table, column):
+    @orca.worker()
+    def worker(table, column):
         df = table.to_frame()
         df['new'] = column
         orca.add_table('table', df)
 
-    orca.run(models=['model'])
+    orca.run(workers=['worker'])
 
     table_wr = orca.get_table('table').to_frame()
 
@@ -794,7 +794,7 @@ def test_cache_scope(df):
     def c(z):
         return z
 
-    @orca.model()
+    @orca.worker()
     def m1(year, a, b, c):
         orca.add_injectable('x', year + a)
         orca.add_injectable('y', year + b)
@@ -802,7 +802,7 @@ def test_cache_scope(df):
 
         assert a == 11
 
-    @orca.model()
+    @orca.worker()
     def m2(year, a, b, c, iterations):
         assert a == 11
         if year == 1000:
@@ -848,17 +848,17 @@ def store_name(request):
 def test_write_tables(df, store_name):
     orca.add_table('table', df)
 
-    @orca.model()
-    def model(table):
+    @orca.worker()
+    def worker(table):
         pass
 
-    orca.write_tables(store_name, ['model'], None)
+    orca.write_tables(store_name, ['worker'], None)
 
     with pd.get_store(store_name, mode='r') as store:
         assert 'table' in store
         pdt.assert_frame_equal(store['table'], df)
 
-    orca.write_tables(store_name, ['model'], 1969)
+    orca.write_tables(store_name, ['worker'], 1969)
 
     with pd.get_store(store_name, mode='r') as store:
         assert '1969/table' in store
@@ -874,11 +874,11 @@ def test_run_and_write_tables(df, store_name):
     def series_year(y):
         return pd.Series([y] * 3, index=df.index)
 
-    @orca.model()
-    def model(year, table):
+    @orca.worker()
+    def worker(year, table):
         table[year_key(year)] = series_year(year)
 
-    orca.run(['model'], years=range(11), data_out=store_name, out_interval=3)
+    orca.run(['worker'], years=range(11), data_out=store_name, out_interval=3)
 
     with pd.get_store(store_name, mode='r') as store:
         for year in range(3, 11, 3):
@@ -983,15 +983,15 @@ def test_eval_variable(df):
     pdt.assert_series_equal(orca.eval_variable('table.a'), df.a * 3)
 
 
-def test_eval_model(df):
+def test_eval_worker(df):
     orca.add_injectable('x', 3)
 
-    @orca.model()
-    def model(x):
+    @orca.worker()
+    def worker(x):
         return df * x
 
-    pdt.assert_frame_equal(orca.eval_model('model'), df * 3)
-    pdt.assert_frame_equal(orca.eval_model('model', x=5), df * 5)
+    pdt.assert_frame_equal(orca.eval_worker('worker'), df * 3)
+    pdt.assert_frame_equal(orca.eval_worker('worker', x=5), df * 5)
 
 
 def test_always_dataframewrapper(df):
