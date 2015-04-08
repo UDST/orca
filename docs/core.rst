@@ -89,7 +89,7 @@ Automated Merges
 
 Certain analyses can be easiest when some tables are merged together,
 but in other places it may be best to keep the tables separate.
-UrbanSim can make these on-demand merges easy by letting you define table
+Orca can make these on-demand merges easy by letting you define table
 relationships up front and then performing the merges for you as needed.
 We call these relationships "broadcasts" (as in a rule for how to broadcast
 one table onto another) and you register them using the
@@ -251,7 +251,7 @@ Injectables
 -----------
 
 You will probably want to have things besides tables injected into functions,
-for which UrbanSim has "injectables". You can register *anything* and have
+for which Orca has "injectables". You can register *anything* and have
 it injected into functions.
 Use the :py:func:`~orca.add_injectable` function or the
 :py:func:`~orca.injectable` decorator::
