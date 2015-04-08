@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 _TABLES = {}
 _COLUMNS = {}
-_MODELS = {}
+_WORKERS = {}
 _BROADCASTS = {}
 _INJECTABLES = {}
 
@@ -43,7 +43,7 @@ def clear_sim():
     """
     _TABLES.clear()
     _COLUMNS.clear()
-    _MODELS.clear()
+    _WORKERS.clear()
     _BROADCASTS.clear()
     _INJECTABLES.clear()
     _TABLE_CACHE.clear()
@@ -653,35 +653,35 @@ class _InjectableFuncWrapper(object):
                 'injectable {!r} removed from cache'.format(self.name))
 
 
-class _ModelFuncWrapper(object):
+class _WorkerFuncWrapper(object):
     """
-    Wrap a model function for argument matching.
+    Wrap a worker function for argument matching.
 
     Parameters
     ----------
-    model_name : str
+    worker_name : str
     func : callable
 
     Attributes
     ----------
     name : str
-        Name of model.
+        Name of worker.
 
     """
-    def __init__(self, model_name, func):
-        self.name = model_name
+    def __init__(self, worker_name, func):
+        self.name = worker_name
         self._func = func
         self._argspec = inspect.getargspec(func)
 
     def __call__(self):
-        with log_start_finish('calling model {!r}'.format(self.name), logger):
+        with log_start_finish('calling worker {!r}'.format(self.name), logger):
             kwargs = _collect_variables(names=self._argspec.args,
                                         expressions=self._argspec.defaults)
             return self._func(**kwargs)
 
     def _tables_used(self):
         """
-        Tables injected into the model.
+        Tables injected into the worker.
 
         Returns
         -------
@@ -727,12 +727,12 @@ def list_columns():
     return list(_COLUMNS.keys())
 
 
-def list_models():
+def list_workers():
     """
-    List of registered model names.
+    List of registered worker names.
 
     """
-    return list(_MODELS.keys())
+    return list(_WORKERS.keys())
 
 
 def list_injectables():
@@ -1199,9 +1199,9 @@ def get_injectable(name):
         raise KeyError('injectable not found: {}'.format(name))
 
 
-def add_model(model_name, func):
+def add_worker(worker_name, func):
     """
-    Add a model function to the simulation.
+    Add a worker function to the simulation.
 
     The function's argument names and keyword argument values
     will be matched to registered variables when the function
@@ -1211,22 +1211,22 @@ def add_model(model_name, func):
 
     Parameters
     ----------
-    model_name : str
+    worker_name : str
     func : callable
 
     """
     if isinstance(func, Callable):
-        logger.debug('registering model {!r}'.format(model_name))
-        _MODELS[model_name] = _ModelFuncWrapper(model_name, func)
+        logger.debug('registering worker {!r}'.format(worker_name))
+        _WORKERS[worker_name] = _WorkerFuncWrapper(worker_name, func)
     else:
         raise TypeError('func must be a callable')
 
 
-def model(model_name=None):
+def worker(worker_name=None):
     """
     Decorates functions that will be called by the `run` function.
 
-    Decorator version of `add_model`. Model name defaults to
+    Decorator version of `add_worker`. Worker name defaults to
     name of function.
 
     The function's argument names and keyword argument values
@@ -1237,27 +1237,27 @@ def model(model_name=None):
 
     """
     def decorator(func):
-        if model_name:
-            name = model_name
+        if worker_name:
+            name = worker_name
         else:
             name = func.__name__
-        add_model(name, func)
+        add_worker(name, func)
         return func
     return decorator
 
 
-def get_model(model_name):
+def get_worker(worker_name):
     """
-    Get a wrapped model by name.
+    Get a wrapped worker by name.
 
     Parameters
     ----------
 
     """
-    if model_name in _MODELS:
-        return _MODELS[model_name]
+    if worker_name in _WORKERS:
+        return _WORKERS[worker_name]
     else:
-        raise KeyError('no model named {}'.format(model_name))
+        raise KeyError('no worker named {}'.format(worker_name))
 
 
 _Broadcast = namedtuple(
@@ -1480,9 +1480,9 @@ def merge_tables(target, tables, columns=None):
     return frames[target]
 
 
-def write_tables(fname, models, year):
+def write_tables(fname, workers, year):
     """
-    Write all tables injected into `models` to a pandas.HDFStore file.
+    Write all tables injected into `workers` to a pandas.HDFStore file.
     If year is not None it will be used to prefix the table names so that
     multiple years can go in the same file.
 
@@ -1491,15 +1491,15 @@ def write_tables(fname, models, year):
     fname : str
         File name for HDFStore. Will be opened in append mode and closed
         at the end of this function.
-    models : list of str
-        Models from which to gather injected tables for saving.
+    workers : list of str
+        Workers from which to gather injected tables for saving.
     year : int or None
         If an integer, used as a prefix along with table names for
         labeling DataFrames in the HDFStore.
 
     """
-    models = (get_model(m) for m in toolz.unique(models))
-    table_names = toolz.unique(toolz.concat(m._tables_used() for m in models))
+    workers = (get_worker(m) for m in toolz.unique(workers))
+    table_names = toolz.unique(toolz.concat(m._tables_used() for m in workers))
     tables = (get_table(t) for t in table_names)
 
     key_template = '{}/{{}}'.format(year) if year is not None else '{}'
@@ -1509,22 +1509,22 @@ def write_tables(fname, models, year):
             store[key_template.format(t.name)] = t.to_frame()
 
 
-def run(models, years=None, data_out=None, out_interval=1):
+def run(workers, years=None, data_out=None, out_interval=1):
     """
-    Run models in series, optionally repeatedly over some years.
+    Run workers in series, optionally repeatedly over some years.
     The current year is set as a global injectable.
 
     Parameters
     ----------
-    models : list of str
-        List of models to run identified by their name.
+    workers : list of str
+        List of workers to run identified by their name.
     years : sequence of int, optional
-        Years over which to run the models. `year` is provided as
-        an injectable throughout the simulation. If not given the models
+        Years over which to run the workers. `year` is provided as
+        an injectable throughout the simulation. If not given the workers
         are run once with year set to None.
     data_out : str, optional
-        An optional filename to which all tables injected into any model
-        in `models` will be saved every `out_interval` years.
+        An optional filename to which all tables injected into any worker
+        in `workers` will be saved every `out_interval` years.
         File will be a pandas HDF data store.
     out_interval : int, optional
         Year interval on which to save data to `data_out`. For example,
@@ -1536,7 +1536,7 @@ def run(models, years=None, data_out=None, out_interval=1):
     year_counter = 0
 
     if data_out:
-        write_tables(data_out, models, 'base')
+        write_tables(data_out, workers, 'base')
 
     for year in years:
         add_injectable('year', year)
@@ -1546,15 +1546,16 @@ def run(models, years=None, data_out=None, out_interval=1):
             logger.debug('running year {}'.format(year))
 
         t1 = time.time()
-        for model_name in models:
-            print('Running model {!r}'.format(model_name))
+        for worker_name in workers:
+            print('Running worker {!r}'.format(worker_name))
             with log_start_finish(
-                    'run model {!r}'.format(model_name), logger, logging.INFO):
-                model = get_model(model_name)
+                    'run worker {!r}'.format(worker_name), logger,
+                    logging.INFO):
+                worker = get_worker(worker_name)
                 t2 = time.time()
-                model()
-                print("Time to execute model '{}': {:.2f}s".format(
-                      model_name, time.time()-t2))
+                worker()
+                print("Time to execute worker '{}': {:.2f}s".format(
+                      worker_name, time.time()-t2))
             clear_cache(scope=_CS_STEP)
 
         print("Total time to execute{}: {:.2f}s".format(
@@ -1562,14 +1563,14 @@ def run(models, years=None, data_out=None, out_interval=1):
             time.time()-t1))
 
         if data_out and year_counter == out_interval:
-            write_tables(data_out, models, year)
+            write_tables(data_out, workers, year)
             year_counter = 0
 
         year_counter += 1
         clear_cache(scope=_CS_ITER)
 
     if data_out and year_counter != 1:
-        write_tables(data_out, models, 'final')
+        write_tables(data_out, workers, 'final')
 
 
 @contextmanager
@@ -1616,23 +1617,23 @@ def eval_variable(name, **kwargs):
         return vars[name]
 
 
-def eval_model(name, **kwargs):
+def eval_worker(name, **kwargs):
     """
-    Evaluate a model as would be done under the simulation framework
+    Evaluate a worker as would be done under the simulation framework
     and return the result. Any keyword arguments are temporarily set
     as injectables.
 
     Parameters
     ----------
     name : str
-        Name of model to run.
+        Name of worker to run.
 
     Returns
     -------
     object
-        Anything returned by a model. (Though note that under the
-        simulation framework return values from models are ignored.)
+        Anything returned by a worker. (Though note that under the
+        simulation framework return values from workers are ignored.)
 
     """
     with injectables(**kwargs):
-        return get_model(name)()
+        return get_worker(name)()

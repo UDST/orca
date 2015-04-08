@@ -354,53 +354,53 @@ context manager::
 Finally, users can manually clear the cache using
 :py:func:`~orca.clear_cache`.
 
-Models
-------
+Workers
+-------
 
-In UrbanSim a model is a function run by the simulation framework with
-argument matching. Use the :py:func:`~orca.model`
-decorator to register a model function.
-Models are important for their side-effects, their
-return values are discarded. For example, a model might replace a column
+A worker is a function run by Orca with argument matching.
+Use the :py:func:`~orca.worker` decorator to register a worker function.
+Workers are generally important for their side-effects, their
+return values are discarded during pipeline runs.
+For example, a worker might replace a column
 in a table (a new table, though similar to ``my_table`` above)::
 
     df = pd.DataFrame({'a': [1, 2, 3]})
     orca.add_table('new_table')
 
-    @orca.model()
+    @orca.worker()
     def replace_col(new_table):
         new_table['a'] = [4, 5, 6]
 
 Or update some values in a column::
 
-    @orca.model()
+    @orca.worker()
     def update_col(new_table):
         s = pd.Series([99], index=[1])
         new_table.update_col_from_series('a', s)
 
 Or add rows to a table::
 
-    @orca.model()
+    @orca.worker()
     def add_rows(new_table):
         new_rows = pd.DataFrame({'a': [100, 101]}, index=[3, 4])
         df = new_table.to_frame()
         df = pd.concat([df, new_rows])
         orca.add_table('new_table', df)
 
-The first two of the above examples update ``my_tables``'s underlying DataFrame and
-so require it to be a :py:class:`~orca.DataFrameWrapper`.
+The first two of the above examples update ``my_tables``'s underlying
+DataFrame and so require it to be a :py:class:`~orca.DataFrameWrapper`.
 If your table is a wrapped function, not a DataFrame, you can update
 columns by replacing them entirely with a new Series_ using the
 :py:func:`~orca.add_column` function.
 
-A demonstration of running the above models:
+A demonstration of running the above workers:
 
 .. code-block:: python
 
     In [68]: orca.run(['replace_col', 'update_col', 'add_rows'])
-    Running model 'replace_col'
-    Running model 'update_col'
-    Running model 'add_rows'
+    Running worker 'replace_col'
+    Running worker 'update_col'
+    Running worker 'add_rows'
 
     In [69]: orca.get_table('new_table').to_frame()
     Out[69]:
@@ -411,65 +411,65 @@ A demonstration of running the above models:
     3  100
     4  101
 
-Though updating tables is generally how models will advance the simulation
-they can do anything you like, so feel free to insert models with any
-arbitrary purpose (for example, clearing cached data) into the simulation.
+In the context of a simulation workers can be thought of as model steps
+that will often advance the simulation by updating data.
+Workers are plain Python functions, though, and there is no restriction on
+what they are allowed to do.
 
 Running Simulations
 -------------------
 
 You start simulations by calling the :py:func:`~orca.run`
-function and listing which models you want to run.
-Calling :py:func:`~orca.run` with just a list of models,
-as in the above example, will run through the models once.
-To run the simulation over some years provide those years as a sequence
+function and listing which workers you want to run.
+Calling :py:func:`~orca.run` with just a list of workers,
+as in the above example, will run through the workers once.
+To run the pipeline over some years, provide those years as a sequence
 to :py:func:`~orca.run`.
-The variable ``year`` is provided as an injectable to model functions:
+The variable ``year`` is provided as an injectable to Orca functions:
 
 .. code-block:: python
 
-    In [77]: @orca.model()
+    In [77]: @orca.worker()
        ....: def print_year(year):
        ....:         print '*** the year is {} ***'.format(year)
        ....:
 
     In [78]: orca.run(['print_year'], years=range(2010, 2015))
     Running year 2010
-    Running model 'print_year'
+    Running worker 'print_year'
     *** the year is 2010 ***
     Running year 2011
-    Running model 'print_year'
+    Running worker 'print_year'
     *** the year is 2011 ***
     Running year 2012
-    Running model 'print_year'
+    Running worker 'print_year'
     *** the year is 2012 ***
     Running year 2013
-    Running model 'print_year'
+    Running worker 'print_year'
     *** the year is 2013 ***
     Running year 2014
-    Running model 'print_year'
+    Running worker 'print_year'
     *** the year is 2014 ***
 
 Running Sim Components a la Carte
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 It can be useful to have the simulation framework evaluate single variables
-and models, especially during simulation development and testing.
+and workers, especially during simulation development and testing.
 To achieve this, use the
 :py:func:`~orca.eval_variable` and
-:py:func:`~orca.eval_model` functions.
+:py:func:`~orca.eval_worker` functions.
 
 ``eval_variable`` takes the name of a variable (including variable expressions)
-and returns that variable as it would be injected into a function by the
-simulation framework. ``eval_model`` takes the name of a model, runs that
-model under the simulation framework, and returns any result.
+and returns that variable as it would be injected into a function Orca.
+``eval_worker`` takes the name of a worker, runs that
+worker with variable injection, and returns any result.
 
 .. note::
-   Most models don't have return values because the simulation framework
+   Most workers don't have return values because Orca
    ignores them, but they can be useful for testing.
 
-Both :py:func:`~orca.eval_variable` and
-:py:func:`~orca.eval_model`
+Both :py:func:`~orca.eval_variable` and :py:func:`~orca.eval_worker`
 take arbitrary keyword arguments that are temporarily turned into injectables
 within the simulation framework while the evaluation is taking place.
 When the evaluation is complete the simulation state is reset to whatever
@@ -644,15 +644,15 @@ Merge API
    list_broadcasts
    merge_tables
 
-Model API
-~~~~~~~~~
+Worker API
+~~~~~~~~~~
 
 .. autosummary::
 
-   add_model
-   model
-   get_model
-   list_models
+   add_worker
+   worker
+   get_worker
+   list_workers
    run
 
 Cache API
