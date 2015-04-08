@@ -96,7 +96,7 @@ one table onto another) and you register them using the
 :py:func:`~orca.broadcast` function.
 
 For an example we'll first define some DataFrames that contain links
-to one another and register them with the simulation::
+to one another and register them with Orca::
 
     df_a = pd.DataFrame(
         {'a': [0, 1]},
@@ -176,9 +176,9 @@ they are in the ``columns=`` list.)
 Columns
 -------
 
-Often, not all the columns you need for a simulation are preexisting
-on your tables. You may need to collect information from other tables
-or perform a calculation to generate a column. UrbanSim allows you to
+Often, not all the columns you need are preexisting on your tables.
+You may need to collect information from other tables
+or perform a calculation to generate a column. Orca allows you to
 register a Series_ or function as a column on a registered table.
 Use the :py:func:`~orca.add_column` function or
 the :py:func:`~orca.column` decorator::
@@ -284,7 +284,7 @@ so this only works if the function inputs are hashable
 (usable as dictionary keys).
 Memoized functions can have their caches cleared manually using their
 ``clear_cached`` function attribute.
-The caches of memoized functions are also hooked into the global simulation
+The caches of memoized functions are also hooked into the global Orca
 caching system,
 so you can also manage their caches via the ``cache_scope`` keyword argument
 and the :py:func:`~orca.clear_cache` function.
@@ -305,9 +305,8 @@ An example of the above injectables in IPython:
 Caching
 -------
 
-The UrbanSim simulation framework has cache system so that function results
-can be stored for re-use when it is not necessary to recompute them
-every time they are used.
+Orca has cache system so that function results can be stored for re-use when it
+is not necessary to recompute them every time they are used.
 
 The decorators
 :py:func:`~orca.table`,
@@ -322,16 +321,16 @@ to enable caching of their results.
 Cache Scope
 ~~~~~~~~~~~
 
-Cached items have an associated "scope" that allows the simulation framework
-to automatically manage how long functions have their results cached before
-re-evaluating them. The three scope settings are:
+Cached items have an associated "scope" that allows Orca to automatically
+manage how long functions have their results cached before re-evaluating them.
+The three scope settings are:
 
 * ``'forever'`` (the default setting) -
   Results are cached until manually cleared by user commands.
 * ``'iteration'`` -
-  Results are cached for the remainder of the current simulation iteration.
+  Results are cached for the remainder of the current pipeline iteration.
 * ``'step'`` -
-  Results are cached until the current simulation step finishes.
+  Results are cached until the current pipeline step finishes.
 
 Managing the Cache
 ~~~~~~~~~~~~~~~~~~
@@ -416,10 +415,10 @@ that will often advance the simulation by updating data.
 Workers are plain Python functions, though, and there is no restriction on
 what they are allowed to do.
 
-Running Simulations
--------------------
+Running Pipelines
+-----------------
 
-You start simulations by calling the :py:func:`~orca.run`
+You start pipelines by calling the :py:func:`~orca.run`
 function and listing which workers you want to run.
 Calling :py:func:`~orca.run` with just a list of workers,
 as in the above example, will run through the workers once.
@@ -454,8 +453,8 @@ The variable ``year`` is provided as an injectable to Orca functions:
 Running Sim Components a la Carte
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It can be useful to have the simulation framework evaluate single variables
-and workers, especially during simulation development and testing.
+It can be useful to have Orca evaluate single variables and workers,
+especially during development and testing.
 To achieve this, use the
 :py:func:`~orca.eval_variable` and
 :py:func:`~orca.eval_worker` functions.
@@ -471,8 +470,8 @@ worker with variable injection, and returns any result.
 
 Both :py:func:`~orca.eval_variable` and :py:func:`~orca.eval_worker`
 take arbitrary keyword arguments that are temporarily turned into injectables
-within the simulation framework while the evaluation is taking place.
-When the evaluation is complete the simulation state is reset to whatever
+within Orca while the evaluation is taking place.
+When the evaluation is complete Orca's state is reset to whatever
 it was before calling the ``eval`` function.
 
 An example of :py:func:`~orca.eval_variable`:
@@ -536,10 +535,10 @@ Archiving Data
 ~~~~~~~~~~~~~~
 
 An option to the :py:func:`~orca.run` function is to have
-it save simulation data at set intervals.
+it save table data at set intervals.
 Only tables are saved, as DataFrames_ to an HDF5 file via pandas'
 `HDFStore <http://pandas.pydata.org/pandas-docs/stable/io.html#hdf5-pytables>`__
-feature. If the simulation is running only one loop the tables are stored
+feature. If Orca is running only one loop the tables are stored
 under their registered names. If it is running multiple years the tables are
 stored under names like ``'<year>/<table name>'``. For example, in the year 2020
 the "buildings" table would be stored as ``'2020/buildings'``.
@@ -551,8 +550,8 @@ under the key ``'final/<table name>'``.
 Argument Matching
 -----------------
 
-A key feature of the simulation framework is that it matches the names
-of function arguments to the names of registered variables in order to
+A key feature of Orca is that it matches the names of function arguments to
+the names of registered variables in order to
 inject variables when evaluating functions.
 For that reason, it's important that variables be registered with names
 that are also
