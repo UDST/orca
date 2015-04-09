@@ -38,7 +38,7 @@ CacheItem = namedtuple('CacheItem', ['name', 'value', 'scope'])
 
 def clear_sim():
     """
-    Clear any stored state from the simulation.
+    Clear any stored state from the pipeline.
 
     """
     _TABLES.clear()
@@ -52,7 +52,7 @@ def clear_sim():
     for m in _MEMOIZED.values():
         m.value.clear_cached()
     _MEMOIZED.clear()
-    logger.debug('simulation state cleared')
+    logger.debug('pipeline state cleared')
 
 
 def clear_cache(scope=None):
@@ -72,7 +72,7 @@ def clear_cache(scope=None):
         _INJECTABLE_CACHE.clear()
         for m in _MEMOIZED.values():
             m.value.clear_cached()
-        logger.debug('simulation cache cleared')
+        logger.debug('pipeline cache cleared')
     else:
         for d in (_TABLE_CACHE, _COLUMN_CACHE, _INJECTABLE_CACHE):
             items = toolz.valfilter(lambda x: x.scope == scope, d)
@@ -95,7 +95,7 @@ def enable_cache():
 
 def disable_cache():
     """
-    Turn off caching across the simulation, even for registered variables
+    Turn off caching across Orca, even for registered variables
     that have caching enabled.
 
     """
@@ -127,8 +127,8 @@ def cache_disabled():
         enable_cache()
 
 
-# for errors that occur during simulation runs
-class SimulationError(Exception):
+# for errors that occur during Orca runs
+class OrcaError(Exception):
     pass
 
 
@@ -324,8 +324,8 @@ class TableFuncWrapper(object):
     cache_scope : {'step', 'iteration', 'forever'}, optional
         Scope for which to cache data. Default is to cache forever
         (or until manually cleared). 'iteration' caches data for each
-        complete iteration of the simulation, 'step' caches data for
-        a single step of the simulation.
+        complete iteration of the pipeline, 'step' caches data for
+        a single step of the pipeline.
     copy_col : bool, optional
         Whether to return copies when evaluating columns.
 
@@ -493,8 +493,8 @@ class _ColumnFuncWrapper(object):
     cache_scope : {'step', 'iteration', 'forever'}, optional
         Scope for which to cache data. Default is to cache forever
         (or until manually cleared). 'iteration' caches data for each
-        complete iteration of the simulation, 'step' caches data for
-        a single step of the simulation.
+        complete iteration of the pipeline, 'step' caches data for
+        a single step of the pipeline.
 
     Attributes
     ----------
@@ -605,8 +605,8 @@ class _InjectableFuncWrapper(object):
     cache_scope : {'step', 'iteration', 'forever'}, optional
         Scope for which to cache data. Default is to cache forever
         (or until manually cleared). 'iteration' caches data for each
-        complete iteration of the simulation, 'step' caches data for
-        a single step of the simulation.
+        complete iteration of the pipeline, 'step' caches data for
+        a single step of the pipeline.
 
     Attributes
     ----------
@@ -834,7 +834,7 @@ def add_table(
         table_name, table, cache=False, cache_scope=_CS_FOREVER,
         copy_col=True):
     """
-    Register a table with the simulation.
+    Register a table with Orca.
 
     Parameters
     ----------
@@ -844,15 +844,15 @@ def add_table(
         If a function, the function should return a DataFrame.
         The function's argument names and keyword argument values
         will be matched to registered variables when the function
-        needs to be evaluated by the simulation framework.
+        needs to be evaluated by Orca.
     cache : bool, optional
         Whether to cache the results of a provided callable. Does not
         apply if `table` is a DataFrame.
     cache_scope : {'step', 'iteration', 'forever'}, optional
         Scope for which to cache data. Default is to cache forever
         (or until manually cleared). 'iteration' caches data for each
-        complete iteration of the simulation, 'step' caches data for
-        a single step of the simulation.
+        complete iteration of the pipeline, 'step' caches data for
+        a single step of the pipeline.
     copy_col : bool, optional
         Whether to return copies when evaluating columns.
 
@@ -943,16 +943,15 @@ def add_column(
         is being added. If a callable, the function's argument
         names and keyword argument values will be matched to
         registered variables when the function needs to be
-        evaluated by the simulation framework. The function should
-        return a Series.
+        evaluated by Orca. The function should return a Series.
     cache : bool, optional
         Whether to cache the results of a provided callable. Does not
         apply if `column` is a Series.
     cache_scope : {'step', 'iteration', 'forever'}, optional
         Scope for which to cache data. Default is to cache forever
         (or until manually cleared). 'iteration' caches data for each
-        complete iteration of the simulation, 'step' caches data for
-        a single step of the simulation.
+        complete iteration of the pipeline, 'step' caches data for
+        a single step of the pipeline.
 
     """
     if isinstance(column, Callable):
@@ -1067,7 +1066,7 @@ def column_map(tables, columns):
 def _memoize_function(f, name, cache_scope=_CS_FOREVER):
     """
     Wraps a function for memoization and ties it's cache into the
-    simulation cacheing system.
+    Orca cacheing system.
 
     Parameters
     ----------
@@ -1077,8 +1076,8 @@ def _memoize_function(f, name, cache_scope=_CS_FOREVER):
     cache_scope : {'step', 'iteration', 'forever'}, optional
         Scope for which to cache data. Default is to cache forever
         (or until manually cleared). 'iteration' caches data for each
-        complete iteration of the simulation, 'step' caches data for
-        a single step of the simulation.
+        complete iteration of the pipeline, 'step' caches data for
+        a single step of the pipeline.
 
     """
     cache = {}
@@ -1120,7 +1119,7 @@ def add_injectable(
         If a callable and `autocall` is True then the function's
         argument names and keyword argument values will be matched
         to registered variables when the function needs to be
-        evaluated by the simulation framework. The return value will
+        evaluated by Orca. The return value will
         be passed to any functions using this injectable. In all other
         cases, `value` will be passed through untouched.
     autocall : bool, optional
@@ -1133,8 +1132,8 @@ def add_injectable(
     cache_scope : {'step', 'iteration', 'forever'}, optional
         Scope for which to cache data. Default is to cache forever
         (or until manually cleared). 'iteration' caches data for each
-        complete iteration of the simulation, 'step' caches data for
-        a single step of the simulation.
+        complete iteration of the pipeline, 'step' caches data for
+        a single step of the pipeline.
     memoize : bool, optional
         If autocall is False it is still possible to cache function results
         by setting this flag to True. Cached values are stored in a dictionary
@@ -1207,7 +1206,7 @@ def get_injectable(name):
 
 def add_worker(worker_name, func):
     """
-    Add a worker function to the simulation.
+    Add a worker function to Orca.
 
     The function's argument names and keyword argument values
     will be matched to registered variables when the function
@@ -1381,7 +1380,7 @@ def _next_merge(merge_node):
         for d in toolz.remove(_is_leaf_node, _dict_value_to_pairs(merge_node)):
             return _next_merge(d)
         else:
-            raise SimulationError('No node found for next merge.')
+            raise OrcaError('No node found for next merge.')
 
 
 def merge_tables(target, tables, columns=None):
@@ -1587,7 +1586,7 @@ def run(workers, iter_vars=None, data_out=None, out_interval=1):
 @contextmanager
 def injectables(**kwargs):
     """
-    Temporarily add injectables to the simulation environment.
+    Temporarily add injectables to the pipeline environment.
     Takes only keyword arguments.
 
     Injectables will be returned to their original state when the context
@@ -1604,7 +1603,7 @@ def injectables(**kwargs):
 
 def eval_variable(name, **kwargs):
     """
-    Execute a single variable function registered with the simulation framework
+    Execute a single variable function registered with Orca
     and return the result. Any keyword arguments are temporarily set
     as injectables. This gives the value as would be injected into a function.
 
@@ -1630,7 +1629,7 @@ def eval_variable(name, **kwargs):
 
 def eval_worker(name, **kwargs):
     """
-    Evaluate a worker as would be done under the simulation framework
+    Evaluate a worker as would be done within the pipeline environment
     and return the result. Any keyword arguments are temporarily set
     as injectables.
 
@@ -1642,8 +1641,8 @@ def eval_worker(name, **kwargs):
     Returns
     -------
     object
-        Anything returned by a worker. (Though note that under the
-        simulation framework return values from workers are ignored.)
+        Anything returned by a worker. (Though note that in Orca runs
+        return values from workers are ignored.)
 
     """
     with injectables(**kwargs):
