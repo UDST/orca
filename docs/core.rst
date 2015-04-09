@@ -68,22 +68,6 @@ and lazy evaluation of table functions. Learn more in the API documentation:
 * :py:class:`~orca.DataFrameWrapper`
 * :py:class:`~orca.TableFuncWrapper`
 
-Table Sources
-~~~~~~~~~~~~~
-
-Sometimes you may want to set up a function that returns a DataFrame but
-only have it evaluated once and thereafter have access to the DataFrame itself
-as if you had used :py:func:`~orca.add_table` to
-register it. For that you can use the
-:py:func:`~orca.table_source` decorator::
-
-    @orca.table_source()
-    def my_table():
-        return pd.DataFrame({'a': [1, 2, 3]})
-
-When ``my_table`` is first injected somewhere it will be converted to a
-:py:class:`~orca.DataFrameWrapper`.
-
 Automated Merges
 ~~~~~~~~~~~~~~~~
 
@@ -418,37 +402,47 @@ what they are allowed to do.
 Running Pipelines
 -----------------
 
-You start pipelines by calling the :py:func:`~orca.run`
-function and listing which workers you want to run.
+You start pipelines by calling the :py:func:`~orca.run` function and
+listing which workers you want to run.
 Calling :py:func:`~orca.run` with just a list of workers,
 as in the above example, will run through the workers once.
-To run the pipeline over some years, provide those years as a sequence
-to :py:func:`~orca.run`.
-The variable ``year`` is provided as an injectable to Orca functions:
+To run the pipeline over some a sequence, provide those values as a sequence
+to :py:func:`~orca.run` using the ``iter_vars`` argument.
+The variable ``iter_var`` is provided as an injectable to Orca functions:
 
 .. code-block:: python
 
     In [77]: @orca.worker()
-       ....: def print_year(year):
-       ....:         print '*** the year is {} ***'.format(year)
+       ....: def print_year(iter_var):
+       ....:         print '*** the iteration value is {} ***'.format(iter_var)
        ....:
 
-    In [78]: orca.run(['print_year'], years=range(2010, 2015))
-    Running year 2010
+    In [78]: orca.run(['print_year'], iter_vars=range(2010, 2015))
+    Running iteration 1 with iteration value 2010
     Running worker 'print_year'
-    *** the year is 2010 ***
-    Running year 2011
+    *** the iteration value is 2010 ***
+    Time to execute worker 'print_year': 0.00 s
+    Total time to execute iteration 1 with iteration value 2010: 0.00 s
+    Running iteration 2 with iteration value 2011
     Running worker 'print_year'
-    *** the year is 2011 ***
-    Running year 2012
+    *** the iteration value is 2011 ***
+    Time to execute worker 'print_year': 0.00 s
+    Total time to execute iteration 2 with iteration value 2011: 0.00 s
+    Running iteration 3 with iteration value 2012
     Running worker 'print_year'
-    *** the year is 2012 ***
-    Running year 2013
+    *** the iteration value is 2012 ***
+    Time to execute worker 'print_year': 0.00 s
+    Total time to execute iteration 3 with iteration value 2012: 0.00 s
+    Running iteration 4 with iteration value 2013
     Running worker 'print_year'
-    *** the year is 2013 ***
-    Running year 2014
+    *** the iteration value is 2013 ***
+    Time to execute worker 'print_year': 0.00 s
+    Total time to execute iteration 4 with iteration value 2013: 0.00 s
+    Running iteration 5 with iteration value 2014
     Running worker 'print_year'
-    *** the year is 2014 ***
+    *** the iteration value is 2014 ***
+    Time to execute worker 'print_year': 0.00 s
+    Total time to execute iteration 5 with iteration value 2014: 0.00 s
 
 Running Sim Components a la Carte
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -536,15 +530,17 @@ Archiving Data
 
 An option to the :py:func:`~orca.run` function is to have
 it save table data at set intervals.
-Only tables are saved, as DataFrames_ to an HDF5 file via pandas'
+Tables (and only tables) are saved as DataFrames_ to an HDF5 file via pandas'
 `HDFStore <http://pandas.pydata.org/pandas-docs/stable/io.html#hdf5-pytables>`__
 feature. If Orca is running only one loop the tables are stored
-under their registered names. If it is running multiple years the tables are
-stored under names like ``'<year>/<table name>'``. For example, in the year 2020
-the "buildings" table would be stored as ``'2020/buildings'``.
+under their registered names. If it is running multiple iterations the tables are
+stored under names like ``'<iter_var>/<table name>'``.
+For example, if ``iter_var`` is ``2020`` the "buildings" table would be stored
+as ``'2020/buildings'``.
 The ``out_interval`` keyword to :py:func:`~orca.run`
 controls how often the tables are saved out. For example, ``out_interval=5``
-saves tables every fifth year. In addition, the final data is always saved
+saves tables every fifth iteration.
+In addition, the final data is always saved
 under the key ``'final/<table name>'``.
 
 Argument Matching

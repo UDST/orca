@@ -886,7 +886,9 @@ def table(
 
     The function's argument names and keyword argument values
     will be matched to registered variables when the function
-    needs to be evaluated by the simulation framework.
+    needs to be evaluated by Orca.
+    The argument name "iter_var" may be used to have the current
+    iteration variable injected.
 
     """
     def decorator(func):
@@ -980,7 +982,9 @@ def column(table_name, column_name=None, cache=False, cache_scope=_CS_FOREVER):
 
     The function's argument names and keyword argument values
     will be matched to registered variables when the function
-    needs to be evaluated by the simulation framework.
+    needs to be evaluated by Orca.
+    The argument name "iter_var" may be used to have the current
+    iteration variable injected.
     The index of the returned Series must match the named table.
 
     """
@@ -1163,7 +1167,9 @@ def injectable(
 
     The function's argument names and keyword argument values
     will be matched to registered variables when the function
-    needs to be evaluated by the simulation framework.
+    needs to be evaluated by Orca.
+    The argument name "iter_var" may be used to have the current
+    iteration variable injected.
 
     """
     def decorator(func):
@@ -1205,9 +1211,9 @@ def add_worker(worker_name, func):
 
     The function's argument names and keyword argument values
     will be matched to registered variables when the function
-    needs to be evaluated by the simulation framework.
-    The argument name "year" may be used to have the current
-    simulation year injected.
+    needs to be evaluated by Orca.
+    The argument name "iter_var" may be used to have the current
+    iteration variable injected.
 
     Parameters
     ----------
@@ -1231,9 +1237,9 @@ def worker(worker_name=None):
 
     The function's argument names and keyword argument values
     will be matched to registered variables when the function
-    needs to be evaluated by the simulation framework.
-    The argument name "year" may be used to have the current
-    simulation year injected.
+    needs to be evaluated by Orca.
+    The argument name "iter_var" may be used to have the current
+    iteration variable injected.
 
     """
     def decorator(func):
@@ -1480,11 +1486,11 @@ def merge_tables(target, tables, columns=None):
     return frames[target]
 
 
-def write_tables(fname, workers, year):
+def write_tables(fname, workers, iter_var):
     """
     Write all tables injected into `workers` to a pandas.HDFStore file.
-    If year is not None it will be used to prefix the table names so that
-    multiple years can go in the same file.
+    If var is not None it will be used to prefix the table names so that
+    multiple iterations can go in the same file.
 
     Parameters
     ----------
@@ -1493,57 +1499,61 @@ def write_tables(fname, workers, year):
         at the end of this function.
     workers : list of str
         Workers from which to gather injected tables for saving.
-    year : int or None
-        If an integer, used as a prefix along with table names for
+    iter_var : object or None
+        If not None, used as a prefix along with table names for
         labeling DataFrames in the HDFStore.
 
     """
-    workers = (get_worker(m) for m in toolz.unique(workers))
-    table_names = toolz.unique(toolz.concat(m._tables_used() for m in workers))
+    workers = (get_worker(w) for w in toolz.unique(workers))
+    table_names = toolz.unique(toolz.concat(w._tables_used() for w in workers))
     tables = (get_table(t) for t in table_names)
 
-    key_template = '{}/{{}}'.format(year) if year is not None else '{}'
+    key_template = '{}/{{}}'.format(iter_var) if iter_var is not None else '{}'
 
     with pd.get_store(fname, mode='a') as store:
         for t in tables:
             store[key_template.format(t.name)] = t.to_frame()
 
 
-def run(workers, years=None, data_out=None, out_interval=1):
+def run(workers, iter_vars=None, data_out=None, out_interval=1):
     """
-    Run workers in series, optionally repeatedly over some years.
-    The current year is set as a global injectable.
+    Run workers in series, optionally repeatedly over some sequence.
+    The current iteration variable is set as a global injectable
+    called ``iter_var``.
 
     Parameters
     ----------
     workers : list of str
         List of workers to run identified by their name.
-    years : sequence of int, optional
-        Years over which to run the workers. `year` is provided as
-        an injectable throughout the simulation. If not given the workers
-        are run once with year set to None.
+    iter_vars : iterable, optional
+        The values of `iter_vars` will be made available as an injectable
+        called ``iter_var`` when repeatedly running `workers`.
     data_out : str, optional
         An optional filename to which all tables injected into any worker
-        in `workers` will be saved every `out_interval` years.
+        in `workers` will be saved every `out_interval` iterations.
         File will be a pandas HDF data store.
     out_interval : int, optional
-        Year interval on which to save data to `data_out`. For example,
-        2 will save out every 2 years, 5 every 5 years. Default is every
-        year. The first and last years are always included.
+        Iteration interval on which to save data to `data_out`. For example,
+        2 will save out every 2 iterations, 5 every 5 iterations.
+        Default is every iteration.
+        The first and last iterations are always included.
 
     """
-    years = years or [None]
-    year_counter = 0
+    iter_vars = iter_vars or [None]
+    iter_counter = 0
 
     if data_out:
         write_tables(data_out, workers, 'base')
 
-    for year in years:
-        add_injectable('year', year)
+    for i, var in enumerate(iter_vars, start=1):
+        add_injectable('iter_var', var)
 
-        if year is not None:
-            print('Running year {}'.format(year))
-            logger.debug('running year {}'.format(year))
+        if var is not None:
+            print('Running iteration {} with iteration value {!r}'.format(
+                i, var))
+            logger.debug(
+                'running iteration {} with iteration value {!r}'.format(
+                    i, var))
 
         t1 = time.time()
         for worker_name in workers:
@@ -1554,22 +1564,23 @@ def run(workers, years=None, data_out=None, out_interval=1):
                 worker = get_worker(worker_name)
                 t2 = time.time()
                 worker()
-                print("Time to execute worker '{}': {:.2f}s".format(
-                      worker_name, time.time()-t2))
+                print("Time to execute worker '{}': {:.2f} s".format(
+                      worker_name, time.time() - t2))
             clear_cache(scope=_CS_STEP)
 
-        print("Total time to execute{}: {:.2f}s".format(
-            " year {}".format(year) if year is not None else '',
-            time.time()-t1))
+        print(
+            ('Total time to execute iteration {} '
+             'with iteration value {!r}: '
+             '{:.2f} s').format(i, var, time.time() - t1))
 
-        if data_out and year_counter == out_interval:
-            write_tables(data_out, workers, year)
-            year_counter = 0
+        if data_out and iter_counter == out_interval:
+            write_tables(data_out, workers, var)
+            iter_counter = 0
 
-        year_counter += 1
+        iter_counter += 1
         clear_cache(scope=_CS_ITER)
 
-    if data_out and year_counter != 1:
+    if data_out and iter_counter != 1:
         write_tables(data_out, workers, 'final')
 
 
