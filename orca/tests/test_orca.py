@@ -440,16 +440,16 @@ def test_worker_run(df):
         return tt['a'] + tt['b'] + tf['c']
 
     @orca.worker()
-    def test_worker1(year, test_table, table_func):
+    def test_worker1(iter_var, test_table, table_func):
         tf = table_func.to_frame(columns=['new_col'])
-        test_table[year] = tf['new_col'] + year
+        test_table[iter_var] = tf['new_col'] + iter_var
 
     @orca.worker('test_worker2')
     def asdf(table='test_table'):
         tt = table.to_frame()
         table['a'] = tt['a'] ** 2
 
-    orca.run(workers=['test_worker1', 'test_worker2'], years=[2000, 3000])
+    orca.run(workers=['test_worker1', 'test_worker2'], iter_vars=[2000, 3000])
 
     test_table = orca.get_table('test_table')
     assert_frames_equal(
@@ -795,26 +795,26 @@ def test_cache_scope(df):
         return z
 
     @orca.worker()
-    def m1(year, a, b, c):
-        orca.add_injectable('x', year + a)
-        orca.add_injectable('y', year + b)
-        orca.add_injectable('z', year + c)
+    def m1(iter_var, a, b, c):
+        orca.add_injectable('x', iter_var + a)
+        orca.add_injectable('y', iter_var + b)
+        orca.add_injectable('z', iter_var + c)
 
         assert a == 11
 
     @orca.worker()
-    def m2(year, a, b, c, iterations):
+    def m2(iter_var, a, b, c, iterations):
         assert a == 11
-        if year == 1000:
+        if iter_var == 1000:
             assert b == 22
             assert c == 1033
-        elif year == 2000:
+        elif iter_var == 2000:
             assert b == 1022
             assert c == 3033
 
         orca.add_injectable('iterations', iterations + 1)
 
-    orca.run(['m1', 'm2'], years=[1000, 2000])
+    orca.run(['m1', 'm2'], iter_vars=[1000, 2000])
 
 
 def test_table_func_local_cols(df):
@@ -875,10 +875,11 @@ def test_run_and_write_tables(df, store_name):
         return pd.Series([y] * 3, index=df.index)
 
     @orca.worker()
-    def worker(year, table):
-        table[year_key(year)] = series_year(year)
+    def worker(iter_var, table):
+        table[year_key(iter_var)] = series_year(iter_var)
 
-    orca.run(['worker'], years=range(11), data_out=store_name, out_interval=3)
+    orca.run(
+        ['worker'], iter_vars=range(11), data_out=store_name, out_interval=3)
 
     with pd.get_store(store_name, mode='r') as store:
         for year in range(3, 11, 3):
