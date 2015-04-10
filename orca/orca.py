@@ -14,7 +14,7 @@ from functools import wraps
 
 import pandas as pd
 import tables
-from zbox import toolz
+from zbox import toolz as tz
 
 from .utils.logutil import log_start_finish
 
@@ -79,10 +79,10 @@ def clear_cache(scope=None):
         logger.debug('pipeline cache cleared')
     else:
         for d in (_TABLE_CACHE, _COLUMN_CACHE, _INJECTABLE_CACHE):
-            items = toolz.valfilter(lambda x: x.scope == scope, d)
+            items = tz.valfilter(lambda x: x.scope == scope, d)
             for k in items:
                 del d[k]
-        for m in toolz.filter(lambda x: x.scope == scope, _MEMOIZED.values()):
+        for m in tz.filter(lambda x: x.scope == scope, _MEMOIZED.values()):
             m.value.clear_cached()
         logger.debug('cleared cached values with scope {!r}'.format(scope))
 
@@ -210,7 +210,7 @@ class DataFrameWrapper(object):
         if columns:
             local_cols = [c for c in self.local.columns
                           if c in columns and c not in extra_cols]
-            extra_cols = toolz.keyfilter(lambda c: c in columns, extra_cols)
+            extra_cols = tz.keyfilter(lambda c: c in columns, extra_cols)
             df = self.local[local_cols].copy()
         else:
             df = self.local.copy()
@@ -808,11 +808,11 @@ def _collect_variables(names, expressions=None):
     if not expressions:
         expressions = []
     offset = len(names) - len(expressions)
-    labels_map = dict(toolz.concatv(
-        toolz.compatibility.zip(names[:offset], names[:offset]),
-        toolz.compatibility.zip(names[offset:], expressions)))
+    labels_map = dict(tz.concatv(
+        tz.compatibility.zip(names[:offset], names[:offset]),
+        tz.compatibility.zip(names[offset:], expressions)))
 
-    all_variables = toolz.merge(_INJECTABLES, _TABLES)
+    all_variables = tz.merge(_INJECTABLES, _TABLES)
     variables = {}
     for label, expression in labels_map.items():
         # In the future, more registered variable expressions could be
@@ -1059,7 +1059,7 @@ def column_map(tables, columns):
     columns = set(columns)
     colmap = {
         t.name: list(set(t.columns).intersection(columns)) for t in tables}
-    foundcols = toolz.reduce(
+    foundcols = tz.reduce(
         lambda x, y: x.union(y), (set(v) for v in colmap.values()))
     if foundcols != columns:
         raise RuntimeError('Not all required columns were found. '
@@ -1314,9 +1314,9 @@ def _get_broadcasts(tables):
 
     """
     tables = set(tables)
-    casts = toolz.keyfilter(
+    casts = tz.keyfilter(
         lambda x: x[0] in tables and x[1] in tables, _BROADCASTS)
-    if tables - set(toolz.concat(casts.keys())):
+    if tables - set(tz.concat(casts.keys())):
         raise ValueError('Not enough links to merge all tables.')
     return casts
 
@@ -1358,7 +1358,7 @@ def _dict_value_to_pairs(d):
     {'a': 1} and {'b': 2}.
 
     """
-    d = d[toolz.first(d)]
+    d = d[tz.first(d)]
 
     for k, v in d.items():
         yield {k: v}
@@ -1381,7 +1381,7 @@ def _next_merge(merge_node):
     if all(_is_leaf_node(d) for d in _dict_value_to_pairs(merge_node)):
         return merge_node
     else:
-        for d in toolz.remove(_is_leaf_node, _dict_value_to_pairs(merge_node)):
+        for d in tz.remove(_is_leaf_node, _dict_value_to_pairs(merge_node)):
             return _next_merge(d)
         else:
             raise OrcaError('No node found for next merge.')
@@ -1458,7 +1458,7 @@ def merge_tables(target, tables, columns=None):
     # perform merges until there's only one table left
     while merges[target]:
         nm = _next_merge(merges)
-        onto = toolz.first(nm)
+        onto = tz.first(nm)
         onto_table = frames[onto]
 
         # loop over all the tables that can be broadcast onto
@@ -1507,8 +1507,8 @@ def write_tables(fname, workers, iter_var):
         labeling DataFrames in the HDFStore.
 
     """
-    workers = (get_worker(w) for w in toolz.unique(workers))
-    table_names = toolz.unique(toolz.concat(w._tables_used() for w in workers))
+    workers = (get_worker(w) for w in tz.unique(workers))
+    table_names = tz.unique(tz.concat(w._tables_used() for w in workers))
     tables = (get_table(t) for t in table_names)
 
     key_template = '{}/{{}}'.format(iter_var) if iter_var is not None else '{}'
