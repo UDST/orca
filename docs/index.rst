@@ -17,13 +17,40 @@ Orca was originally designed to orchestrate UrbanSim_ simulations and so
 has capabilities for running a pipeline multiple times while iterating
 over a set of input data.
 
+Goals
+~~~~~
+
+Orca has explit goals of flexibility, transparency, lazy execution,
+and encouraging good practices. Those goals are achieved by:
+
+* Flexibility
+
+  * Users may write and run any Python
+
+* Transparency
+
+  * Dependencies between data and processing units are explicitly listed
+  * Your code is a record of everything that happens
+
+* Lazy execution
+
+  * Orca only calls functions if they are explicitly needed
+
+* Good practices
+
+  * Encourage small, functional units
+  * Encourage code re-use
+
+Components
+~~~~~~~~~~
+
 The units of Orca pipelines are Python functions registered with Orca
 via decorators.
 Orca calls these functions by matching their arguments to other registered
 data.
 (This format is heavily inspired by
 `pytest's fixtures <http://pytest.org/latest/fixture.html#fixture>`__.)
-The main compeonents of a pipeline include:
+The main components of a pipeline include:
 
 * Workers
 

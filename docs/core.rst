@@ -11,13 +11,13 @@ Tables
 ------
 
 Tables are Pandas DataFrames_.
-Use the :py:func:`~orca.add_table` function to register
+Use the :py:func:`~orca.orca.add_table` function to register
 a DataFrame under a given name::
 
     df = pd.DataFrame({'a': [1, 2, 3]})
     orca.add_table('my_table', df)
 
-Or you can use the decorator :py:func:`~orca.table`
+Or you can use the decorator :py:func:`~orca.orca.table`
 to register a function that returns a DataFrame::
 
     @orca.table('halve_my_table')
@@ -59,14 +59,14 @@ Table Wrappers
 ~~~~~~~~~~~~~~
 
 Notice in the table function above that we had to call a
-:py:meth:`~orca.DataFrameWrapper.to_frame` method
+:py:meth:`~orca.orca.DataFrameWrapper.to_frame` method
 before using the table in a math operation. The values injected into
 functions are not DataFrames, but specialized wrappers.
 The wrappers facilitate caching, `computed columns <#columns>`__,
 and lazy evaluation of table functions. Learn more in the API documentation:
 
-* :py:class:`~orca.DataFrameWrapper`
-* :py:class:`~orca.TableFuncWrapper`
+* :py:class:`~orca.orca.DataFrameWrapper`
+* :py:class:`~orca.orca.TableFuncWrapper`
 
 Automated Merges
 ~~~~~~~~~~~~~~~~
@@ -77,7 +77,7 @@ Orca can make these on-demand merges easy by letting you define table
 relationships up front and then performing the merges for you as needed.
 We call these relationships "broadcasts" (as in a rule for how to broadcast
 one table onto another) and you register them using the
-:py:func:`~orca.broadcast` function.
+:py:func:`~orca.orca.broadcast` function.
 
 For an example we'll first define some DataFrames that contain links
 to one another and register them with Orca::
@@ -105,7 +105,7 @@ to one another and register them with Orca::
 
 The tables have data so that 'a' can be broadcast onto 'b',
 and 'b' and 'c' can be broadcast onto 'd'.
-We use the :py:func:`~orca.broadcast` function
+We use the :py:func:`~orca.orca.broadcast` function
 to register those relationships::
 
     orca.broadcast(cast='a', onto='b', cast_index=True, onto_on='a_id')
@@ -116,7 +116,7 @@ The syntax is similar to that of the
 `pandas merge function <http://pandas.pydata.org/pandas-docs/stable/generated/pandas.merge.html#pandas.merge>`__,
 and indeed ``merge`` is used behind the scenes.
 Once the broadcasts are defined, use the
-:py:func:`~orca.merge_tables` function to get a
+:py:func:`~orca.orca.merge_tables` function to get a
 merged DataFrame. Some examples in IPython:
 
 .. code-block:: python
@@ -146,13 +146,13 @@ merged DataFrame. Some examples in IPython:
 
 Note that it's the target table's index that you find in the final merged
 table, though the order may have changed.
-:py:func:`~orca.merge_tables` has an optional
+:py:func:`~orca.orca.merge_tables` has an optional
 ``columns=`` keyword that can contain column names from any the tables
 going into the merge so you can limit which columns end up in the final table.
 (Columns necessary for performing merges will be included whether or not
 they are in the ``columns=`` list.)
 
-.. note:: :py:func:`~orca.merge_tables` calls
+.. note:: :py:func:`~orca.orca.merge_tables` calls
    `pandas.merge <http://pandas.pydata.org/pandas-docs/stable/generated/pandas.merge.html#pandas.merge>`__
    with ``how='inner'``, meaning that only items that
    appear in both tables are kept in the merged table.
@@ -164,8 +164,8 @@ Often, not all the columns you need are preexisting on your tables.
 You may need to collect information from other tables
 or perform a calculation to generate a column. Orca allows you to
 register a Series_ or function as a column on a registered table.
-Use the :py:func:`~orca.add_column` function or
-the :py:func:`~orca.column` decorator::
+Use the :py:func:`~orca.orca.add_column` function or
+the :py:func:`~orca.orca.column` decorator::
 
     s = pd.Series(['a', 'b', 'c'])
     orca.add_column('my_table', 'my_col', s)
@@ -176,7 +176,7 @@ the :py:func:`~orca.column` decorator::
         return df['my_col'] * 2
 
 In the ``my_col_x2`` function we use the ``columns=`` keyword on
-:py:meth:`~orca.DataFrameWrapper.to_frame` to get only
+:py:meth:`~orca.orca.DataFrameWrapper.to_frame` to get only
 the one column necessary for our calculation. This can be useful for
 avoiding unnecessary computation or to avoid recursion (as would happen
 in this case if we called ``to_frame()`` with no arguments).
@@ -185,7 +185,7 @@ Accessing columns on a table is such a common occurrence that there
 are additional ways to do so without first calling ``to_frame()``
 to create an actual ``DataFrame``.
 
-:py:class:`~orca.DataFrameWrapper` supports accessing
+:py:class:`~orca.orca.DataFrameWrapper` supports accessing
 individual columns in the same ways as ``DataFrames``::
 
     @orca.column('my_table')
@@ -221,9 +221,9 @@ A demonstration in IPython using the column definitions from above:
     1  2        bb      b
     2  3        cc      c
 
-:py:class:`~orca.DataFrameWrapper` has
-:py:attr:`~orca.DataFrameWrapper.columns`
-and :py:attr:`~orca.DataFrameWrapper.local_columns`
+:py:class:`~orca.orca.DataFrameWrapper` has
+:py:attr:`~orca.orca.DataFrameWrapper.columns`
+and :py:attr:`~orca.orca.DataFrameWrapper.local_columns`
 attributes that, respectively, list all the columns on a table and
 only those columns that are part of the underlying DataFrame.
 
@@ -237,8 +237,8 @@ Injectables
 You will probably want to have things besides tables injected into functions,
 for which Orca has "injectables". You can register *anything* and have
 it injected into functions.
-Use the :py:func:`~orca.add_injectable` function or the
-:py:func:`~orca.injectable` decorator::
+Use the :py:func:`~orca.orca.add_injectable` function or the
+:py:func:`~orca.orca.injectable` decorator::
 
     orca.add_injectable('z', 5)
 
@@ -271,7 +271,7 @@ Memoized functions can have their caches cleared manually using their
 The caches of memoized functions are also hooked into the global Orca
 caching system,
 so you can also manage their caches via the ``cache_scope`` keyword argument
-and the :py:func:`~orca.clear_cache` function.
+and the :py:func:`~orca.orca.clear_cache` function.
 
 An example of the above injectables in IPython:
 
@@ -293,9 +293,9 @@ Orca has cache system so that function results can be stored for re-use when it
 is not necessary to recompute them every time they are used.
 
 The decorators
-:py:func:`~orca.table`,
-:py:func:`~orca.column`, and
-:py:func:`~orca.injectable`
+:py:func:`~orca.orca.table`,
+:py:func:`~orca.orca.column`, and
+:py:func:`~orca.orca.injectable`
 all take two keyword arguments related to caching:
 ``cache`` and ``cache_scope``.
 
@@ -324,24 +324,24 @@ cache scopes, but there may be situations, especially during testing,
 when more manual management is required.
 
 Caching can be turned off globally using the
-:py:func:`~orca.disable_cache` function
-(and turned back on by :py:func:`~orca.enable_cache`).
+:py:func:`~orca.orca.disable_cache` function
+(and turned back on by :py:func:`~orca.orca.enable_cache`).
 
 To run a block of commands with the cache disabled, but have it automatically
-re-enabled, use the :py:func:`~orca.cache_disabled`
+re-enabled, use the :py:func:`~orca.orca.cache_disabled`
 context manager::
 
     with orca.cache_disabled():
         result = orca.eval_variable('my_table')
 
 Finally, users can manually clear the cache using
-:py:func:`~orca.clear_cache`.
+:py:func:`~orca.orca.clear_cache`.
 
 Workers
 -------
 
 A worker is a function run by Orca with argument matching.
-Use the :py:func:`~orca.worker` decorator to register a worker function.
+Use the :py:func:`~orca.orca.worker` decorator to register a worker function.
 Workers are generally important for their side-effects, their
 return values are discarded during pipeline runs.
 For example, a worker might replace a column
@@ -371,10 +371,10 @@ Or add rows to a table::
         orca.add_table('new_table', df)
 
 The first two of the above examples update ``my_tables``'s underlying
-DataFrame and so require it to be a :py:class:`~orca.DataFrameWrapper`.
+DataFrame and so require it to be a :py:class:`~orca.orca.DataFrameWrapper`.
 If your table is a wrapped function, not a DataFrame, you can update
 columns by replacing them entirely with a new Series_ using the
-:py:func:`~orca.add_column` function.
+:py:func:`~orca.orca.add_column` function.
 
 A demonstration of running the above workers:
 
@@ -402,12 +402,12 @@ what they are allowed to do.
 Running Pipelines
 -----------------
 
-You start pipelines by calling the :py:func:`~orca.run` function and
+You start pipelines by calling the :py:func:`~orca.orca.run` function and
 listing which workers you want to run.
-Calling :py:func:`~orca.run` with just a list of workers,
+Calling :py:func:`~orca.orca.run` with just a list of workers,
 as in the above example, will run through the workers once.
 To run the pipeline over some a sequence, provide those values as a sequence
-to :py:func:`~orca.run` using the ``iter_vars`` argument.
+to :py:func:`~orca.orca.run` using the ``iter_vars`` argument.
 The variable ``iter_var`` is provided as an injectable to Orca functions:
 
 .. code-block:: python
@@ -450,8 +450,8 @@ Running Sim Components a la Carte
 It can be useful to have Orca evaluate single variables and workers,
 especially during development and testing.
 To achieve this, use the
-:py:func:`~orca.eval_variable` and
-:py:func:`~orca.eval_worker` functions.
+:py:func:`~orca.orca.eval_variable` and
+:py:func:`~orca.orca.eval_worker` functions.
 
 ``eval_variable`` takes the name of a variable (including variable expressions)
 and returns that variable as it would be injected into a function Orca.
@@ -462,13 +462,13 @@ worker with variable injection, and returns any result.
    Most workers don't have return values because Orca
    ignores them, but they can be useful for testing.
 
-Both :py:func:`~orca.eval_variable` and :py:func:`~orca.eval_worker`
+Both :py:func:`~orca.orca.eval_variable` and :py:func:`~orca.orca.eval_worker`
 take arbitrary keyword arguments that are temporarily turned into injectables
 within Orca while the evaluation is taking place.
 When the evaluation is complete Orca's state is reset to whatever
 it was before calling the ``eval`` function.
 
-An example of :py:func:`~orca.eval_variable`:
+An example of :py:func:`~orca.orca.eval_variable`:
 
 .. code-block:: python
 
@@ -483,7 +483,7 @@ An example of :py:func:`~orca.eval_variable`:
 The keyword arguments are only temporarily set as injectables,
 which can lead to errors in a situation like this with a table
 where the evaluation of the table is delayed until
-:py:meth:`~orca.DataFrameWrapper.to_frame` is called:
+:py:meth:`~orca.orca.DataFrameWrapper.to_frame` is called:
 
 .. code-block:: python
 
@@ -506,7 +506,7 @@ where the evaluation of the table is delayed until
     KeyError: 'y'
 
 In order to get the injectables to be set for a controlled term you can
-use the :py:func:`~orca.injectables` context manager
+use the :py:func:`~orca.orca.injectables` context manager
 to set the injectables:
 
 .. code-block:: python
@@ -528,7 +528,7 @@ to set the injectables:
 Archiving Data
 ~~~~~~~~~~~~~~
 
-An option to the :py:func:`~orca.run` function is to have
+An option to the :py:func:`~orca.orca.run` function is to have
 it save table data at set intervals.
 Tables (and only tables) are saved as DataFrames_ to an HDF5 file via pandas'
 `HDFStore <http://pandas.pydata.org/pandas-docs/stable/io.html#hdf5-pytables>`__
@@ -537,7 +537,7 @@ under their registered names. If it is running multiple iterations the tables ar
 stored under names like ``'<iter_var>/<table name>'``.
 For example, if ``iter_var`` is ``2020`` the "buildings" table would be stored
 as ``'2020/buildings'``.
-The ``out_interval`` keyword to :py:func:`~orca.run`
+The ``out_interval`` keyword to :py:func:`~orca.orca.run`
 controls how often the tables are saved out. For example, ``out_interval=5``
 saves tables every fifth iteration.
 In addition, the final data is always saved
@@ -578,7 +578,7 @@ Expressions can also be used to refer to columns within a registered table::
 In this case, the expression ``my_table.a`` refers to the column ``a``,
 which is a pandas Series_ within the table ``my_table``. We return
 a new Series to register a new column on ``my_table`` using the
-:py:func:`~orca.column` decorator. We can take a
+:py:func:`~orca.orca.column` decorator. We can take a
 look in IPython:
 
 .. code-block:: python
@@ -597,7 +597,7 @@ like to specifically document that in the function's arguments.
 API
 ---
 
-.. currentmodule:: orca
+.. currentmodule:: orca.orca
 
 Table API
 ~~~~~~~~~
@@ -664,7 +664,7 @@ Cache API
 API Docs
 ~~~~~~~~
 
-.. automodule:: orca
+.. automodule:: orca.orca
    :members:
 
 .. _DataFrame: http://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe

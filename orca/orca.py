@@ -1041,6 +1041,7 @@ def column_map(tables, columns):
     """
     Take a list of tables and a list of column names and resolve which
     columns come from which table.
+
     Parameters
     ----------
     tables : sequence of _DataFrameWrapper or _TableFuncWrapper
@@ -1048,6 +1049,7 @@ def column_map(tables, columns):
         thing is that they have ``.name`` and ``.columns`` attributes.
     columns : sequence of str
         The column names of interest.
+
     Returns
     -------
     col_map : dict
