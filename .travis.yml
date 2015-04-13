@@ -1,0 +1,32 @@
+language: python
+sudo: false
+python:
+- '2.7'
+- '3.3'
+- '3.4'
+install:
+- if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
+  -O miniconda.sh; else wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  -O miniconda.sh; fi
+- bash miniconda.sh -b -p $HOME/miniconda
+- export PATH="$HOME/miniconda/bin:$PATH"
+- hash -r
+- conda config --set always_yes yes --set changeps1 no
+- conda update -q conda
+- conda info -a
+- >
+  conda create -q -n test-environment
+  python=$TRAVIS_PYTHON_VERSION
+  cytoolz pandas pip pytables pytest
+- source activate test-environment
+- pip install zbox
+- pip install pytest-cov coveralls pep8
+- pip install .
+script:
+- pep8 orca
+- py.test --cov orca --cov-report term-missing
+after_success:
+- coveralls
+notifications:
+  slack:
+    secure: MZyoNIy/9sbh0HnAtER0hR+v8j8MACnRd/Jul023vY+u5j+pNT395WUPf3SoexQvhSMDtz8kRadxKC4PJ8N6EGBP1+aCFcV0DFDPORG/mCFIffl++w2C+L+/5hdUPZisBFmme1/ICfKnkPeFWPmI+XlmY5+BTn28iwg8R9t6g5c=
