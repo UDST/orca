@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 _TABLES = {}
 _COLUMNS = {}
-_WORKERS = {}
+_STEPS = {}
 _BROADCASTS = {}
 _INJECTABLES = {}
 
@@ -47,7 +47,7 @@ def clear_sim():
     """
     _TABLES.clear()
     _COLUMNS.clear()
-    _WORKERS.clear()
+    _STEPS.clear()
     _BROADCASTS.clear()
     _INJECTABLES.clear()
     _TABLE_CACHE.clear()
@@ -657,35 +657,35 @@ class _InjectableFuncWrapper(object):
                 'injectable {!r} removed from cache'.format(self.name))
 
 
-class _WorkerFuncWrapper(object):
+class _StepFuncWrapper(object):
     """
-    Wrap a worker function for argument matching.
+    Wrap a step function for argument matching.
 
     Parameters
     ----------
-    worker_name : str
+    step_name : str
     func : callable
 
     Attributes
     ----------
     name : str
-        Name of worker.
+        Name of step.
 
     """
-    def __init__(self, worker_name, func):
-        self.name = worker_name
+    def __init__(self, step_name, func):
+        self.name = step_name
         self._func = func
         self._argspec = inspect.getargspec(func)
 
     def __call__(self):
-        with log_start_finish('calling worker {!r}'.format(self.name), logger):
+        with log_start_finish('calling step {!r}'.format(self.name), logger):
             kwargs = _collect_variables(names=self._argspec.args,
                                         expressions=self._argspec.defaults)
             return self._func(**kwargs)
 
     def _tables_used(self):
         """
-        Tables injected into the worker.
+        Tables injected into the step.
 
         Returns
         -------
@@ -731,12 +731,12 @@ def list_columns():
     return list(_COLUMNS.keys())
 
 
-def list_workers():
+def list_steps():
     """
-    List of registered worker names.
+    List of registered step names.
 
     """
-    return list(_WORKERS.keys())
+    return list(_STEPS.keys())
 
 
 def list_injectables():
@@ -1210,9 +1210,9 @@ def get_injectable(name):
         raise KeyError('injectable not found: {}'.format(name))
 
 
-def add_worker(worker_name, func):
+def add_step(step_name, func):
     """
-    Add a worker function to Orca.
+    Add a step function to Orca.
 
     The function's argument names and keyword argument values
     will be matched to registered variables when the function
@@ -1222,22 +1222,22 @@ def add_worker(worker_name, func):
 
     Parameters
     ----------
-    worker_name : str
+    step_name : str
     func : callable
 
     """
     if isinstance(func, Callable):
-        logger.debug('registering worker {!r}'.format(worker_name))
-        _WORKERS[worker_name] = _WorkerFuncWrapper(worker_name, func)
+        logger.debug('registering step {!r}'.format(step_name))
+        _STEPS[step_name] = _StepFuncWrapper(step_name, func)
     else:
         raise TypeError('func must be a callable')
 
 
-def worker(worker_name=None):
+def step(step_name=None):
     """
     Decorates functions that will be called by the `run` function.
 
-    Decorator version of `add_worker`. Worker name defaults to
+    Decorator version of `add_step`. step name defaults to
     name of function.
 
     The function's argument names and keyword argument values
@@ -1248,27 +1248,27 @@ def worker(worker_name=None):
 
     """
     def decorator(func):
-        if worker_name:
-            name = worker_name
+        if step_name:
+            name = step_name
         else:
             name = func.__name__
-        add_worker(name, func)
+        add_step(name, func)
         return func
     return decorator
 
 
-def get_worker(worker_name):
+def get_step(step_name):
     """
-    Get a wrapped worker by name.
+    Get a wrapped step by name.
 
     Parameters
     ----------
 
     """
-    if worker_name in _WORKERS:
-        return _WORKERS[worker_name]
+    if step_name in _STEPS:
+        return _STEPS[step_name]
     else:
-        raise KeyError('no worker named {}'.format(worker_name))
+        raise KeyError('no step named {}'.format(step_name))
 
 
 _Broadcast = namedtuple(
@@ -1491,9 +1491,9 @@ def merge_tables(target, tables, columns=None):
     return frames[target]
 
 
-def write_tables(fname, workers, iter_var):
+def write_tables(fname, steps, iter_var):
     """
-    Write all tables injected into `workers` to a pandas.HDFStore file.
+    Write all tables injected into `steps` to a pandas.HDFStore file.
     If var is not None it will be used to prefix the table names so that
     multiple iterations can go in the same file.
 
@@ -1502,15 +1502,15 @@ def write_tables(fname, workers, iter_var):
     fname : str
         File name for HDFStore. Will be opened in append mode and closed
         at the end of this function.
-    workers : list of str
-        Workers from which to gather injected tables for saving.
+    steps : list of str
+        steps from which to gather injected tables for saving.
     iter_var : object or None
         If not None, used as a prefix along with table names for
         labeling DataFrames in the HDFStore.
 
     """
-    workers = (get_worker(w) for w in tz.unique(workers))
-    table_names = tz.unique(tz.concat(w._tables_used() for w in workers))
+    steps = (get_step(w) for w in tz.unique(steps))
+    table_names = tz.unique(tz.concat(w._tables_used() for w in steps))
     tables = (get_table(t) for t in table_names)
 
     key_template = '{}/{{}}'.format(iter_var) if iter_var is not None else '{}'
@@ -1520,22 +1520,22 @@ def write_tables(fname, workers, iter_var):
             store[key_template.format(t.name)] = t.to_frame()
 
 
-def run(workers, iter_vars=None, data_out=None, out_interval=1):
+def run(steps, iter_vars=None, data_out=None, out_interval=1):
     """
-    Run workers in series, optionally repeatedly over some sequence.
+    Run steps in series, optionally repeatedly over some sequence.
     The current iteration variable is set as a global injectable
     called ``iter_var``.
 
     Parameters
     ----------
-    workers : list of str
-        List of workers to run identified by their name.
+    steps : list of str
+        List of steps to run identified by their name.
     iter_vars : iterable, optional
         The values of `iter_vars` will be made available as an injectable
-        called ``iter_var`` when repeatedly running `workers`.
+        called ``iter_var`` when repeatedly running `steps`.
     data_out : str, optional
-        An optional filename to which all tables injected into any worker
-        in `workers` will be saved every `out_interval` iterations.
+        An optional filename to which all tables injected into any step
+        in `steps` will be saved every `out_interval` iterations.
         File will be a pandas HDF data store.
     out_interval : int, optional
         Iteration interval on which to save data to `data_out`. For example,
@@ -1548,7 +1548,7 @@ def run(workers, iter_vars=None, data_out=None, out_interval=1):
     iter_counter = 0
 
     if data_out:
-        write_tables(data_out, workers, 'base')
+        write_tables(data_out, steps, 'base')
 
     for i, var in enumerate(iter_vars, start=1):
         add_injectable('iter_var', var)
@@ -1561,16 +1561,16 @@ def run(workers, iter_vars=None, data_out=None, out_interval=1):
                     i, var))
 
         t1 = time.time()
-        for worker_name in workers:
-            print('Running worker {!r}'.format(worker_name))
+        for step_name in steps:
+            print('Running step {!r}'.format(step_name))
             with log_start_finish(
-                    'run worker {!r}'.format(worker_name), logger,
+                    'run step {!r}'.format(step_name), logger,
                     logging.INFO):
-                worker = get_worker(worker_name)
+                step = get_step(step_name)
                 t2 = time.time()
-                worker()
-                print("Time to execute worker '{}': {:.2f} s".format(
-                      worker_name, time.time() - t2))
+                step()
+                print("Time to execute step '{}': {:.2f} s".format(
+                      step_name, time.time() - t2))
             clear_cache(scope=_CS_STEP)
 
         print(
@@ -1579,14 +1579,14 @@ def run(workers, iter_vars=None, data_out=None, out_interval=1):
              '{:.2f} s').format(i, var, time.time() - t1))
 
         if data_out and iter_counter == out_interval:
-            write_tables(data_out, workers, var)
+            write_tables(data_out, steps, var)
             iter_counter = 0
 
         iter_counter += 1
         clear_cache(scope=_CS_ITER)
 
     if data_out and iter_counter != 1:
-        write_tables(data_out, workers, 'final')
+        write_tables(data_out, steps, 'final')
 
 
 @contextmanager
@@ -1633,23 +1633,23 @@ def eval_variable(name, **kwargs):
         return vars[name]
 
 
-def eval_worker(name, **kwargs):
+def eval_step(name, **kwargs):
     """
-    Evaluate a worker as would be done within the pipeline environment
+    Evaluate a step as would be done within the pipeline environment
     and return the result. Any keyword arguments are temporarily set
     as injectables.
 
     Parameters
     ----------
     name : str
-        Name of worker to run.
+        Name of step to run.
 
     Returns
     -------
     object
-        Anything returned by a worker. (Though note that in Orca runs
-        return values from workers are ignored.)
+        Anything returned by a step. (Though note that in Orca runs
+        return values from steps are ignored.)
 
     """
     with injectables(**kwargs):
-        return get_worker(name)()
+        return get_step(name)()
