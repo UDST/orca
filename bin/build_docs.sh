@@ -53,6 +53,7 @@ if [ "$TRAVIS_REPO_SLUG" == "synthicity/orca" ] && \
         cd gh-pages
         rm -rf *
         cp -R ../orca/docs/_build/html/* ./
+        touch .nojekyll
         git add -A .
 
         git commit -am "Update dev doc after building $TRAVIS_BUILD_NUMBER"
