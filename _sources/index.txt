@@ -116,6 +116,26 @@ Orca offers some conveniences for streamlining the construction of pipelines:
     as it progressed. Orca can save registered tables out
     to an HDF5 file during every iteration or at set intervals.
 
+Installation
+------------
+
+Orca depends on Pandas, PyTables, toolz (or cytoolz), and zbox.
+Pandas and PyTables are included in `Anaconda <http://docs.continuum.io/anaconda/>`__.
+Toolz and zbox may be installed with `pip <https://pip.pypa.io/en/latest/index.html>`__,
+and both toolz and cytoolz are can be installed by
+`conda <http://conda.pydata.org/>`__ (if you are using Anaconda or miniconda).
+
+With the dependencies installed, install Orca with pip::
+
+    pip install orca
+
+
+Links
+-----
+
+* `GitHub <https://github.com/synthicity/orca>`__
+* `PyPi <https://pypi.python.org/pypi/orca>`__
+
 Contents
 --------
 
