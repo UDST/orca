@@ -1,0 +1,229 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Orca Utilities &mdash; Orca 1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Orca 1.0 documentation" href="index.html"/>
+        <link rel="prev" title="Orca Core" href="core.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="index.html" class="fa fa-home"> Orca</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="core.html">Orca Core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html#tables">Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#columns">Columns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#injectables">Injectables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#caching">Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#workers">Workers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#running-pipelines">Running Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#argument-matching">Argument Matching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Orca Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-orca.utils.testing">Testing Helpers</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Orca</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Orca Utilities</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/utils.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="orca-utilities">
+<h1>Orca Utilities<a class="headerlink" href="#orca-utilities" title="Permalink to this headline">¶</a></h1>
+<p>These are various utilities used internally within Orca.</p>
+<div class="section" id="module-orca.utils.testing">
+<span id="testing-helpers"></span><h2>Testing Helpers<a class="headerlink" href="#module-orca.utils.testing" title="Permalink to this headline">¶</a></h2>
+<p>Utilities used in testing of UrbanSim.</p>
+<dl class="function">
+<dt id="orca.utils.testing.assert_frames_equal">
+<tt class="descclassname">orca.utils.testing.</tt><tt class="descname">assert_frames_equal</tt><big>(</big><em>actual</em>, <em>expected</em>, <em>use_close=False</em><big>)</big><a class="headerlink" href="#orca.utils.testing.assert_frames_equal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare DataFrame items by index and column and
+raise AssertionError if any item is not equal.</p>
+<p>Ordering is unimportant, items are compared only by label.
+NaN and infinite values are supported.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>actual</strong> : pandas.DataFrame</p>
+<p><strong>expected</strong> : pandas.DataFrame</p>
+<p><strong>use_close</strong> : bool, optional</p>
+<blockquote class="last">
+<div><p>If True, use numpy.testing.assert_allclose instead of
+numpy.testing.assert_equal.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="orca.utils.testing.assert_index_equal">
+<tt class="descclassname">orca.utils.testing.</tt><tt class="descname">assert_index_equal</tt><big>(</big><em>left</em>, <em>right</em><big>)</big><a class="headerlink" href="#orca.utils.testing.assert_index_equal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar to pdt.assert_index_equal but is not sensitive to key ordering.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>left: pandas.Index</strong></p>
+<p class="last"><strong>right: pandas.Index</strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="core.html" class="btn btn-neutral" title="Orca Core"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Synthicity, LLC.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

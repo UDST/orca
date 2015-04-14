@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Orca &mdash; Orca 1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Orca 1.0 documentation" href="#"/>
+        <link rel="next" title="Orca Core" href="core.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+          <a href="#" class="fa fa-home"> Orca</a>
+        
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Orca Core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html#tables">Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#columns">Columns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#injectables">Injectables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#caching">Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#workers">Workers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#running-pipelines">Running Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#argument-matching">Argument Matching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Orca Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#module-orca.utils.testing">Testing Helpers</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">Orca</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="#">Docs</a> &raquo;</li>
+      
+    <li>Orca</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="orca">
+<h1>Orca<a class="headerlink" href="#orca" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Orca is a pipeline orchestration framework that allows you to define dynamic
+data sources and explicitly connect them to processing functions. Orca has many
+features for working with <a class="reference external" href="http://pandas.pydata.org/">Pandas</a> data
+structures, but it can be used with any data.
+Orca was originally designed to orchestrate <a class="reference external" href="http://synthicity.github.io/urbansim/">UrbanSim</a> simulations and so
+has capabilities for running a pipeline multiple times while iterating
+over a set of input data.</p>
+<div class="section" id="goals">
+<h3>Goals<a class="headerlink" href="#goals" title="Permalink to this headline">¶</a></h3>
+<p>Orca has explit goals of flexibility, transparency, lazy execution,
+and encouraging good practices. Those goals are achieved by:</p>
+<ul class="simple">
+<li>Flexibility<ul>
+<li>Users may write and run any Python</li>
+</ul>
+</li>
+<li>Transparency<ul>
+<li>Dependencies between data and processing units are explicitly listed</li>
+<li>Your code is a record of everything that happens</li>
+</ul>
+</li>
+<li>Lazy execution<ul>
+<li>Orca only calls functions if they are explicitly needed</li>
+</ul>
+</li>
+<li>Good practices<ul>
+<li>Encourage small, functional units</li>
+<li>Encourage code re-use</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="components">
+<h3>Components<a class="headerlink" href="#components" title="Permalink to this headline">¶</a></h3>
+<p>The units of Orca pipelines are Python functions registered with Orca
+via decorators.
+Orca calls these functions by matching their arguments to other registered
+data.
+(This format is heavily inspired by
+<a class="reference external" href="http://pytest.org/latest/fixture.html#fixture">pytest&#8217;s fixtures</a>.)
+The main components of a pipeline include:</p>
+<ul class="simple">
+<li>Workers<ul>
+<li>Workers are Python functions registered with Orca whose main utility
+is via their side-effects.
+Some workers will update the pipeline data somehow, maybe by updating
+a column in a table or adding rows to a table; other workers might
+generate plots or save processed data.</li>
+</ul>
+</li>
+<li>Tables<ul>
+<li>Orca has a built-in understanding of Pandas <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe">DataFrames</a>,
+which are referred to as &#8220;tables&#8221;.
+Tables can be registered as plain DataFrames or as
+functions that return DataFrames.</li>
+</ul>
+</li>
+<li>Columns<ul>
+<li>Columns can be dynamically added to tables by registering
+individual pandas <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#series">Series</a> instances or by registering functions
+that return Series.</li>
+</ul>
+</li>
+<li>Injectables<ul>
+<li>Functions may need to make use of data that are not in a table/column.
+For these you can register any object or any function as an &#8220;injectable&#8221;
+to make it available throughout an Orca pipeline.</li>
+</ul>
+</li>
+</ul>
+<p>Orca offers some conveniences for streamlining the construction of pipelines:</p>
+<ul class="simple">
+<li>Argument matching<ul>
+<li>When a registered function needs to be evaluated, Orca inspects
+the function&#8217;s argument names and keyword argument values. Orca
+matches those arguments to registered variables, such as tables,
+columns, or injectables, and calls the function with those arguments
+(in turn calling any other functions as necessary and injecting
+other arguments).</li>
+</ul>
+</li>
+<li>Functions as data<ul>
+<li>If something needs to be recomputed on-demand you can register
+a function that returns your table/column/injectable. That function
+will be evaluated anytime the variable is used in the pipeline so
+that the value is always current.</li>
+</ul>
+</li>
+<li>Caching<ul>
+<li>Have some data that needs to be computed, but not very frequently?
+You can enable caching on individual items to save time, then later clear
+the cache on just that item or clear the entire cache in one call.
+You can also set limited scopes on caching so that items are removed
+from the cache at set intervals.</li>
+</ul>
+</li>
+<li>Automated Merges<ul>
+<li>Orca can merge multiple tables to some target table once you have
+described relationships between them.</li>
+</ul>
+</li>
+<li>Data archives<ul>
+<li>After running a pipeline it can be useful to look at how the data changed
+as it progressed. Orca can save registered tables out
+to an HDF5 file during every iteration or at set intervals.</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Orca Core</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="core.html#tables">Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#columns">Columns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#injectables">Injectables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#caching">Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#workers">Workers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#running-pipelines">Running Pipelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#argument-matching">Argument Matching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#api">API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Orca Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils.html#module-orca.utils.testing">Testing Helpers</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="core.html" class="btn btn-neutral float-right" title="Orca Core">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Synthicity, LLC.
+    </p>
+  </div>
+
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
