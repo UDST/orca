@@ -3,3 +3,5 @@
 # See full license in LICENSE.
 
 from .orca import *
+
+version = __version__ = '1.0dev'
