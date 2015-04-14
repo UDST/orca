@@ -52,12 +52,12 @@ data.
 `pytest's fixtures <http://pytest.org/latest/fixture.html#fixture>`__.)
 The main components of a pipeline include:
 
-* Workers
+* Steps
 
-  * Workers are Python functions registered with Orca whose main utility
+  * Steps are Python functions registered with Orca whose main utility
     is via their side-effects.
-    Some workers will update the pipeline data somehow, maybe by updating
-    a column in a table or adding rows to a table; other workers might
+    Some steps will update the pipeline data somehow, maybe by updating
+    a column in a table or adding rows to a table; other steps might
     generate plots or save processed data.
 
 * Tables

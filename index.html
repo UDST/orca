@@ -68,7 +68,7 @@
 <li class="toctree-l2"><a class="reference internal" href="core.html#columns">Columns</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#injectables">Injectables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#caching">Caching</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#workers">Workers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#steps">Steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#running-pipelines">Running Pipelines</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#argument-matching">Argument Matching</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#api">API</a></li>
@@ -159,11 +159,11 @@ data.
 <a class="reference external" href="http://pytest.org/latest/fixture.html#fixture">pytest&#8217;s fixtures</a>.)
 The main components of a pipeline include:</p>
 <ul class="simple">
-<li>Workers<ul>
-<li>Workers are Python functions registered with Orca whose main utility
+<li>Steps<ul>
+<li>Steps are Python functions registered with Orca whose main utility
 is via their side-effects.
-Some workers will update the pipeline data somehow, maybe by updating
-a column in a table or adding rows to a table; other workers might
+Some steps will update the pipeline data somehow, maybe by updating
+a column in a table or adding rows to a table; other steps might
 generate plots or save processed data.</li>
 </ul>
 </li>
@@ -236,7 +236,7 @@ to an HDF5 file during every iteration or at set intervals.</li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#columns">Columns</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#injectables">Injectables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#caching">Caching</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#workers">Workers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core.html#steps">Steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#running-pipelines">Running Pipelines</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#argument-matching">Argument Matching</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#api">API</a></li>

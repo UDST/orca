@@ -69,7 +69,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#columns">Columns</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#injectables">Injectables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#caching">Caching</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#workers">Workers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#steps">Steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#running-pipelines">Running Pipelines</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#argument-matching">Argument Matching</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#api">API</a></li>
@@ -431,31 +431,31 @@ context manager:</p>
 <a class="reference internal" href="#orca.orca.clear_cache" title="orca.orca.clear_cache"><tt class="xref py py-func docutils literal"><span class="pre">clear_cache()</span></tt></a>.</p>
 </div>
 </div>
-<div class="section" id="workers">
-<h2>Workers<a class="headerlink" href="#workers" title="Permalink to this headline">¶</a></h2>
-<p>A worker is a function run by Orca with argument matching.
-Use the <a class="reference internal" href="#orca.orca.worker" title="orca.orca.worker"><tt class="xref py py-func docutils literal"><span class="pre">worker()</span></tt></a> decorator to register a worker function.
-Workers are generally important for their side-effects, their
+<div class="section" id="steps">
+<h2>Steps<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h2>
+<p>A step is a function run by Orca with argument matching.
+Use the <a class="reference internal" href="#orca.orca.step" title="orca.orca.step"><tt class="xref py py-func docutils literal"><span class="pre">step()</span></tt></a> decorator to register a step function.
+Steps are generally important for their side-effects, their
 return values are discarded during pipeline runs.
-For example, a worker might replace a column
+For example, a step might replace a column
 in a table (a new table, though similar to <tt class="docutils literal"><span class="pre">my_table</span></tt> above):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
 <span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s">&#39;new_table&#39;</span><span class="p">)</span>
 
-<span class="nd">@orca.worker</span><span class="p">()</span>
+<span class="nd">@orca.step</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">replace_col</span><span class="p">(</span><span class="n">new_table</span><span class="p">):</span>
     <span class="n">new_table</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Or update some values in a column:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.worker</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.step</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">update_col</span><span class="p">(</span><span class="n">new_table</span><span class="p">):</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">99</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">new_table</span><span class="o">.</span><span class="n">update_col_from_series</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Or add rows to a table:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.worker</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.step</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">add_rows</span><span class="p">(</span><span class="n">new_table</span><span class="p">):</span>
     <span class="n">new_rows</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">]},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">new_table</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
@@ -468,11 +468,11 @@ DataFrame and so require it to be a <a class="reference internal" href="#orca.or
 If your table is a wrapped function, not a DataFrame, you can update
 columns by replacing them entirely with a new <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#series">Series</a> using the
 <a class="reference internal" href="#orca.orca.add_column" title="orca.orca.add_column"><tt class="xref py py-func docutils literal"><span class="pre">add_column()</span></tt></a> function.</p>
-<p>A demonstration of running the above workers:</p>
+<p>A demonstration of running the above steps:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">68</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s">&#39;replace_col&#39;</span><span class="p">,</span> <span class="s">&#39;update_col&#39;</span><span class="p">,</span> <span class="s">&#39;add_rows&#39;</span><span class="p">])</span>
-<span class="n">Running</span> <span class="n">worker</span> <span class="s">&#39;replace_col&#39;</span>
-<span class="n">Running</span> <span class="n">worker</span> <span class="s">&#39;update_col&#39;</span>
-<span class="n">Running</span> <span class="n">worker</span> <span class="s">&#39;add_rows&#39;</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;replace_col&#39;</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;update_col&#39;</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;add_rows&#39;</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">69</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="s">&#39;new_table&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">69</span><span class="p">]:</span>
@@ -484,70 +484,70 @@ columns by replacing them entirely with a new <a class="reference external" href
 <span class="mi">4</span>  <span class="mi">101</span>
 </pre></div>
 </div>
-<p>In the context of a simulation workers can be thought of as model steps
+<p>In the context of a simulation steps can be thought of as model steps
 that will often advance the simulation by updating data.
-Workers are plain Python functions, though, and there is no restriction on
+Steps are plain Python functions, though, and there is no restriction on
 what they are allowed to do.</p>
 </div>
 <div class="section" id="running-pipelines">
 <h2>Running Pipelines<a class="headerlink" href="#running-pipelines" title="Permalink to this headline">¶</a></h2>
 <p>You start pipelines by calling the <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><tt class="xref py py-func docutils literal"><span class="pre">run()</span></tt></a> function and
-listing which workers you want to run.
-Calling <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><tt class="xref py py-func docutils literal"><span class="pre">run()</span></tt></a> with just a list of workers,
-as in the above example, will run through the workers once.
+listing which steps you want to run.
+Calling <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><tt class="xref py py-func docutils literal"><span class="pre">run()</span></tt></a> with just a list of steps,
+as in the above example, will run through the steps once.
 To run the pipeline over some a sequence, provide those values as a sequence
 to <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><tt class="xref py py-func docutils literal"><span class="pre">run()</span></tt></a> using the <tt class="docutils literal"><span class="pre">iter_vars</span></tt> argument.
 The variable <tt class="docutils literal"><span class="pre">iter_var</span></tt> is provided as an injectable to Orca functions:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">77</span><span class="p">]:</span> <span class="nd">@orca.worker</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">77</span><span class="p">]:</span> <span class="nd">@orca.step</span><span class="p">()</span>
    <span class="o">....</span><span class="p">:</span> <span class="k">def</span> <span class="nf">print_year</span><span class="p">(</span><span class="n">iter_var</span><span class="p">):</span>
    <span class="o">....</span><span class="p">:</span>         <span class="k">print</span> <span class="s">&#39;*** the iteration value is {} ***&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iter_var</span><span class="p">)</span>
    <span class="o">....</span><span class="p">:</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">78</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s">&#39;print_year&#39;</span><span class="p">],</span> <span class="n">iter_vars</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">2015</span><span class="p">))</span>
 <span class="n">Running</span> <span class="n">iteration</span> <span class="mi">1</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2010</span>
-<span class="n">Running</span> <span class="n">worker</span> <span class="s">&#39;print_year&#39;</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span>
 <span class="o">***</span> <span class="n">the</span> <span class="n">iteration</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">2010</span> <span class="o">***</span>
-<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">worker</span> <span class="s">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
+<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">1</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2010</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Running</span> <span class="n">iteration</span> <span class="mi">2</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2011</span>
-<span class="n">Running</span> <span class="n">worker</span> <span class="s">&#39;print_year&#39;</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span>
 <span class="o">***</span> <span class="n">the</span> <span class="n">iteration</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">2011</span> <span class="o">***</span>
-<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">worker</span> <span class="s">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
+<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">2</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2011</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Running</span> <span class="n">iteration</span> <span class="mi">3</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2012</span>
-<span class="n">Running</span> <span class="n">worker</span> <span class="s">&#39;print_year&#39;</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span>
 <span class="o">***</span> <span class="n">the</span> <span class="n">iteration</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">2012</span> <span class="o">***</span>
-<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">worker</span> <span class="s">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
+<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">3</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2012</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Running</span> <span class="n">iteration</span> <span class="mi">4</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2013</span>
-<span class="n">Running</span> <span class="n">worker</span> <span class="s">&#39;print_year&#39;</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span>
 <span class="o">***</span> <span class="n">the</span> <span class="n">iteration</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">2013</span> <span class="o">***</span>
-<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">worker</span> <span class="s">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
+<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">4</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2013</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Running</span> <span class="n">iteration</span> <span class="mi">5</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2014</span>
-<span class="n">Running</span> <span class="n">worker</span> <span class="s">&#39;print_year&#39;</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span>
 <span class="o">***</span> <span class="n">the</span> <span class="n">iteration</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">2014</span> <span class="o">***</span>
-<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">worker</span> <span class="s">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
+<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">5</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2014</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 </pre></div>
 </div>
 <div class="section" id="running-sim-components-a-la-carte">
 <h3>Running Sim Components a la Carte<a class="headerlink" href="#running-sim-components-a-la-carte" title="Permalink to this headline">¶</a></h3>
-<p>It can be useful to have Orca evaluate single variables and workers,
+<p>It can be useful to have Orca evaluate single variables and steps,
 especially during development and testing.
 To achieve this, use the
 <a class="reference internal" href="#orca.orca.eval_variable" title="orca.orca.eval_variable"><tt class="xref py py-func docutils literal"><span class="pre">eval_variable()</span></tt></a> and
-<a class="reference internal" href="#orca.orca.eval_worker" title="orca.orca.eval_worker"><tt class="xref py py-func docutils literal"><span class="pre">eval_worker()</span></tt></a> functions.</p>
+<a class="reference internal" href="#orca.orca.eval_step" title="orca.orca.eval_step"><tt class="xref py py-func docutils literal"><span class="pre">eval_step()</span></tt></a> functions.</p>
 <p><tt class="docutils literal"><span class="pre">eval_variable</span></tt> takes the name of a variable (including variable expressions)
 and returns that variable as it would be injected into a function Orca.
-<tt class="docutils literal"><span class="pre">eval_worker</span></tt> takes the name of a worker, runs that
-worker with variable injection, and returns any result.</p>
+<tt class="docutils literal"><span class="pre">eval_step</span></tt> takes the name of a step, runs that
+step with variable injection, and returns any result.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Most workers don&#8217;t have return values because Orca
+<p class="last">Most steps don&#8217;t have return values because Orca
 ignores them, but they can be useful for testing.</p>
 </div>
-<p>Both <a class="reference internal" href="#orca.orca.eval_variable" title="orca.orca.eval_variable"><tt class="xref py py-func docutils literal"><span class="pre">eval_variable()</span></tt></a> and <a class="reference internal" href="#orca.orca.eval_worker" title="orca.orca.eval_worker"><tt class="xref py py-func docutils literal"><span class="pre">eval_worker()</span></tt></a>
+<p>Both <a class="reference internal" href="#orca.orca.eval_variable" title="orca.orca.eval_variable"><tt class="xref py py-func docutils literal"><span class="pre">eval_variable()</span></tt></a> and <a class="reference internal" href="#orca.orca.eval_step" title="orca.orca.eval_step"><tt class="xref py py-func docutils literal"><span class="pre">eval_step()</span></tt></a>
 take arbitrary keyword arguments that are temporarily turned into injectables
 within Orca while the evaluation is taking place.
 When the evaluation is complete Orca&#8217;s state is reset to whatever
@@ -762,28 +762,28 @@ like to specifically document that in the function&#8217;s arguments.</p>
 </tbody>
 </table>
 </div>
-<div class="section" id="worker-api">
-<h3>Worker API<a class="headerlink" href="#worker-api" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="step-api">
+<h3>Step API<a class="headerlink" href="#step-api" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.add_worker" title="orca.orca.add_worker"><tt class="xref py py-obj docutils literal"><span class="pre">add_worker</span></tt></a>(worker_name,&nbsp;func)</td>
-<td>Add a worker function to Orca.</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.add_step" title="orca.orca.add_step"><tt class="xref py py-obj docutils literal"><span class="pre">add_step</span></tt></a>(step_name,&nbsp;func)</td>
+<td>Add a step function to Orca.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#orca.orca.worker" title="orca.orca.worker"><tt class="xref py py-obj docutils literal"><span class="pre">worker</span></tt></a>([worker_name])</td>
+<tr class="row-even"><td><a class="reference internal" href="#orca.orca.step" title="orca.orca.step"><tt class="xref py py-obj docutils literal"><span class="pre">step</span></tt></a>([step_name])</td>
 <td>Decorates functions that will be called by the <cite>run</cite> function.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.get_worker" title="orca.orca.get_worker"><tt class="xref py py-obj docutils literal"><span class="pre">get_worker</span></tt></a>(worker_name)</td>
-<td>Get a wrapped worker by name.</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.get_step" title="orca.orca.get_step"><tt class="xref py py-obj docutils literal"><span class="pre">get_step</span></tt></a>(step_name)</td>
+<td>Get a wrapped step by name.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#orca.orca.list_workers" title="orca.orca.list_workers"><tt class="xref py py-obj docutils literal"><span class="pre">list_workers</span></tt></a>()</td>
-<td>List of registered worker names.</td>
+<tr class="row-even"><td><a class="reference internal" href="#orca.orca.list_steps" title="orca.orca.list_steps"><tt class="xref py py-obj docutils literal"><span class="pre">list_steps</span></tt></a>()</td>
+<td>List of registered step names.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><tt class="xref py py-obj docutils literal"><span class="pre">run</span></tt></a>(workers[,&nbsp;iter_vars,&nbsp;data_out,&nbsp;out_interval])</td>
-<td>Run workers in series, optionally repeatedly over some sequence.</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><tt class="xref py py-obj docutils literal"><span class="pre">run</span></tt></a>(steps[,&nbsp;iter_vars,&nbsp;data_out,&nbsp;out_interval])</td>
+<td>Run steps in series, optionally repeatedly over some sequence.</td>
 </tr>
 </tbody>
 </table>
@@ -1197,6 +1197,27 @@ rules as universal caching.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="orca.orca.add_step">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">add_step</tt><big>(</big><em>step_name</em>, <em>func</em><big>)</big><a class="headerlink" href="#orca.orca.add_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a step function to Orca.</p>
+<p>The function&#8217;s argument names and keyword argument values
+will be matched to registered variables when the function
+needs to be evaluated by Orca.
+The argument name &#8220;iter_var&#8221; may be used to have the current
+iteration variable injected.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>step_name</strong> : str</p>
+<p class="last"><strong>func</strong> : callable</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="orca.orca.add_table">
 <tt class="descclassname">orca.orca.</tt><tt class="descname">add_table</tt><big>(</big><em>table_name</em>, <em>table</em>, <em>cache=False</em>, <em>cache_scope='forever'</em>, <em>copy_col=True</em><big>)</big><a class="headerlink" href="#orca.orca.add_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Register a table with Orca.</p>
@@ -1234,27 +1255,6 @@ a single step of the pipeline.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>wrapped</strong> : <cite>DataFrameWrapper</cite> or <cite>TableFuncWrapper</cite></p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="orca.orca.add_worker">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">add_worker</tt><big>(</big><em>worker_name</em>, <em>func</em><big>)</big><a class="headerlink" href="#orca.orca.add_worker" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a worker function to Orca.</p>
-<p>The function&#8217;s argument names and keyword argument values
-will be matched to registered variables when the function
-needs to be evaluated by Orca.
-The argument name &#8220;iter_var&#8221; may be used to have the current
-iteration variable injected.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>worker_name</strong> : str</p>
-<p class="last"><strong>func</strong> : callable</p>
 </td>
 </tr>
 </tbody>
@@ -1392,6 +1392,33 @@ caching enabled.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="orca.orca.eval_step">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">eval_step</tt><big>(</big><em>name</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#orca.orca.eval_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate a step as would be done within the pipeline environment
+and return the result. Any keyword arguments are temporarily set
+as injectables.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+<blockquote>
+<div><p>Name of step to run.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">object</p>
+<blockquote class="last">
+<div><p>Anything returned by a step. (Though note that in Orca runs
+return values from steps are ignored.)</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="orca.orca.eval_variable">
 <tt class="descclassname">orca.orca.</tt><tt class="descname">eval_variable</tt><big>(</big><em>name</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#orca.orca.eval_variable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a single variable function registered with Orca
@@ -1422,33 +1449,6 @@ had been injected into a function.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="orca.orca.eval_worker">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">eval_worker</tt><big>(</big><em>name</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#orca.orca.eval_worker" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate a worker as would be done within the pipeline environment
-and return the result. Any keyword arguments are temporarily set
-as injectables.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
-<blockquote>
-<div><p>Name of worker to run.</p>
-</div></blockquote>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">object</p>
-<blockquote class="last">
-<div><p>Anything returned by a worker. (Though note that in Orca runs
-return values from workers are ignored.)</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
 <dt id="orca.orca.get_injectable">
 <tt class="descclassname">orca.orca.</tt><tt class="descname">get_injectable</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#orca.orca.get_injectable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get an injectable by name. <em>Does not</em> evaluate wrapped functions.</p>
@@ -1470,6 +1470,12 @@ return values from workers are ignored.)</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="orca.orca.get_step">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">get_step</tt><big>(</big><em>step_name</em><big>)</big><a class="headerlink" href="#orca.orca.get_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a wrapped step by name.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="orca.orca.get_table">
 <tt class="descclassname">orca.orca.</tt><tt class="descname">get_table</tt><big>(</big><em>table_name</em><big>)</big><a class="headerlink" href="#orca.orca.get_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a registered table.</p>
@@ -1484,12 +1490,6 @@ return values from workers are ignored.)</p>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="function">
-<dt id="orca.orca.get_worker">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">get_worker</tt><big>(</big><em>worker_name</em><big>)</big><a class="headerlink" href="#orca.orca.get_worker" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get a wrapped worker by name.</p>
 </dd></dl>
 
 <dl class="function">
@@ -1550,15 +1550,15 @@ variable expression.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="orca.orca.list_tables">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">list_tables</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.list_tables" title="Permalink to this definition">¶</a></dt>
-<dd><p>List of table names.</p>
+<dt id="orca.orca.list_steps">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">list_steps</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.list_steps" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of registered step names.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="orca.orca.list_workers">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">list_workers</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.list_workers" title="Permalink to this definition">¶</a></dt>
-<dd><p>List of registered worker names.</p>
+<dt id="orca.orca.list_tables">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">list_tables</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.list_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of table names.</p>
 </dd></dl>
 
 <dl class="function">
@@ -1596,27 +1596,27 @@ table.</p>
 
 <dl class="function">
 <dt id="orca.orca.run">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">run</tt><big>(</big><em>workers</em>, <em>iter_vars=None</em>, <em>data_out=None</em>, <em>out_interval=1</em><big>)</big><a class="headerlink" href="#orca.orca.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run workers in series, optionally repeatedly over some sequence.
+<tt class="descclassname">orca.orca.</tt><tt class="descname">run</tt><big>(</big><em>steps</em>, <em>iter_vars=None</em>, <em>data_out=None</em>, <em>out_interval=1</em><big>)</big><a class="headerlink" href="#orca.orca.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run steps in series, optionally repeatedly over some sequence.
 The current iteration variable is set as a global injectable
 called <tt class="docutils literal"><span class="pre">iter_var</span></tt>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>workers</strong> : list of str</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>steps</strong> : list of str</p>
 <blockquote>
-<div><p>List of workers to run identified by their name.</p>
+<div><p>List of steps to run identified by their name.</p>
 </div></blockquote>
 <p><strong>iter_vars</strong> : iterable, optional</p>
 <blockquote>
 <div><p>The values of <cite>iter_vars</cite> will be made available as an injectable
-called <tt class="docutils literal"><span class="pre">iter_var</span></tt> when repeatedly running <cite>workers</cite>.</p>
+called <tt class="docutils literal"><span class="pre">iter_var</span></tt> when repeatedly running <cite>steps</cite>.</p>
 </div></blockquote>
 <p><strong>data_out</strong> : str, optional</p>
 <blockquote>
-<div><p>An optional filename to which all tables injected into any worker
-in <cite>workers</cite> will be saved every <cite>out_interval</cite> iterations.
+<div><p>An optional filename to which all tables injected into any step
+in <cite>steps</cite> will be saved every <cite>out_interval</cite> iterations.
 File will be a pandas HDF data store.</p>
 </div></blockquote>
 <p><strong>out_interval</strong> : int, optional</p>
@@ -1633,6 +1633,19 @@ The first and last iterations are always included.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="orca.orca.step">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">step</tt><big>(</big><em>step_name=None</em><big>)</big><a class="headerlink" href="#orca.orca.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorates functions that will be called by the <cite>run</cite> function.</p>
+<p>Decorator version of <cite>add_step</cite>. step name defaults to
+name of function.</p>
+<p>The function&#8217;s argument names and keyword argument values
+will be matched to registered variables when the function
+needs to be evaluated by Orca.
+The argument name &#8220;iter_var&#8221; may be used to have the current
+iteration variable injected.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="orca.orca.table">
 <tt class="descclassname">orca.orca.</tt><tt class="descname">table</tt><big>(</big><em>table_name=None</em>, <em>cache=False</em>, <em>cache_scope='forever'</em>, <em>copy_col=True</em><big>)</big><a class="headerlink" href="#orca.orca.table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorates functions that return DataFrames.</p>
@@ -1646,22 +1659,9 @@ iteration variable injected.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="orca.orca.worker">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">worker</tt><big>(</big><em>worker_name=None</em><big>)</big><a class="headerlink" href="#orca.orca.worker" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decorates functions that will be called by the <cite>run</cite> function.</p>
-<p>Decorator version of <cite>add_worker</cite>. Worker name defaults to
-name of function.</p>
-<p>The function&#8217;s argument names and keyword argument values
-will be matched to registered variables when the function
-needs to be evaluated by Orca.
-The argument name &#8220;iter_var&#8221; may be used to have the current
-iteration variable injected.</p>
-</dd></dl>
-
-<dl class="function">
 <dt id="orca.orca.write_tables">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">write_tables</tt><big>(</big><em>fname</em>, <em>workers</em>, <em>iter_var</em><big>)</big><a class="headerlink" href="#orca.orca.write_tables" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write all tables injected into <cite>workers</cite> to a pandas.HDFStore file.
+<tt class="descclassname">orca.orca.</tt><tt class="descname">write_tables</tt><big>(</big><em>fname</em>, <em>steps</em>, <em>iter_var</em><big>)</big><a class="headerlink" href="#orca.orca.write_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write all tables injected into <cite>steps</cite> to a pandas.HDFStore file.
 If var is not None it will be used to prefix the table names so that
 multiple iterations can go in the same file.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1673,9 +1673,9 @@ multiple iterations can go in the same file.</p>
 <div><p>File name for HDFStore. Will be opened in append mode and closed
 at the end of this function.</p>
 </div></blockquote>
-<p><strong>workers</strong> : list of str</p>
+<p><strong>steps</strong> : list of str</p>
 <blockquote>
-<div><p>Workers from which to gather injected tables for saving.</p>
+<div><p>steps from which to gather injected tables for saving.</p>
 </div></blockquote>
 <p><strong>iter_var</strong> : object or None</p>
 <blockquote class="last">

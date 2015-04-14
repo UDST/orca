@@ -337,33 +337,33 @@ context manager::
 Finally, users can manually clear the cache using
 :py:func:`~orca.orca.clear_cache`.
 
-Workers
--------
+Steps
+-----
 
-A worker is a function run by Orca with argument matching.
-Use the :py:func:`~orca.orca.worker` decorator to register a worker function.
-Workers are generally important for their side-effects, their
+A step is a function run by Orca with argument matching.
+Use the :py:func:`~orca.orca.step` decorator to register a step function.
+Steps are generally important for their side-effects, their
 return values are discarded during pipeline runs.
-For example, a worker might replace a column
+For example, a step might replace a column
 in a table (a new table, though similar to ``my_table`` above)::
 
     df = pd.DataFrame({'a': [1, 2, 3]})
     orca.add_table('new_table')
 
-    @orca.worker()
+    @orca.step()
     def replace_col(new_table):
         new_table['a'] = [4, 5, 6]
 
 Or update some values in a column::
 
-    @orca.worker()
+    @orca.step()
     def update_col(new_table):
         s = pd.Series([99], index=[1])
         new_table.update_col_from_series('a', s)
 
 Or add rows to a table::
 
-    @orca.worker()
+    @orca.step()
     def add_rows(new_table):
         new_rows = pd.DataFrame({'a': [100, 101]}, index=[3, 4])
         df = new_table.to_frame()
@@ -376,14 +376,14 @@ If your table is a wrapped function, not a DataFrame, you can update
 columns by replacing them entirely with a new Series_ using the
 :py:func:`~orca.orca.add_column` function.
 
-A demonstration of running the above workers:
+A demonstration of running the above steps:
 
 .. code-block:: python
 
     In [68]: orca.run(['replace_col', 'update_col', 'add_rows'])
-    Running worker 'replace_col'
-    Running worker 'update_col'
-    Running worker 'add_rows'
+    Running step 'replace_col'
+    Running step 'update_col'
+    Running step 'add_rows'
 
     In [69]: orca.get_table('new_table').to_frame()
     Out[69]:
@@ -394,75 +394,75 @@ A demonstration of running the above workers:
     3  100
     4  101
 
-In the context of a simulation workers can be thought of as model steps
+In the context of a simulation steps can be thought of as model steps
 that will often advance the simulation by updating data.
-Workers are plain Python functions, though, and there is no restriction on
+Steps are plain Python functions, though, and there is no restriction on
 what they are allowed to do.
 
 Running Pipelines
 -----------------
 
 You start pipelines by calling the :py:func:`~orca.orca.run` function and
-listing which workers you want to run.
-Calling :py:func:`~orca.orca.run` with just a list of workers,
-as in the above example, will run through the workers once.
+listing which steps you want to run.
+Calling :py:func:`~orca.orca.run` with just a list of steps,
+as in the above example, will run through the steps once.
 To run the pipeline over some a sequence, provide those values as a sequence
 to :py:func:`~orca.orca.run` using the ``iter_vars`` argument.
 The variable ``iter_var`` is provided as an injectable to Orca functions:
 
 .. code-block:: python
 
-    In [77]: @orca.worker()
+    In [77]: @orca.step()
        ....: def print_year(iter_var):
        ....:         print '*** the iteration value is {} ***'.format(iter_var)
        ....:
 
     In [78]: orca.run(['print_year'], iter_vars=range(2010, 2015))
     Running iteration 1 with iteration value 2010
-    Running worker 'print_year'
+    Running step 'print_year'
     *** the iteration value is 2010 ***
-    Time to execute worker 'print_year': 0.00 s
+    Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 1 with iteration value 2010: 0.00 s
     Running iteration 2 with iteration value 2011
-    Running worker 'print_year'
+    Running step 'print_year'
     *** the iteration value is 2011 ***
-    Time to execute worker 'print_year': 0.00 s
+    Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 2 with iteration value 2011: 0.00 s
     Running iteration 3 with iteration value 2012
-    Running worker 'print_year'
+    Running step 'print_year'
     *** the iteration value is 2012 ***
-    Time to execute worker 'print_year': 0.00 s
+    Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 3 with iteration value 2012: 0.00 s
     Running iteration 4 with iteration value 2013
-    Running worker 'print_year'
+    Running step 'print_year'
     *** the iteration value is 2013 ***
-    Time to execute worker 'print_year': 0.00 s
+    Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 4 with iteration value 2013: 0.00 s
     Running iteration 5 with iteration value 2014
-    Running worker 'print_year'
+    Running step 'print_year'
     *** the iteration value is 2014 ***
-    Time to execute worker 'print_year': 0.00 s
+    Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 5 with iteration value 2014: 0.00 s
 
 Running Sim Components a la Carte
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It can be useful to have Orca evaluate single variables and workers,
+It can be useful to have Orca evaluate single variables and steps,
 especially during development and testing.
 To achieve this, use the
 :py:func:`~orca.orca.eval_variable` and
-:py:func:`~orca.orca.eval_worker` functions.
+:py:func:`~orca.orca.eval_step` functions.
 
 ``eval_variable`` takes the name of a variable (including variable expressions)
 and returns that variable as it would be injected into a function Orca.
-``eval_worker`` takes the name of a worker, runs that
-worker with variable injection, and returns any result.
+``eval_step`` takes the name of a step, runs that
+step with variable injection, and returns any result.
 
 .. note::
-   Most workers don't have return values because Orca
+   Most steps don't have return values because Orca
    ignores them, but they can be useful for testing.
 
-Both :py:func:`~orca.orca.eval_variable` and :py:func:`~orca.orca.eval_worker`
+Both :py:func:`~orca.orca.eval_variable` and :py:func:`~orca.orca.eval_step`
 take arbitrary keyword arguments that are temporarily turned into injectables
 within Orca while the evaluation is taking place.
 When the evaluation is complete Orca's state is reset to whatever
@@ -639,15 +639,15 @@ Merge API
    list_broadcasts
    merge_tables
 
-Worker API
-~~~~~~~~~~
+Step API
+~~~~~~~~
 
 .. autosummary::
 
-   add_worker
-   worker
-   get_worker
-   list_workers
+   add_step
+   step
+   get_step
+   list_steps
    run
 
 Cache API
