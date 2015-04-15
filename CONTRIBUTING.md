@@ -21,8 +21,8 @@ from glob import glob
 
 import numpy as np
 
-import urbansim.urbansim.modelcompile as modelcompile
-from urbansim.util import misc
+import package.module as module
+from package.othermod import useful_func
 ```
 
 Imports of scientific Python libraries should follow these conventions:
