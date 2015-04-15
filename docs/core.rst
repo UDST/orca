@@ -444,8 +444,8 @@ The variable ``iter_var`` is provided as an injectable to Orca functions:
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 5 with iteration value 2014: 0.00 s
 
-Running Sim Components a la Carte
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Running Orca Components a la Carte
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 It can be useful to have Orca evaluate single variables and steps,
 especially during development and testing.
