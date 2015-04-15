@@ -531,8 +531,8 @@ The variable <tt class="docutils literal"><span class="pre">iter_var</span></tt>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">5</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2014</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 </pre></div>
 </div>
-<div class="section" id="running-sim-components-a-la-carte">
-<h3>Running Sim Components a la Carte<a class="headerlink" href="#running-sim-components-a-la-carte" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="running-orca-components-a-la-carte">
+<h3>Running Orca Components a la Carte<a class="headerlink" href="#running-orca-components-a-la-carte" title="Permalink to this headline">¶</a></h3>
 <p>It can be useful to have Orca evaluate single variables and steps,
 especially during development and testing.
 To achieve this, use the
@@ -1309,6 +1309,12 @@ parameters of pandas.merge.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="orca.orca.clear_all">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">clear_all</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.clear_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear any and all stored state from Orca.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="orca.orca.clear_cache">
 <tt class="descclassname">orca.orca.</tt><tt class="descname">clear_cache</tt><big>(</big><em>scope=None</em><big>)</big><a class="headerlink" href="#orca.orca.clear_cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear all cached data.</p>
@@ -1325,12 +1331,6 @@ By default all cached values are removed.</p>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="function">
-<dt id="orca.orca.clear_sim">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">clear_sim</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.clear_sim" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clear any stored state from the pipeline.</p>
 </dd></dl>
 
 <dl class="function">
