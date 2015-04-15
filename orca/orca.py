@@ -40,9 +40,9 @@ _CS_STEP = 'step'
 CacheItem = namedtuple('CacheItem', ['name', 'value', 'scope'])
 
 
-def clear_sim():
+def clear_all():
     """
-    Clear any stored state from the pipeline.
+    Clear any and all stored state from Orca.
 
     """
     _TABLES.clear()

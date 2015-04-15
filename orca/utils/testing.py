@@ -3,7 +3,7 @@
 # See full license in LICENSE.
 
 """
-Utilities used in testing of UrbanSim.
+Utilities used in testing of Orca.
 
 """
 import numpy as np

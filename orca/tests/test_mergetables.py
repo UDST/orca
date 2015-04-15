@@ -10,11 +10,11 @@ from ..utils.testing import assert_frames_equal
 
 
 def setup_function(func):
-    orca.clear_sim()
+    orca.clear_all()
 
 
 def teardown_function(func):
-    orca.clear_sim()
+    orca.clear_all()
 
 
 @pytest.fixture
