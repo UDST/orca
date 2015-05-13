@@ -901,6 +901,20 @@ def test_run_and_write_tables(df, store_name):
                 store['final/table'][year_key(x)], series_year(x))
 
 
+def test_get_raw_table(df):
+    orca.add_table('table1', df)
+
+    @orca.table()
+    def table2():
+        return df
+
+    assert isinstance(orca._get_raw_table('table1'), orca.DataFrameWrapper)
+    assert isinstance(orca._get_raw_table('table2'), orca.TableFuncWrapper)
+
+    assert orca._table_type('table1') == 'dataframe'
+    assert orca._table_type('table2') == 'function'
+
+
 def test_get_table(df):
     orca.add_table('frame', df)
 

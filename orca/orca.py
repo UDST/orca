@@ -907,6 +907,25 @@ def table(
     return decorator
 
 
+def _get_raw_table(table_name):
+    """
+    Get a wrapped table by name and don't do anything to it.
+
+    Parameters
+    ----------
+    table_name : str
+
+    Returns
+    -------
+    table : DataFrameWrapper or TableFuncWrapper
+
+    """
+    if _is_table(table_name):
+        return _TABLES[table_name]
+    else:
+        raise KeyError('table not found: {}'.format(table_name))
+
+
 def get_table(table_name):
     """
     Get a registered table.
@@ -922,13 +941,33 @@ def get_table(table_name):
     table : `DataFrameWrapper`
 
     """
-    if table_name in _TABLES:
-        table = _TABLES[table_name]
-        if isinstance(table, TableFuncWrapper):
-            table = table()
-        return table
-    else:
-        raise KeyError('table not found: {}'.format(table_name))
+    table = _get_raw_table(table_name)
+    if isinstance(table, TableFuncWrapper):
+        table = table()
+    return table
+
+
+def _table_type(table_name):
+    """
+    Returns the type of a registered table.
+
+    The type can be either "dataframe" or "function".
+
+    Parameters
+    ----------
+    table_name : str
+
+    Returns
+    -------
+    table_type : {'dataframe', 'function'}
+
+    """
+    table = _get_raw_table(table_name)
+
+    if isinstance(table, DataFrameWrapper):
+        return 'dataframe'
+    elif isinstance(table, TableFuncWrapper):
+        return 'function'
 
 
 def add_column(
