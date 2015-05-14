@@ -16,6 +16,7 @@ import pandas as pd
 import tables
 from zbox import toolz as tz
 
+from . import utils
 from .utils.logutil import log_start_finish
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
@@ -477,6 +478,21 @@ class TableFuncWrapper(object):
         logger.debug(
             'cleared cached result and cached columns for table {!r}'.format(
                 self.name))
+
+    def func_source_data(self):
+        """
+        Return data about the wrapped function source, including file name,
+        line number, and source code.
+
+        Returns
+        -------
+        filename : str
+        lineno : int
+            The line number on which the function starts.
+        source : str
+
+        """
+        return utils.func_source_data(self._func)
 
 
 class _ColumnFuncWrapper(object):

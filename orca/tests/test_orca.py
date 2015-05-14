@@ -1025,3 +1025,16 @@ def test_always_dataframewrapper(df):
 
     result = orca.eval_variable('table2')
     pdt.assert_frame_equal(result.to_frame(), df / 4)
+
+
+def test_table_func_source_data(df):
+    @orca.table()
+    def table():
+        return df * 2
+
+    t = orca._get_raw_table('table')
+    filename, lineno, source = t.func_source_data()
+
+    assert filename.endswith('test_orca.py')
+    assert isinstance(lineno, int)
+    assert 'return df * 2' in source
