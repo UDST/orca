@@ -963,7 +963,7 @@ def get_table(table_name):
     return table
 
 
-def _table_type(table_name):
+def table_type(table_name):
     """
     Returns the type of a registered table.
 
