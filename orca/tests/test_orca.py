@@ -833,8 +833,8 @@ def test_table_func_local_cols(df):
 
 def test_is_table(df):
     orca.add_table('table', df)
-    assert orca._is_table('table') is True
-    assert orca._is_table('asdf') is False
+    assert orca.is_table('table') is True
+    assert orca.is_table('asdf') is False
 
 
 @pytest.fixture
@@ -908,8 +908,8 @@ def test_get_raw_table(df):
     def table2():
         return df
 
-    assert isinstance(orca._get_raw_table('table1'), orca.DataFrameWrapper)
-    assert isinstance(orca._get_raw_table('table2'), orca.TableFuncWrapper)
+    assert isinstance(orca.get_raw_table('table1'), orca.DataFrameWrapper)
+    assert isinstance(orca.get_raw_table('table2'), orca.TableFuncWrapper)
 
     assert orca._table_type('table1') == 'dataframe'
     assert orca._table_type('table2') == 'function'
@@ -1032,7 +1032,7 @@ def test_table_func_source_data(df):
     def table():
         return df * 2
 
-    t = orca._get_raw_table('table')
+    t = orca.get_raw_table('table')
     filename, lineno, source = t.func_source_data()
 
     assert filename.endswith('test_orca.py')

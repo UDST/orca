@@ -718,12 +718,12 @@ class _StepFuncWrapper(object):
         tables = set()
         for name in names:
             parent_name = name.split('.')[0]
-            if _is_table(parent_name):
+            if is_table(parent_name):
                 tables.add(parent_name)
         return tables
 
 
-def _is_table(name):
+def is_table(name):
     """
     Returns whether a given name refers to a registered table.
 
@@ -923,7 +923,7 @@ def table(
     return decorator
 
 
-def _get_raw_table(table_name):
+def get_raw_table(table_name):
     """
     Get a wrapped table by name and don't do anything to it.
 
@@ -936,7 +936,7 @@ def _get_raw_table(table_name):
     table : DataFrameWrapper or TableFuncWrapper
 
     """
-    if _is_table(table_name):
+    if is_table(table_name):
         return _TABLES[table_name]
     else:
         raise KeyError('table not found: {}'.format(table_name))
@@ -957,7 +957,7 @@ def get_table(table_name):
     table : `DataFrameWrapper`
 
     """
-    table = _get_raw_table(table_name)
+    table = get_raw_table(table_name)
     if isinstance(table, TableFuncWrapper):
         table = table()
     return table
@@ -978,7 +978,7 @@ def _table_type(table_name):
     table_type : {'dataframe', 'function'}
 
     """
-    table = _get_raw_table(table_name)
+    table = get_raw_table(table_name)
 
     if isinstance(table, DataFrameWrapper):
         return 'dataframe'
