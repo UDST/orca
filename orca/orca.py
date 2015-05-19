@@ -285,6 +285,38 @@ class DataFrameWrapper(object):
     def __getattr__(self, key):
         return self.get_column(key)
 
+    def column_type(self, column_name):
+        """
+        Report column type as one of 'local', 'series', or 'function'.
+
+        Parameters
+        ----------
+        column_name : str
+
+        Returns
+        -------
+        col_type : {'local', 'series', 'function'}
+            'local' means that the column is part of the registered table,
+            'series' means the column is a registered Pandas Series,
+            and 'function' means the column is a registered function providing
+            a Pandas Series.
+
+        """
+        extra_cols = list_columns_for_table(self.name)
+
+        if column_name in extra_cols:
+            col = _COLUMNS[(self.name, column_name)]
+
+            if isinstance(col, _SeriesWrapper):
+                return 'series'
+            elif isinstance(col, _ColumnFuncWrapper):
+                return 'function'
+
+        elif column_name in self.local_columns:
+            return 'local'
+
+        raise KeyError('column {!r} not found'.format(column_name))
+
     def update_col_from_series(self, column_name, series):
         """
         Update existing values in a column from another series.
@@ -466,6 +498,38 @@ class TableFuncWrapper(object):
 
     def __len__(self):
         return self._len
+
+    def column_type(self, column_name):
+        """
+        Report column type as one of 'local', 'series', or 'function'.
+
+        Parameters
+        ----------
+        column_name : str
+
+        Returns
+        -------
+        col_type : {'local', 'series', 'function'}
+            'local' means that the column is part of the registered table,
+            'series' means the column is a registered Pandas Series,
+            and 'function' means the column is a registered function providing
+            a Pandas Series.
+
+        """
+        extra_cols = list_columns_for_table(self.name)
+
+        if column_name in extra_cols:
+            col = _COLUMNS[(self.name, column_name)]
+
+            if isinstance(col, _SeriesWrapper):
+                return 'series'
+            elif isinstance(col, _ColumnFuncWrapper):
+                return 'function'
+
+        elif column_name in self.local_columns:
+            return 'local'
+
+        raise KeyError('column {!r} not found'.format(column_name))
 
     def clear_cached(self):
         """

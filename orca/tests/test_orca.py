@@ -1038,3 +1038,32 @@ def test_table_func_source_data(df):
     assert filename.endswith('test_orca.py')
     assert isinstance(lineno, int)
     assert 'return df * 2' in source
+
+
+def test_column_type(df):
+    orca.add_table('test_frame', df)
+
+    @orca.table()
+    def test_func():
+        return df
+
+    s = pd.Series(range(len(df)), index=df.index)
+
+    def col_func():
+        return s
+
+    orca.add_column('test_frame', 'col_series', s)
+    orca.add_column('test_func', 'col_series', s)
+    orca.add_column('test_frame', 'col_func', col_func)
+    orca.add_column('test_func', 'col_func', col_func)
+
+    tframe = orca.get_raw_table('test_frame')
+    tfunc = orca.get_raw_table('test_func')
+
+    assert tframe.column_type('a') == 'local'
+    assert tframe.column_type('col_series') == 'series'
+    assert tframe.column_type('col_func') == 'function'
+
+    assert tfunc.column_type('a') == 'local'
+    assert tfunc.column_type('col_series') == 'series'
+    assert tfunc.column_type('col_func') == 'function'
