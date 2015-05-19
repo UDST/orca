@@ -637,6 +637,21 @@ class _ColumnFuncWrapper(object):
                 'cleared cached value for column {!r} in table {!r}'.format(
                     self.name, self.table_name))
 
+    def func_source_data(self):
+        """
+        Return data about the wrapped function source, including file name,
+        line number, and source code.
+
+        Returns
+        -------
+        filename : str
+        lineno : int
+            The line number on which the function starts.
+        source : str
+
+        """
+        return utils.func_source_data(self._func)
+
 
 class _SeriesWrapper(object):
     """
@@ -1186,6 +1201,30 @@ def column_map(tables, columns):
         raise RuntimeError('Not all required columns were found. '
                            'Missing: {}'.format(list(columns - foundcols)))
     return colmap
+
+
+def get_raw_column(table_name, column_name):
+    """
+    Get a wrapped, registered column.
+
+    This function cannot return columns that are part of wrapped
+    DataFrames, it's only for columns registered directly through Orca.
+
+    Parameters
+    ----------
+    table_name : str
+    column_name : str
+
+    Returns
+    -------
+    wrapped : _SeriesWrapper or _ColumnFuncWrapper
+
+    """
+    try:
+        return _COLUMNS[(table_name, column_name)]
+    except KeyError:
+        raise KeyError('column {!r} not found for table {!r}'.format(
+            column_name, table_name))
 
 
 def _memoize_function(f, name, cache_scope=_CS_FOREVER):

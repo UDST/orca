@@ -1067,3 +1067,22 @@ def test_column_type(df):
     assert tfunc.column_type('a') == 'local'
     assert tfunc.column_type('col_series') == 'series'
     assert tfunc.column_type('col_func') == 'function'
+
+
+def test_get_raw_column(df):
+    orca.add_table('test_frame', df)
+
+    s = pd.Series(range(len(df)), index=df.index)
+
+    def col_func():
+        return s
+
+    orca.add_column('test_frame', 'col_series', s)
+    orca.add_column('test_frame', 'col_func', col_func)
+
+    assert isinstance(
+        orca.get_raw_column('test_frame', 'col_series'),
+        orca._SeriesWrapper)
+    assert isinstance(
+        orca.get_raw_column('test_frame', 'col_func'),
+        orca._ColumnFuncWrapper)
