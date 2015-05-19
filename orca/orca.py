@@ -171,7 +171,7 @@ class DataFrameWrapper(object):
         Columns in this table.
 
         """
-        return self.local_columns + _list_columns_for_table(self.name)
+        return self.local_columns + list_columns_for_table(self.name)
 
     @property
     def local_columns(self):
@@ -364,7 +364,7 @@ class TableFuncWrapper(object):
         if the wrapped function has not been called yet.)
 
         """
-        return self._columns + _list_columns_for_table(self.name)
+        return self._columns + list_columns_for_table(self.name)
 
     @property
     def local_columns(self):
@@ -1057,7 +1057,7 @@ def column(table_name, column_name=None, cache=False, cache_scope=_CS_FOREVER):
     return decorator
 
 
-def _list_columns_for_table(table_name):
+def list_columns_for_table(table_name):
     """
     Return a list of all the extra columns registered for a given table.
 

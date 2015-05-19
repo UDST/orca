@@ -217,10 +217,10 @@ def test_columns_for_table():
     def asdf():
         return pd.Series([13, 14, 15], index=['x', 'y', 'z'])
 
-    t1_col_names = orca._list_columns_for_table('table1')
+    t1_col_names = orca.list_columns_for_table('table1')
     assert set(t1_col_names) == {'col10', 'col11'}
 
-    t2_col_names = orca._list_columns_for_table('table2')
+    t2_col_names = orca.list_columns_for_table('table2')
     assert set(t2_col_names) == {'col20', 'col21'}
 
     t1_cols = orca._columns_for_table('table1')
