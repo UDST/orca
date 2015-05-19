@@ -1086,3 +1086,18 @@ def test_get_raw_column(df):
     assert isinstance(
         orca.get_raw_column('test_frame', 'col_func'),
         orca._ColumnFuncWrapper)
+
+
+def test_column_func_source_data(df):
+    orca.add_table('test_frame', df)
+
+    @orca.column('test_frame')
+    def col_func():
+        return pd.Series(range(len(df)), index=df.index)
+
+    s = orca.get_raw_column('test_frame', 'col_func')
+    filename, lineno, source = s.func_source_data()
+
+    assert filename.endswith('test_orca.py')
+    assert isinstance(lineno, int)
+    assert 'def col_func():' in source
