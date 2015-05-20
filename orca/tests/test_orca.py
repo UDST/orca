@@ -1101,3 +1101,9 @@ def test_column_func_source_data(df):
     assert filename.endswith('test_orca.py')
     assert isinstance(lineno, int)
     assert 'def col_func():' in source
+
+
+def test_is_injectable():
+    orca.add_injectable('answer', 42)
+    assert orca.is_injectable('answer') is True
+    assert orca.is_injectable('nope') is False

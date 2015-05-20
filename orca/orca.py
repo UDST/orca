@@ -1347,6 +1347,14 @@ def injectable(
     return decorator
 
 
+def is_injectable(name):
+    """
+    Checks whether a given name can be mapped to an injectable.
+
+    """
+    return name in _INJECTABLES
+
+
 def get_injectable(name):
     """
     Get an injectable by name. *Does not* evaluate wrapped functions.
