@@ -1263,6 +1263,7 @@ def _memoize_function(f, name, cache_scope=_CS_FOREVER):
             cache[cache_key] = result
             return result
 
+    wrapper.__wrapped__ = f
     wrapper.cache = cache
     wrapper.clear_cached = lambda: cache.clear()
     _MEMOIZED[name] = CacheItem(name, wrapper, cache_scope)
@@ -1355,6 +1356,32 @@ def is_injectable(name):
     return name in _INJECTABLES
 
 
+def injectable_type(name):
+    """
+    Classify an injectable as either 'variable' or 'function'.
+
+    Parameters
+    ----------
+    name : str
+
+    Returns
+    -------
+    inj_type : {'variable', 'function'}
+        If the injectable is an automatically called function or any other
+        type of callable the type will be 'function', all other injectables
+        will be have type 'variable'.
+
+    """
+    if is_injectable(name):
+        inj = _INJECTABLES[name]
+        if isinstance(inj, (_InjectableFuncWrapper, Callable)):
+            return 'function'
+        else:
+            return 'variable'
+    else:
+        raise KeyError('injectable not found: {!r}'.format(name))
+
+
 def get_injectable(name):
     """
     Get an injectable by name. *Does not* evaluate wrapped functions.
@@ -1369,11 +1396,11 @@ def get_injectable(name):
         Original value or evaluated value of an _InjectableFuncWrapper.
 
     """
-    if name in _INJECTABLES:
+    if is_injectable(name):
         i = _INJECTABLES[name]
         return i() if isinstance(i, _InjectableFuncWrapper) else i
     else:
-        raise KeyError('injectable not found: {}'.format(name))
+        raise KeyError('injectable not found: {!r}'.format(name))
 
 
 def add_step(step_name, func):

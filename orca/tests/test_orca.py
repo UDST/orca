@@ -1107,3 +1107,19 @@ def test_is_injectable():
     orca.add_injectable('answer', 42)
     assert orca.is_injectable('answer') is True
     assert orca.is_injectable('nope') is False
+
+
+def test_injectable_type():
+    orca.add_injectable('answer', 42)
+
+    @orca.injectable()
+    def inj1():
+        return 42
+
+    @orca.injectable(autocall=False, memoize=True)
+    def power(x):
+        return 42 ** x
+
+    assert orca.injectable_type('answer') == 'variable'
+    assert orca.injectable_type('inj1') == 'function'
+    assert orca.injectable_type('power') == 'function'
