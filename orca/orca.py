@@ -1356,6 +1356,25 @@ def is_injectable(name):
     return name in _INJECTABLES
 
 
+def get_raw_injectable(name):
+    """
+    Return a raw, possibly wrapped injectable.
+
+    Parameters
+    ----------
+    name : str
+
+    Returns
+    -------
+    inj : _InjectableFuncWrapper or object
+
+    """
+    if is_injectable(name):
+        return _INJECTABLES[name]
+    else:
+        raise KeyError('injectable not found: {!r}'.format(name))
+
+
 def injectable_type(name):
     """
     Classify an injectable as either 'variable' or 'function'.
@@ -1372,14 +1391,11 @@ def injectable_type(name):
         will be have type 'variable'.
 
     """
-    if is_injectable(name):
-        inj = _INJECTABLES[name]
-        if isinstance(inj, (_InjectableFuncWrapper, Callable)):
-            return 'function'
-        else:
-            return 'variable'
+    inj = get_raw_injectable(name)
+    if isinstance(inj, (_InjectableFuncWrapper, Callable)):
+        return 'function'
     else:
-        raise KeyError('injectable not found: {!r}'.format(name))
+        return 'variable'
 
 
 def get_injectable(name):
@@ -1396,11 +1412,38 @@ def get_injectable(name):
         Original value or evaluated value of an _InjectableFuncWrapper.
 
     """
-    if is_injectable(name):
-        i = _INJECTABLES[name]
-        return i() if isinstance(i, _InjectableFuncWrapper) else i
+    i = get_raw_injectable(name)
+    return i() if isinstance(i, _InjectableFuncWrapper) else i
+
+
+def get_injectable_func_source_data(name):
+    """
+    Return data about an injectable function's source, including file name,
+    line number, and source code.
+
+    Parameters
+    ----------
+    name : str
+
+    Returns
+    -------
+    filename : str
+    lineno : int
+        The line number on which the function starts.
+    source : str
+
+    """
+    if injectable_type(name) != 'function':
+        raise ValueError('injectable {!r} is not a function'.format(name))
+
+    inj = get_raw_injectable(name)
+
+    if isinstance(inj, _InjectableFuncWrapper):
+        return utils.func_source_data(inj._func)
+    elif hasattr(inj, '__wrapped__'):
+        return utils.func_source_data(inj.__wrapped__)
     else:
-        raise KeyError('injectable not found: {!r}'.format(name))
+        return utils.func_source_data(inj)
 
 
 def add_step(step_name, func):

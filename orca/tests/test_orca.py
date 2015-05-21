@@ -1123,3 +1123,33 @@ def test_injectable_type():
     assert orca.injectable_type('answer') == 'variable'
     assert orca.injectable_type('inj1') == 'function'
     assert orca.injectable_type('power') == 'function'
+
+
+def test_get_injectable_func_source_data():
+    @orca.injectable()
+    def inj1():
+        return 42
+
+    @orca.injectable(autocall=False, memoize=True)
+    def power(x):
+        return 42 ** x
+
+    def inj2():
+        return 'orca'
+
+    orca.add_injectable('inj2', inj2, autocall=False)
+
+    filename, lineno, source = orca.get_injectable_func_source_data('inj1')
+    assert filename.endswith('test_orca.py')
+    assert isinstance(lineno, int)
+    assert '@orca.injectable()' in source
+
+    filename, lineno, source = orca.get_injectable_func_source_data('power')
+    assert filename.endswith('test_orca.py')
+    assert isinstance(lineno, int)
+    assert '@orca.injectable(autocall=False, memoize=True)' in source
+
+    filename, lineno, source = orca.get_injectable_func_source_data('inj2')
+    assert filename.endswith('test_orca.py')
+    assert isinstance(lineno, int)
+    assert 'def inj2()' in source
