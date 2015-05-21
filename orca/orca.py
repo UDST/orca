@@ -1507,8 +1507,8 @@ def get_step(step_name):
         raise KeyError('no step named {}'.format(step_name))
 
 
-_Broadcast = namedtuple(
-    '_Broadcast',
+Broadcast = namedtuple(
+    'Broadcast',
     ['cast', 'onto', 'cast_on', 'onto_on', 'cast_index', 'onto_index'])
 
 
@@ -1533,7 +1533,7 @@ def broadcast(cast, onto, cast_on=None, onto_on=None,
     logger.debug(
         'registering broadcast of table {!r} onto {!r}'.format(cast, onto))
     _BROADCASTS[(cast, onto)] = \
-        _Broadcast(cast, onto, cast_on, onto_on, cast_index, onto_index)
+        Broadcast(cast, onto, cast_on, onto_on, cast_index, onto_index)
 
 
 def _get_broadcasts(tables):
@@ -1547,7 +1547,7 @@ def _get_broadcasts(tables):
 
     Returns
     -------
-    casts : dict of `_Broadcast`
+    casts : dict of `Broadcast`
         Keys are tuples of strings like (cast_name, onto_name).
 
     """
@@ -1557,6 +1557,51 @@ def _get_broadcasts(tables):
     if tables - set(tz.concat(casts.keys())):
         raise ValueError('Not enough links to merge all tables.')
     return casts
+
+
+def is_broadcast(cast_name, onto_name):
+    """
+    Checks whether a relationship exists for broadcast `cast_name`
+    onto `onto_name`.
+
+    """
+    return (cast_name, onto_name) in _BROADCASTS
+
+
+def get_broadcast(cast_name, onto_name):
+    """
+    Get a single broadcast.
+
+    Broadcasts are stored data about how to do a Pandas join.
+    A Broadcast object is a namedtuple with these attributes:
+
+        - cast: the name of the table being broadcast
+        - onto: the name of the table onto which "cast" is broadcast
+        - cast_on: The optional name of a column on which to join.
+          None if the table index will be used instead.
+        - onto_on: The optional name of a column on which to join.
+          None if the table index will be used instead.
+        - cast_index: True if the table index should be used for the join.
+        - onto_index: True if the table index should be used for the join.
+
+    Parameters
+    ----------
+    cast_name : str
+        The name of the table being braodcast.
+    onto_name : str
+        The name of the table onto which `cast_name` is broadcast.
+
+    Returns
+    -------
+    broadcast : Broadcast
+
+    """
+    if is_broadcast(cast_name, onto_name):
+        return _BROADCASTS[(cast_name, onto_name)]
+    else:
+        raise KeyError(
+            'no rule found for broadcasting {!r} onto {!r}'.format(
+                cast_name, onto_name))
 
 
 # utilities for merge_tables

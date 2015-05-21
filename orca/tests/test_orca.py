@@ -469,6 +469,25 @@ def test_step_run(df):
     assert set(m._tables_used()) == {'test_table', 'table_func'}
 
 
+def test_get_broadcast():
+    orca.broadcast('a', 'b', cast_on='ax', onto_on='bx')
+    orca.broadcast('x', 'y', cast_on='yx', onto_index=True)
+
+    assert orca.is_broadcast('a', 'b') is True
+    assert orca.is_broadcast('b', 'a') is False
+
+    with pytest.raises(KeyError):
+        orca.get_broadcast('b', 'a')
+
+    ab = orca.get_broadcast('a', 'b')
+    assert isinstance(ab, orca.Broadcast)
+    assert ab == ('a', 'b', 'ax', 'bx', False, False)
+
+    xy = orca.get_broadcast('x', 'y')
+    assert isinstance(xy, orca.Broadcast)
+    assert xy == ('x', 'y', 'yx', None, False, True)
+
+
 def test_get_broadcasts():
     orca.broadcast('a', 'b')
     orca.broadcast('b', 'c')
