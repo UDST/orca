@@ -1493,6 +1493,14 @@ def step(step_name=None):
     return decorator
 
 
+def is_step(step_name):
+    """
+    Check whether a given name refers to a registered step.
+
+    """
+    return step_name in _STEPS
+
+
 def get_step(step_name):
     """
     Get a wrapped step by name.
@@ -1501,7 +1509,7 @@ def get_step(step_name):
     ----------
 
     """
-    if step_name in _STEPS:
+    if is_step(step_name):
         return _STEPS[step_name]
     else:
         raise KeyError('no step named {}'.format(step_name))

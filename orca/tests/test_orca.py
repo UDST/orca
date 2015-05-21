@@ -398,6 +398,15 @@ def test_column_map(fta, ftb):
     assert sorted(result['b']) == ['by', 'bz']
 
 
+def test_is_step():
+    @orca.step()
+    def test_step():
+        pass
+
+    assert orca.is_step('test_step') is True
+    assert orca.is_step('not_a_step') is False
+
+
 def test_steps(df):
     orca.add_table('test_table', df)
 
