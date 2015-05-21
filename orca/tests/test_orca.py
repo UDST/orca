@@ -478,6 +478,21 @@ def test_step_run(df):
     assert set(m._tables_used()) == {'test_table', 'table_func'}
 
 
+def test_step_func_source_data():
+    @orca.step()
+    def test_step():
+        return 'orca'
+
+    filename, lineno, source = orca.get_step('test_step').func_source_data()
+
+    assert filename.endswith('test_orca.py')
+    assert isinstance(lineno, int)
+    assert source == (
+        "    @orca.step()\n"
+        "    def test_step():\n"
+        "        return 'orca'\n")
+
+
 def test_get_broadcast():
     orca.broadcast('a', 'b', cast_on='ax', onto_on='bx')
     orca.broadcast('x', 'y', cast_on='yx', onto_index=True)

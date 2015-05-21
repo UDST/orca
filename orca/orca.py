@@ -801,6 +801,21 @@ class _StepFuncWrapper(object):
                 tables.add(parent_name)
         return tables
 
+    def func_source_data(self):
+        """
+        Return data about a step function's source, including file name,
+        line number, and source code.
+
+        Returns
+        -------
+        filename : str
+        lineno : int
+            The line number on which the function starts.
+        source : str
+
+        """
+        return utils.func_source_data(self._func)
+
 
 def is_table(name):
     """
