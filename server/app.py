@@ -110,6 +110,10 @@ def schema():
 
 @app.route('/tables')
 def list_tables():
+    """
+    List all registered tables.
+
+    """
     tables = orca.list_tables()
     return jsonify(tables=tables)
 
@@ -241,12 +245,27 @@ def table_groupbyagg(table_name):
 @app.route('/tables/<table_name>/columns')
 @check_is_table
 def list_table_columns(table_name):
+    """
+    List columns for a specific table.
+
+    """
     return jsonify(columns=orca.get_table(table_name).columns)
 
 
 @app.route('/tables/<table_name>/columns/<col_name>/definition')
 @check_is_column
 def column_definition(table_name, col_name):
+    """
+    Get the source of a column function.
+
+    If a column is a registered Series and not a function then all that is
+    returned is {'type': 'series'}.
+
+    If the column is a registered function then the JSON returned has keys
+    "type", "filename", "lineno", "text", and "html". "text" is the raw
+    text of the function, "html" has been marked up by Pygments.
+
+    """
     col_type = orca.get_table(table_name).column_type(col_name)
 
     if col_type != 'function':
@@ -265,6 +284,11 @@ def column_definition(table_name, col_name):
 @app.route('/tables/<table_name>/columns/<col_name>/describe')
 @check_is_column
 def column_describe(table_name, col_name):
+    """
+    Return summary statistics of a column as JSON.
+    Uses Pandas' "split" JSON format.
+
+    """
     col_desc = orca.get_table(table_name).get_column(col_name).describe()
     return (
         col_desc.to_json(orient='split'),
@@ -275,18 +299,31 @@ def column_describe(table_name, col_name):
 @app.route('/tables/<table_name>/columns/<col_name>/csv')
 @check_is_column
 def column_csv(table_name, col_name):
+    """
+    Return a column as CSV using Pandas' default CSV output.
+
+    """
     csv = orca.get_table(table_name).get_column(col_name).to_csv(path=None)
     return csv, 200, {'Content-Type': 'text/csv'}
 
 
 @app.route('/injectables')
 def list_injectables():
+    """
+    List all registered injectables.
+
+    """
     return jsonify(injectables=orca.list_injectables())
 
 
 @app.route('/injectables/<inj_name>/repr')
 @check_is_injectable
 def injectable_repr(inj_name):
+    """
+    Returns the type and repr of an injectable. JSON response has
+    "type" and "repr" keys.
+
+    """
     i = orca.get_injectable(inj_name)
     return jsonify(type=str(type(i)), repr=repr(i))
 
@@ -294,6 +331,17 @@ def injectable_repr(inj_name):
 @app.route('/injectables/<inj_name>/definition')
 @check_is_injectable
 def injectable_definition(inj_name):
+    """
+    Get the source of an injectable function.
+
+    If an injectable is a registered Python variable and not a function
+    then all that is returned is {'type': 'variable'}.
+
+    If the column is a registered function then the JSON returned has keys
+    "type", "filename", "lineno", "text", and "html". "text" is the raw
+    text of the function, "html" has been marked up by Pygments.
+
+    """
     inj_type = orca.injectable_type(inj_name)
 
     if inj_type == 'variable':
@@ -309,12 +357,23 @@ def injectable_definition(inj_name):
 
 @app.route('/broadcasts')
 def list_broadcasts():
+    """
+    List all registered broadcasts as a list of objects with
+    keys "cast" and "onto".
+
+    """
     casts = [{'cast': b[0], 'onto': b[1]} for b in orca.list_broadcasts()]
     return jsonify(broadcasts=casts)
 
 
 @app.route('/broadcasts/<cast_name>/<onto_name>/definition')
 def broadcast_definition(cast_name, onto_name):
+    """
+    Return the definition of a broadcast as an object with keys
+    "cast", "onto", "cast_on", "onto_on", "cast_index", and "onto_index".
+    These are the same as the arguments to the ``broadcast`` function.
+
+    """
     if not orca.is_broadcast(cast_name, onto_name):
         abort(404)
 
@@ -327,11 +386,21 @@ def broadcast_definition(cast_name, onto_name):
 
 @app.route('/steps')
 def list_steps():
+    """
+    List all registered Orca steps.
+
+    """
     return jsonify(steps=orca.list_steps())
 
 
 @app.route('/steps/<step_name>/definition')
 def step_definition(step_name):
+    """
+    Get the source of a step function. Returned object has keys
+    "filename", "lineno", "text" and "html". "text" is the raw
+    text of the function, "html" has been marked up by Pygments.
+
+    """
     if not orca.is_step(step_name):
         abort(404)
 
