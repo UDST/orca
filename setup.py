@@ -36,5 +36,8 @@ setup(
         'tables >= 3.1.0',
         'toolz >= 0.7.0',
         'zbox >= 1.2'
-    ]
+    ],
+    extras_require={
+        'server': ['flask >= 0.10', 'pygments >= 2.0']
+    }
 )
