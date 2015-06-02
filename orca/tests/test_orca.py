@@ -1024,13 +1024,13 @@ def test_injectables_cm():
     }
 
 
-def test_tables_cm():
+def test_temporary_tables_cm():
     orca.add_table('a', pd.DataFrame())
 
-    with orca.tables():
+    with orca.temporary_tables():
         assert sorted(orca._TABLES.keys()) == ['a']
 
-    with orca.tables(a=pd.DataFrame(), b=pd.DataFrame()):
+    with orca.temporary_tables(a=pd.DataFrame(), b=pd.DataFrame()):
         assert sorted(orca._TABLES.keys()) == ['a', 'b']
 
     assert sorted(orca._TABLES.keys()) == ['a']

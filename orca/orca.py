@@ -1912,7 +1912,7 @@ def injectables(**kwargs):
 
 
 @contextmanager
-def tables(**kwargs):
+def temporary_tables(**kwargs):
     """
     Temporarily set DataFrames as registered tables.
 
