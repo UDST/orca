@@ -817,6 +817,47 @@ like to specifically document that in the function&#8217;s arguments.</p>
 <div class="section" id="module-orca.orca">
 <span id="api-docs"></span><h3>API Docs<a class="headerlink" href="#module-orca.orca" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
+<dt id="orca.orca.Broadcast">
+<em class="property">class </em><tt class="descclassname">orca.orca.</tt><tt class="descname">Broadcast</tt><a class="headerlink" href="#orca.orca.Broadcast" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="orca.orca.Broadcast.cast">
+<tt class="descname">cast</tt><a class="headerlink" href="#orca.orca.Broadcast.cast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orca.orca.Broadcast.cast_index">
+<tt class="descname">cast_index</tt><a class="headerlink" href="#orca.orca.Broadcast.cast_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orca.orca.Broadcast.cast_on">
+<tt class="descname">cast_on</tt><a class="headerlink" href="#orca.orca.Broadcast.cast_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orca.orca.Broadcast.onto">
+<tt class="descname">onto</tt><a class="headerlink" href="#orca.orca.Broadcast.onto" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orca.orca.Broadcast.onto_index">
+<tt class="descname">onto_index</tt><a class="headerlink" href="#orca.orca.Broadcast.onto_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 5</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orca.orca.Broadcast.onto_on">
+<tt class="descname">onto_on</tt><a class="headerlink" href="#orca.orca.Broadcast.onto_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="orca.orca.CacheItem">
 <em class="property">class </em><tt class="descclassname">orca.orca.</tt><tt class="descname">CacheItem</tt><a class="headerlink" href="#orca.orca.CacheItem" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
@@ -883,6 +924,30 @@ computed columns.</p>
 <dt id="orca.orca.DataFrameWrapper.clear_cached">
 <tt class="descname">clear_cached</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.DataFrameWrapper.clear_cached" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove cached results from this table&#8217;s computed columns.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="orca.orca.DataFrameWrapper.column_type">
+<tt class="descname">column_type</tt><big>(</big><em>column_name</em><big>)</big><a class="headerlink" href="#orca.orca.DataFrameWrapper.column_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Report column type as one of &#8216;local&#8217;, &#8216;series&#8217;, or &#8216;function&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>column_name</strong> : str</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>col_type</strong> : {&#8216;local&#8217;, &#8216;series&#8217;, &#8216;function&#8217;}</p>
+<blockquote class="last">
+<div><p>&#8216;local&#8217; means that the column is part of the registered table,
+&#8216;series&#8217; means the column is a registered Pandas Series,
+and &#8216;function&#8217; means the column is a registered function providing
+a Pandas Series.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -1042,11 +1107,56 @@ a single step of the pipeline.</p>
 <dd><p>Remove this table&#8217;s cached result and that of associated columns.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="orca.orca.TableFuncWrapper.column_type">
+<tt class="descname">column_type</tt><big>(</big><em>column_name</em><big>)</big><a class="headerlink" href="#orca.orca.TableFuncWrapper.column_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Report column type as one of &#8216;local&#8217;, &#8216;series&#8217;, or &#8216;function&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>column_name</strong> : str</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>col_type</strong> : {&#8216;local&#8217;, &#8216;series&#8217;, &#8216;function&#8217;}</p>
+<blockquote class="last">
+<div><p>&#8216;local&#8217; means that the column is part of the registered table,
+&#8216;series&#8217; means the column is a registered Pandas Series,
+and &#8216;function&#8217; means the column is a registered function providing
+a Pandas Series.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="orca.orca.TableFuncWrapper.columns">
 <tt class="descname">columns</tt><a class="headerlink" href="#orca.orca.TableFuncWrapper.columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Columns in this table. (May contain only computed columns
 if the wrapped function has not been called yet.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="orca.orca.TableFuncWrapper.func_source_data">
+<tt class="descname">func_source_data</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.TableFuncWrapper.func_source_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data about the wrapped function source, including file name,
+line number, and source code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
+<p><strong>lineno</strong> : int</p>
+<blockquote>
+<div><p>The line number on which the function starts.</p>
+</div></blockquote>
+<p class="last"><strong>source</strong> : str</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -1449,6 +1559,45 @@ had been injected into a function.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="orca.orca.get_broadcast">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">get_broadcast</tt><big>(</big><em>cast_name</em>, <em>onto_name</em><big>)</big><a class="headerlink" href="#orca.orca.get_broadcast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a single broadcast.</p>
+<p>Broadcasts are stored data about how to do a Pandas join.
+A Broadcast object is a namedtuple with these attributes:</p>
+<blockquote>
+<div><ul class="simple">
+<li>cast: the name of the table being broadcast</li>
+<li>onto: the name of the table onto which &#8220;cast&#8221; is broadcast</li>
+<li>cast_on: The optional name of a column on which to join.
+None if the table index will be used instead.</li>
+<li>onto_on: The optional name of a column on which to join.
+None if the table index will be used instead.</li>
+<li>cast_index: True if the table index should be used for the join.</li>
+<li>onto_index: True if the table index should be used for the join.</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>cast_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the table being braodcast.</p>
+</div></blockquote>
+<p><strong>onto_name</strong> : str</p>
+<blockquote>
+<div><p>The name of the table onto which <cite>cast_name</cite> is broadcast.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>broadcast</strong> : Broadcast</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="orca.orca.get_injectable">
 <tt class="descclassname">orca.orca.</tt><tt class="descname">get_injectable</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#orca.orca.get_injectable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get an injectable by name. <em>Does not</em> evaluate wrapped functions.</p>
@@ -1464,6 +1613,83 @@ had been injected into a function.</p>
 <div><p>Original value or evaluated value of an _InjectableFuncWrapper.</p>
 </div></blockquote>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="orca.orca.get_injectable_func_source_data">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">get_injectable_func_source_data</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#orca.orca.get_injectable_func_source_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data about an injectable function&#8217;s source, including file name,
+line number, and source code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>filename</strong> : str</p>
+<p><strong>lineno</strong> : int</p>
+<blockquote>
+<div><p>The line number on which the function starts.</p>
+</div></blockquote>
+<p class="last"><strong>source</strong> : str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="orca.orca.get_raw_column">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">get_raw_column</tt><big>(</big><em>table_name</em>, <em>column_name</em><big>)</big><a class="headerlink" href="#orca.orca.get_raw_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a wrapped, registered column.</p>
+<p>This function cannot return columns that are part of wrapped
+DataFrames, it&#8217;s only for columns registered directly through Orca.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>table_name</strong> : str</p>
+<p><strong>column_name</strong> : str</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>wrapped</strong> : _SeriesWrapper or _ColumnFuncWrapper</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="orca.orca.get_raw_injectable">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">get_raw_injectable</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#orca.orca.get_raw_injectable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a raw, possibly wrapped injectable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> : str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>inj</strong> : _InjectableFuncWrapper or object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="orca.orca.get_raw_table">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">get_raw_table</tt><big>(</big><em>table_name</em><big>)</big><a class="headerlink" href="#orca.orca.get_raw_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a wrapped table by name and don&#8217;t do anything to it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>table_name</strong> : str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>table</strong> : DataFrameWrapper or TableFuncWrapper</td>
 </tr>
 </tbody>
 </table>
@@ -1506,12 +1732,42 @@ iteration variable injected.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="orca.orca.injectable_type">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">injectable_type</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#orca.orca.injectable_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify an injectable as either &#8216;variable&#8217; or &#8216;function&#8217;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>name</strong> : str</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>inj_type</strong> : {&#8216;variable&#8217;, &#8216;function&#8217;}</p>
+<blockquote class="last">
+<div><p>If the injectable is an automatically called function or any other
+type of callable the type will be &#8216;function&#8217;, all other injectables
+will be have type &#8216;variable&#8217;.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="orca.orca.injectables">
 <tt class="descclassname">orca.orca.</tt><tt class="descname">injectables</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#orca.orca.injectables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Temporarily add injectables to the pipeline environment.
 Takes only keyword arguments.</p>
 <p>Injectables will be returned to their original state when the context
 manager exits.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="orca.orca.is_broadcast">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">is_broadcast</tt><big>(</big><em>cast_name</em>, <em>onto_name</em><big>)</big><a class="headerlink" href="#orca.orca.is_broadcast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether a relationship exists for broadcast <cite>cast_name</cite>
+onto <cite>onto_name</cite>.</p>
 </dd></dl>
 
 <dl class="function">
@@ -1532,6 +1788,24 @@ variable expression.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="orca.orca.is_injectable">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">is_injectable</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#orca.orca.is_injectable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether a given name can be mapped to an injectable.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="orca.orca.is_step">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">is_step</tt><big>(</big><em>step_name</em><big>)</big><a class="headerlink" href="#orca.orca.is_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a given name refers to a registered step.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="orca.orca.is_table">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">is_table</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#orca.orca.is_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether a given name refers to a registered table.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="orca.orca.list_broadcasts">
 <tt class="descclassname">orca.orca.</tt><tt class="descname">list_broadcasts</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.list_broadcasts" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of registered broadcasts as (cast table name, onto table name).</p>
@@ -1541,6 +1815,22 @@ variable expression.</p>
 <dt id="orca.orca.list_columns">
 <tt class="descclassname">orca.orca.</tt><tt class="descname">list_columns</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.list_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of (table name, registered column name) pairs.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="orca.orca.list_columns_for_table">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">list_columns_for_table</tt><big>(</big><em>table_name</em><big>)</big><a class="headerlink" href="#orca.orca.list_columns_for_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all the extra columns registered for a given table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>table_name</strong> : str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>columns</strong> : list of str</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
@@ -1656,6 +1946,23 @@ will be matched to registered variables when the function
 needs to be evaluated by Orca.
 The argument name &#8220;iter_var&#8221; may be used to have the current
 iteration variable injected.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="orca.orca.table_type">
+<tt class="descclassname">orca.orca.</tt><tt class="descname">table_type</tt><big>(</big><em>table_name</em><big>)</big><a class="headerlink" href="#orca.orca.table_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the type of a registered table.</p>
+<p>The type can be either &#8220;dataframe&#8221; or &#8220;function&#8221;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>table_name</strong> : str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>table_type</strong> : {&#8216;dataframe&#8217;, &#8216;function&#8217;}</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
