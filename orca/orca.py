@@ -16,6 +16,7 @@ import pandas as pd
 import tables
 from zbox import toolz as tz
 
+from . import utils
 from .utils.logutil import log_start_finish
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
@@ -170,7 +171,7 @@ class DataFrameWrapper(object):
         Columns in this table.
 
         """
-        return self.local_columns + _list_columns_for_table(self.name)
+        return self.local_columns + list_columns_for_table(self.name)
 
     @property
     def local_columns(self):
@@ -284,6 +285,38 @@ class DataFrameWrapper(object):
     def __getattr__(self, key):
         return self.get_column(key)
 
+    def column_type(self, column_name):
+        """
+        Report column type as one of 'local', 'series', or 'function'.
+
+        Parameters
+        ----------
+        column_name : str
+
+        Returns
+        -------
+        col_type : {'local', 'series', 'function'}
+            'local' means that the column is part of the registered table,
+            'series' means the column is a registered Pandas Series,
+            and 'function' means the column is a registered function providing
+            a Pandas Series.
+
+        """
+        extra_cols = list_columns_for_table(self.name)
+
+        if column_name in extra_cols:
+            col = _COLUMNS[(self.name, column_name)]
+
+            if isinstance(col, _SeriesWrapper):
+                return 'series'
+            elif isinstance(col, _ColumnFuncWrapper):
+                return 'function'
+
+        elif column_name in self.local_columns:
+            return 'local'
+
+        raise KeyError('column {!r} not found'.format(column_name))
+
     def update_col_from_series(self, column_name, series):
         """
         Update existing values in a column from another series.
@@ -363,7 +396,7 @@ class TableFuncWrapper(object):
         if the wrapped function has not been called yet.)
 
         """
-        return self._columns + _list_columns_for_table(self.name)
+        return self._columns + list_columns_for_table(self.name)
 
     @property
     def local_columns(self):
@@ -466,6 +499,38 @@ class TableFuncWrapper(object):
     def __len__(self):
         return self._len
 
+    def column_type(self, column_name):
+        """
+        Report column type as one of 'local', 'series', or 'function'.
+
+        Parameters
+        ----------
+        column_name : str
+
+        Returns
+        -------
+        col_type : {'local', 'series', 'function'}
+            'local' means that the column is part of the registered table,
+            'series' means the column is a registered Pandas Series,
+            and 'function' means the column is a registered function providing
+            a Pandas Series.
+
+        """
+        extra_cols = list_columns_for_table(self.name)
+
+        if column_name in extra_cols:
+            col = _COLUMNS[(self.name, column_name)]
+
+            if isinstance(col, _SeriesWrapper):
+                return 'series'
+            elif isinstance(col, _ColumnFuncWrapper):
+                return 'function'
+
+        elif column_name in self.local_columns:
+            return 'local'
+
+        raise KeyError('column {!r} not found'.format(column_name))
+
     def clear_cached(self):
         """
         Remove this table's cached result and that of associated columns.
@@ -477,6 +542,21 @@ class TableFuncWrapper(object):
         logger.debug(
             'cleared cached result and cached columns for table {!r}'.format(
                 self.name))
+
+    def func_source_data(self):
+        """
+        Return data about the wrapped function source, including file name,
+        line number, and source code.
+
+        Returns
+        -------
+        filename : str
+        lineno : int
+            The line number on which the function starts.
+        source : str
+
+        """
+        return utils.func_source_data(self._func)
 
 
 class _ColumnFuncWrapper(object):
@@ -556,6 +636,21 @@ class _ColumnFuncWrapper(object):
             logger.debug(
                 'cleared cached value for column {!r} in table {!r}'.format(
                     self.name, self.table_name))
+
+    def func_source_data(self):
+        """
+        Return data about the wrapped function source, including file name,
+        line number, and source code.
+
+        Returns
+        -------
+        filename : str
+        lineno : int
+            The line number on which the function starts.
+        source : str
+
+        """
+        return utils.func_source_data(self._func)
 
 
 class _SeriesWrapper(object):
@@ -702,12 +797,27 @@ class _StepFuncWrapper(object):
         tables = set()
         for name in names:
             parent_name = name.split('.')[0]
-            if _is_table(parent_name):
+            if is_table(parent_name):
                 tables.add(parent_name)
         return tables
 
+    def func_source_data(self):
+        """
+        Return data about a step function's source, including file name,
+        line number, and source code.
 
-def _is_table(name):
+        Returns
+        -------
+        filename : str
+        lineno : int
+            The line number on which the function starts.
+        source : str
+
+        """
+        return utils.func_source_data(self._func)
+
+
+def is_table(name):
     """
     Returns whether a given name refers to a registered table.
 
@@ -907,6 +1017,25 @@ def table(
     return decorator
 
 
+def get_raw_table(table_name):
+    """
+    Get a wrapped table by name and don't do anything to it.
+
+    Parameters
+    ----------
+    table_name : str
+
+    Returns
+    -------
+    table : DataFrameWrapper or TableFuncWrapper
+
+    """
+    if is_table(table_name):
+        return _TABLES[table_name]
+    else:
+        raise KeyError('table not found: {}'.format(table_name))
+
+
 def get_table(table_name):
     """
     Get a registered table.
@@ -922,13 +1051,33 @@ def get_table(table_name):
     table : `DataFrameWrapper`
 
     """
-    if table_name in _TABLES:
-        table = _TABLES[table_name]
-        if isinstance(table, TableFuncWrapper):
-            table = table()
-        return table
-    else:
-        raise KeyError('table not found: {}'.format(table_name))
+    table = get_raw_table(table_name)
+    if isinstance(table, TableFuncWrapper):
+        table = table()
+    return table
+
+
+def table_type(table_name):
+    """
+    Returns the type of a registered table.
+
+    The type can be either "dataframe" or "function".
+
+    Parameters
+    ----------
+    table_name : str
+
+    Returns
+    -------
+    table_type : {'dataframe', 'function'}
+
+    """
+    table = get_raw_table(table_name)
+
+    if isinstance(table, DataFrameWrapper):
+        return 'dataframe'
+    elif isinstance(table, TableFuncWrapper):
+        return 'function'
 
 
 def add_column(
@@ -1002,7 +1151,7 @@ def column(table_name, column_name=None, cache=False, cache_scope=_CS_FOREVER):
     return decorator
 
 
-def _list_columns_for_table(table_name):
+def list_columns_for_table(table_name):
     """
     Return a list of all the extra columns registered for a given table.
 
@@ -1069,6 +1218,30 @@ def column_map(tables, columns):
     return colmap
 
 
+def get_raw_column(table_name, column_name):
+    """
+    Get a wrapped, registered column.
+
+    This function cannot return columns that are part of wrapped
+    DataFrames, it's only for columns registered directly through Orca.
+
+    Parameters
+    ----------
+    table_name : str
+    column_name : str
+
+    Returns
+    -------
+    wrapped : _SeriesWrapper or _ColumnFuncWrapper
+
+    """
+    try:
+        return _COLUMNS[(table_name, column_name)]
+    except KeyError:
+        raise KeyError('column {!r} not found for table {!r}'.format(
+            column_name, table_name))
+
+
 def _memoize_function(f, name, cache_scope=_CS_FOREVER):
     """
     Wraps a function for memoization and ties it's cache into the
@@ -1105,6 +1278,7 @@ def _memoize_function(f, name, cache_scope=_CS_FOREVER):
             cache[cache_key] = result
             return result
 
+    wrapper.__wrapped__ = f
     wrapper.cache = cache
     wrapper.clear_cached = lambda: cache.clear()
     _MEMOIZED[name] = CacheItem(name, wrapper, cache_scope)
@@ -1189,6 +1363,56 @@ def injectable(
     return decorator
 
 
+def is_injectable(name):
+    """
+    Checks whether a given name can be mapped to an injectable.
+
+    """
+    return name in _INJECTABLES
+
+
+def get_raw_injectable(name):
+    """
+    Return a raw, possibly wrapped injectable.
+
+    Parameters
+    ----------
+    name : str
+
+    Returns
+    -------
+    inj : _InjectableFuncWrapper or object
+
+    """
+    if is_injectable(name):
+        return _INJECTABLES[name]
+    else:
+        raise KeyError('injectable not found: {!r}'.format(name))
+
+
+def injectable_type(name):
+    """
+    Classify an injectable as either 'variable' or 'function'.
+
+    Parameters
+    ----------
+    name : str
+
+    Returns
+    -------
+    inj_type : {'variable', 'function'}
+        If the injectable is an automatically called function or any other
+        type of callable the type will be 'function', all other injectables
+        will be have type 'variable'.
+
+    """
+    inj = get_raw_injectable(name)
+    if isinstance(inj, (_InjectableFuncWrapper, Callable)):
+        return 'function'
+    else:
+        return 'variable'
+
+
 def get_injectable(name):
     """
     Get an injectable by name. *Does not* evaluate wrapped functions.
@@ -1203,11 +1427,38 @@ def get_injectable(name):
         Original value or evaluated value of an _InjectableFuncWrapper.
 
     """
-    if name in _INJECTABLES:
-        i = _INJECTABLES[name]
-        return i() if isinstance(i, _InjectableFuncWrapper) else i
+    i = get_raw_injectable(name)
+    return i() if isinstance(i, _InjectableFuncWrapper) else i
+
+
+def get_injectable_func_source_data(name):
+    """
+    Return data about an injectable function's source, including file name,
+    line number, and source code.
+
+    Parameters
+    ----------
+    name : str
+
+    Returns
+    -------
+    filename : str
+    lineno : int
+        The line number on which the function starts.
+    source : str
+
+    """
+    if injectable_type(name) != 'function':
+        raise ValueError('injectable {!r} is not a function'.format(name))
+
+    inj = get_raw_injectable(name)
+
+    if isinstance(inj, _InjectableFuncWrapper):
+        return utils.func_source_data(inj._func)
+    elif hasattr(inj, '__wrapped__'):
+        return utils.func_source_data(inj.__wrapped__)
     else:
-        raise KeyError('injectable not found: {}'.format(name))
+        return utils.func_source_data(inj)
 
 
 def add_step(step_name, func):
@@ -1257,6 +1508,14 @@ def step(step_name=None):
     return decorator
 
 
+def is_step(step_name):
+    """
+    Check whether a given name refers to a registered step.
+
+    """
+    return step_name in _STEPS
+
+
 def get_step(step_name):
     """
     Get a wrapped step by name.
@@ -1265,14 +1524,14 @@ def get_step(step_name):
     ----------
 
     """
-    if step_name in _STEPS:
+    if is_step(step_name):
         return _STEPS[step_name]
     else:
         raise KeyError('no step named {}'.format(step_name))
 
 
-_Broadcast = namedtuple(
-    '_Broadcast',
+Broadcast = namedtuple(
+    'Broadcast',
     ['cast', 'onto', 'cast_on', 'onto_on', 'cast_index', 'onto_index'])
 
 
@@ -1297,7 +1556,7 @@ def broadcast(cast, onto, cast_on=None, onto_on=None,
     logger.debug(
         'registering broadcast of table {!r} onto {!r}'.format(cast, onto))
     _BROADCASTS[(cast, onto)] = \
-        _Broadcast(cast, onto, cast_on, onto_on, cast_index, onto_index)
+        Broadcast(cast, onto, cast_on, onto_on, cast_index, onto_index)
 
 
 def _get_broadcasts(tables):
@@ -1311,7 +1570,7 @@ def _get_broadcasts(tables):
 
     Returns
     -------
-    casts : dict of `_Broadcast`
+    casts : dict of `Broadcast`
         Keys are tuples of strings like (cast_name, onto_name).
 
     """
@@ -1321,6 +1580,51 @@ def _get_broadcasts(tables):
     if tables - set(tz.concat(casts.keys())):
         raise ValueError('Not enough links to merge all tables.')
     return casts
+
+
+def is_broadcast(cast_name, onto_name):
+    """
+    Checks whether a relationship exists for broadcast `cast_name`
+    onto `onto_name`.
+
+    """
+    return (cast_name, onto_name) in _BROADCASTS
+
+
+def get_broadcast(cast_name, onto_name):
+    """
+    Get a single broadcast.
+
+    Broadcasts are stored data about how to do a Pandas join.
+    A Broadcast object is a namedtuple with these attributes:
+
+        - cast: the name of the table being broadcast
+        - onto: the name of the table onto which "cast" is broadcast
+        - cast_on: The optional name of a column on which to join.
+          None if the table index will be used instead.
+        - onto_on: The optional name of a column on which to join.
+          None if the table index will be used instead.
+        - cast_index: True if the table index should be used for the join.
+        - onto_index: True if the table index should be used for the join.
+
+    Parameters
+    ----------
+    cast_name : str
+        The name of the table being braodcast.
+    onto_name : str
+        The name of the table onto which `cast_name` is broadcast.
+
+    Returns
+    -------
+    broadcast : Broadcast
+
+    """
+    if is_broadcast(cast_name, onto_name):
+        return _BROADCASTS[(cast_name, onto_name)]
+    else:
+        raise KeyError(
+            'no rule found for broadcasting {!r} onto {!r}'.format(
+                cast_name, onto_name))
 
 
 # utilities for merge_tables

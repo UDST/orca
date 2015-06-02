@@ -217,10 +217,10 @@ def test_columns_for_table():
     def asdf():
         return pd.Series([13, 14, 15], index=['x', 'y', 'z'])
 
-    t1_col_names = orca._list_columns_for_table('table1')
+    t1_col_names = orca.list_columns_for_table('table1')
     assert set(t1_col_names) == {'col10', 'col11'}
 
-    t2_col_names = orca._list_columns_for_table('table2')
+    t2_col_names = orca.list_columns_for_table('table2')
     assert set(t2_col_names) == {'col20', 'col21'}
 
     t1_cols = orca._columns_for_table('table1')
@@ -398,6 +398,15 @@ def test_column_map(fta, ftb):
     assert sorted(result['b']) == ['by', 'bz']
 
 
+def test_is_step():
+    @orca.step()
+    def test_step():
+        pass
+
+    assert orca.is_step('test_step') is True
+    assert orca.is_step('not_a_step') is False
+
+
 def test_steps(df):
     orca.add_table('test_table', df)
 
@@ -467,6 +476,40 @@ def test_step_run(df):
 
     m = orca.get_step('test_step1')
     assert set(m._tables_used()) == {'test_table', 'table_func'}
+
+
+def test_step_func_source_data():
+    @orca.step()
+    def test_step():
+        return 'orca'
+
+    filename, lineno, source = orca.get_step('test_step').func_source_data()
+
+    assert filename.endswith('test_orca.py')
+    assert isinstance(lineno, int)
+    assert source == (
+        "    @orca.step()\n"
+        "    def test_step():\n"
+        "        return 'orca'\n")
+
+
+def test_get_broadcast():
+    orca.broadcast('a', 'b', cast_on='ax', onto_on='bx')
+    orca.broadcast('x', 'y', cast_on='yx', onto_index=True)
+
+    assert orca.is_broadcast('a', 'b') is True
+    assert orca.is_broadcast('b', 'a') is False
+
+    with pytest.raises(KeyError):
+        orca.get_broadcast('b', 'a')
+
+    ab = orca.get_broadcast('a', 'b')
+    assert isinstance(ab, orca.Broadcast)
+    assert ab == ('a', 'b', 'ax', 'bx', False, False)
+
+    xy = orca.get_broadcast('x', 'y')
+    assert isinstance(xy, orca.Broadcast)
+    assert xy == ('x', 'y', 'yx', None, False, True)
 
 
 def test_get_broadcasts():
@@ -833,8 +876,8 @@ def test_table_func_local_cols(df):
 
 def test_is_table(df):
     orca.add_table('table', df)
-    assert orca._is_table('table') is True
-    assert orca._is_table('asdf') is False
+    assert orca.is_table('table') is True
+    assert orca.is_table('asdf') is False
 
 
 @pytest.fixture
@@ -899,6 +942,20 @@ def test_run_and_write_tables(df, store_name):
         for x in range(11):
             pdt.assert_series_equal(
                 store['final/table'][year_key(x)], series_year(x))
+
+
+def test_get_raw_table(df):
+    orca.add_table('table1', df)
+
+    @orca.table()
+    def table2():
+        return df
+
+    assert isinstance(orca.get_raw_table('table1'), orca.DataFrameWrapper)
+    assert isinstance(orca.get_raw_table('table2'), orca.TableFuncWrapper)
+
+    assert orca.table_type('table1') == 'dataframe'
+    assert orca.table_type('table2') == 'function'
 
 
 def test_get_table(df):
@@ -1011,3 +1068,131 @@ def test_always_dataframewrapper(df):
 
     result = orca.eval_variable('table2')
     pdt.assert_frame_equal(result.to_frame(), df / 4)
+
+
+def test_table_func_source_data(df):
+    @orca.table()
+    def table():
+        return df * 2
+
+    t = orca.get_raw_table('table')
+    filename, lineno, source = t.func_source_data()
+
+    assert filename.endswith('test_orca.py')
+    assert isinstance(lineno, int)
+    assert 'return df * 2' in source
+
+
+def test_column_type(df):
+    orca.add_table('test_frame', df)
+
+    @orca.table()
+    def test_func():
+        return df
+
+    s = pd.Series(range(len(df)), index=df.index)
+
+    def col_func():
+        return s
+
+    orca.add_column('test_frame', 'col_series', s)
+    orca.add_column('test_func', 'col_series', s)
+    orca.add_column('test_frame', 'col_func', col_func)
+    orca.add_column('test_func', 'col_func', col_func)
+
+    tframe = orca.get_raw_table('test_frame')
+    tfunc = orca.get_raw_table('test_func')
+
+    assert tframe.column_type('a') == 'local'
+    assert tframe.column_type('col_series') == 'series'
+    assert tframe.column_type('col_func') == 'function'
+
+    assert tfunc.column_type('a') == 'local'
+    assert tfunc.column_type('col_series') == 'series'
+    assert tfunc.column_type('col_func') == 'function'
+
+
+def test_get_raw_column(df):
+    orca.add_table('test_frame', df)
+
+    s = pd.Series(range(len(df)), index=df.index)
+
+    def col_func():
+        return s
+
+    orca.add_column('test_frame', 'col_series', s)
+    orca.add_column('test_frame', 'col_func', col_func)
+
+    assert isinstance(
+        orca.get_raw_column('test_frame', 'col_series'),
+        orca._SeriesWrapper)
+    assert isinstance(
+        orca.get_raw_column('test_frame', 'col_func'),
+        orca._ColumnFuncWrapper)
+
+
+def test_column_func_source_data(df):
+    orca.add_table('test_frame', df)
+
+    @orca.column('test_frame')
+    def col_func():
+        return pd.Series(range(len(df)), index=df.index)
+
+    s = orca.get_raw_column('test_frame', 'col_func')
+    filename, lineno, source = s.func_source_data()
+
+    assert filename.endswith('test_orca.py')
+    assert isinstance(lineno, int)
+    assert 'def col_func():' in source
+
+
+def test_is_injectable():
+    orca.add_injectable('answer', 42)
+    assert orca.is_injectable('answer') is True
+    assert orca.is_injectable('nope') is False
+
+
+def test_injectable_type():
+    orca.add_injectable('answer', 42)
+
+    @orca.injectable()
+    def inj1():
+        return 42
+
+    @orca.injectable(autocall=False, memoize=True)
+    def power(x):
+        return 42 ** x
+
+    assert orca.injectable_type('answer') == 'variable'
+    assert orca.injectable_type('inj1') == 'function'
+    assert orca.injectable_type('power') == 'function'
+
+
+def test_get_injectable_func_source_data():
+    @orca.injectable()
+    def inj1():
+        return 42
+
+    @orca.injectable(autocall=False, memoize=True)
+    def power(x):
+        return 42 ** x
+
+    def inj2():
+        return 'orca'
+
+    orca.add_injectable('inj2', inj2, autocall=False)
+
+    filename, lineno, source = orca.get_injectable_func_source_data('inj1')
+    assert filename.endswith('test_orca.py')
+    assert isinstance(lineno, int)
+    assert '@orca.injectable()' in source
+
+    filename, lineno, source = orca.get_injectable_func_source_data('power')
+    assert filename.endswith('test_orca.py')
+    assert isinstance(lineno, int)
+    assert '@orca.injectable(autocall=False, memoize=True)' in source
+
+    filename, lineno, source = orca.get_injectable_func_source_data('inj2')
+    assert filename.endswith('test_orca.py')
+    assert isinstance(lineno, int)
+    assert 'def inj2()' in source
