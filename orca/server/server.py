@@ -1,3 +1,4 @@
+import argparse
 import imp
 import os
 import re
@@ -410,7 +411,16 @@ def step_definition(step_name):
     return jsonify(filename=filename, lineno=lineno, text=source, html=html)
 
 
-if __name__ == '__main__':
-    filename = 'precipout.py'
-    import_file(filename)
+def parse_args(args=None):
+    parser = argparse.ArgumentParser(
+        description=(
+            'Start a Flask server that has HTTP endpoints that provide data '
+            'about an Orca configuration and data registered with Orca.'))
+    parser.add_argument('filename', type=str, help='File with Orca config')
+    return parser.parse_args(args)
+
+
+def main(args=None):
+    args = parse_args(args)
+    import_file(args.filename)
     app.run(debug=True)

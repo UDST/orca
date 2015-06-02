@@ -39,5 +39,10 @@ setup(
     ],
     extras_require={
         'server': ['flask >= 0.10', 'pygments >= 2.0']
+    },
+    entry_points={
+        'console_scripts': [
+            'orca-server = orca.server.server:main [server]'
+        ]
     }
 )
