@@ -244,7 +244,7 @@ def test_injectable_repr(tapp, dfb_factor):
 
     data = json.loads(rv.data.decode('utf-8'))
 
-    assert data == {'type': "<class 'int'>", 'repr': '2'}
+    assert data == {'type': str(type(42)), 'repr': '2'}
 
 
 def test_no_injectable_404(tapp):
