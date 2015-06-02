@@ -5,13 +5,13 @@ import pandas as pd
 import pandas.util.testing as pdt
 import pytest
 
-import app
+from .. import server
 
 
 @pytest.fixture
 def tapp():
-    app.app.config['TESTING'] = True
-    return app.app.test_client()
+    server.app.config['TESTING'] = True
+    return server.app.test_client()
 
 
 @pytest.fixture(scope='module')
@@ -144,7 +144,7 @@ def test_table_definition_func(tapp):
     data = json.loads(rv.data.decode('utf-8'))
 
     assert data['type'] == 'function'
-    assert data['filename'].endswith('test_app.py')
+    assert data['filename'].endswith('test_server.py')
     assert isinstance(data['lineno'], int)
     assert data['text'] == (
         "    @orca.table('dfb')\n"
@@ -197,7 +197,7 @@ def test_column_definition_func(tapp):
     data = json.loads(rv.data.decode('utf-8'))
 
     assert data['type'] == 'function'
-    assert data['filename'].endswith('test_app.py')
+    assert data['filename'].endswith('test_server.py')
     assert isinstance(data['lineno'], int)
     assert data['text'] == (
         "    @orca.column('dfa')\n"
@@ -268,7 +268,7 @@ def test_injectable_definition_func(tapp):
     data = json.loads(rv.data.decode('utf-8'))
 
     assert data['type'] == 'function'
-    assert data['filename'].endswith('test_app.py')
+    assert data['filename'].endswith('test_server.py')
     assert isinstance(data['lineno'], int)
     assert data['text'] == (
         "    @orca.injectable()\n"
@@ -326,7 +326,7 @@ def test_step_definition(tapp):
 
     data = json.loads(rv.data.decode('utf-8'))
 
-    assert data['filename'].endswith('test_app.py')
+    assert data['filename'].endswith('test_server.py')
     assert isinstance(data['lineno'], int)
     assert data['text'] == (
         "    @orca.step()\n"
