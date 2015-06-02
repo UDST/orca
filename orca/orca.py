@@ -1911,6 +1911,30 @@ def injectables(**kwargs):
     _INJECTABLES = original
 
 
+@contextmanager
+def tables(**kwargs):
+    """
+    Temporarily set DataFrames as registered tables.
+
+    Tables will be returned to their original state when the context
+    manager exits. Caching is not enabled for tables registered via
+    this function.
+
+    """
+    global _TABLES
+
+    original = _TABLES.copy()
+
+    for k, v in kwargs.items():
+        if not isinstance(v, pd.DataFrame):
+            raise ValueError('tables only accepts DataFrames')
+        add_table(k, v)
+
+    yield
+
+    _TABLES = original
+
+
 def eval_variable(name, **kwargs):
     """
     Execute a single variable function registered with Orca
