@@ -1,0 +1,71 @@
+package:
+  name: orca
+  version: "1.1.0"
+
+source:
+  fn: orca-1.1.0.tar.gz
+  url: https://pypi.python.org/packages/source/o/orca/orca-1.1.0.tar.gz
+  md5: a87e66bb0b98b67e69ecc71611aa52c8
+#  patches:
+   # List any patch files here
+   # - fix.patch
+
+# build:
+  # preserve_egg_dir: True
+  # entry_points:
+    # Put any entry points (scripts to be generated automatically) here. The
+    # syntax is module:function.  For example
+    #
+    # - orca = orca:main
+    #
+    # Would create an entry point called orca that calls orca.main()
+
+
+  # If this is a new build for the same version, increment the build
+  # number. If you do not include this key, it defaults to 0.
+  # number: 1
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - pandas >=0.13.1
+    - pytables >=3.1.0
+    - cytoolz >=0.7.0
+    - toolz >=0.7.0
+    - zbox >=1.2
+
+  run:
+    - python
+    - pandas >=0.13.1
+    - pytables >=3.1.0
+    - cytoolz >=0.7.0
+    - toolz >=0.7.0
+    - zbox >=1.2
+
+test:
+  # Python imports
+  imports:
+    - orca
+    - orca.utils
+
+  # commands:
+    # You can put test commands to be run here.  Use this to test that the
+    # entry points work.
+
+
+  # You can also put a file called run_test.py in the recipe that will be run
+  # at test time.
+
+  # requires:
+    # Put any additional test requirements here.  For example
+    # - nose
+
+about:
+  home: https://github.com/synthicity/orca
+  license: BSD License
+  summary: 'A pipeline orchestration tool with Pandas support'
+
+# See
+# http://docs.continuum.io/conda/build.html for
+# more information about meta.yaml
