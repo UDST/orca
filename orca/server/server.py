@@ -6,7 +6,8 @@ from functools import wraps
 from operator import methodcaller
 
 import orca
-from flask import Flask, abort, jsonify, request
+from flask import (
+    Flask, abort, jsonify, request, render_template, redirect, url_for)
 from pygments import highlight
 from pygments.lexers import PythonLexer
 from pygments.formatters import HtmlFormatter
@@ -409,6 +410,16 @@ def step_definition(step_name):
         orca.get_step(step_name).func_source_data()
     html = highlight(source, PythonLexer(), HtmlFormatter())
     return jsonify(filename=filename, lineno=lineno, text=source, html=html)
+
+
+@app.route('/ui')
+def ui():
+    return render_template('ui.html')
+
+
+@app.route('/')
+def root():
+    return redirect(url_for('ui'))
 
 
 def parse_args(args=None):
