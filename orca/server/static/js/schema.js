@@ -111,11 +111,11 @@ var SchemaApp = React.createClass({
   },
   render: function() {
     return (
-      <div>
+      <div className="schemaApp">
         <div className="page-header">
           <h1>Orca Schema</h1>
         </div>
-        <div className="schemaApp">
+        <div>
           <TableList tables={this.state.tables} />
           <StepList steps={this.state.steps} />
           <InjectableList injectables={this.state.injectables} />
