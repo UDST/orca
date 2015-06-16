@@ -19,8 +19,7 @@ var TableButton = React.createClass({
       <button
           type="button"
           className={classes}
-          onClick={this.clickHandler}
-          data-view={this.props.view}>
+          onClick={this.clickHandler}>
         {this.props.text}
       </button>
     );
@@ -32,10 +31,10 @@ var TableButtons = React.createClass({
     var button_els = _.map(this.props.buttons, function(b) {
       return (
         <TableButton
-          text={b[0]}
-          view={b[1]}
-          key={b[1]}
-          active={b[1] === this.props.view ? true : false}
+          text={b.text}
+          view={b.view}
+          key={b.view}
+          active={b.view === this.props.view}
           clickHandler={this.props.clickHandler}
         />
       );
@@ -74,9 +73,12 @@ var TableDefinition = React.createClass({
 });
 
 var TableApp = React.createClass({
-  tableButtons: [['Preview', 'preview'], ['Definition', 'definition']],
+  tableButtons: [
+    {text: 'Preview', view: 'preview'},
+    {text: 'Definition', view: 'definition'}
+  ],
   getInitialState: function() {
-    return {view: this.tableButtons[0][1]};
+    return {view: this.tableButtons[0].view};
   },
   handleButtonClick: function(view) {
     if (view !== this.state.view) {
