@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "dependencies": {
     "URIjs": "^1.15.1",
+    "classnames": "^2.1.2",
     "grapnel": "^0.5.8",
     "lodash": "^3.9.3",
     "react": "^0.13.3"
