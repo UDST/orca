@@ -353,14 +353,15 @@ def test_update_col(df):
     wrapped = orca.add_table('table', df)
 
     wrapped.update_col('b', pd.Series([7, 8, 9], index=df.index))
-    pdt.assert_series_equal(wrapped['b'], pd.Series([7, 8, 9], index=df.index))
+    pdt.assert_series_equal(
+        wrapped['b'], pd.Series([7, 8, 9], index=df.index, name='b'))
 
     wrapped.update_col_from_series('a', pd.Series([]))
     pdt.assert_series_equal(wrapped['a'], df['a'])
 
     wrapped.update_col_from_series('a', pd.Series([99], index=['y']))
     pdt.assert_series_equal(
-        wrapped['a'], pd.Series([1, 99, 3], index=df.index))
+        wrapped['a'], pd.Series([1, 99, 3], index=df.index, name='a'))
 
 
 class _FakeTable(object):
@@ -637,7 +638,7 @@ def test_injectables_combined(df):
     table_wr = orca.get_table('table').to_frame()
 
     pdt.assert_frame_equal(table_wr[['a', 'b']], df)
-    pdt.assert_series_equal(table_wr['new'], column())
+    pdt.assert_series_equal(table_wr['new'], pd.Series(column(), name='new'))
 
 
 def test_injectables_cache():
@@ -919,7 +920,7 @@ def test_run_and_write_tables(df, store_name):
         return '{}'.format(y)
 
     def series_year(y):
-        return pd.Series([y] * 3, index=df.index)
+        return pd.Series([y] * 3, index=df.index, name=str(y))
 
     @orca.step()
     def step(iter_var, table):

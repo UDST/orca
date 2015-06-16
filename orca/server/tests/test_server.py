@@ -370,7 +370,7 @@ def test_table_groupbyagg_level_mean(tapp):
 
     pdt.assert_series_equal(
         test,
-        pd.Series([70, 85], index=['a', 'b']))
+        pd.Series([70, 85], index=['a', 'b'], name='b'))
 
 
 def test_table_groupbyagg_level_median(tapp):
@@ -382,7 +382,7 @@ def test_table_groupbyagg_level_median(tapp):
 
     pdt.assert_series_equal(
         test,
-        pd.Series([70, 85], index=['a', 'b']))
+        pd.Series([70, 85], index=['a', 'b'], name='b'))
 
 
 def test_table_groupbyagg_level_sum(tapp):
@@ -394,7 +394,7 @@ def test_table_groupbyagg_level_sum(tapp):
 
     pdt.assert_series_equal(
         test,
-        pd.Series([70, 170], index=['a', 'b']))
+        pd.Series([70, 170], index=['a', 'b'], name='b'))
 
 
 def test_table_groupbyagg_level_std(tapp):
@@ -406,4 +406,6 @@ def test_table_groupbyagg_level_std(tapp):
 
     pdt.assert_series_equal(
         test,
-        pd.Series([pd.np.nan, pd.Series([80, 90]).std()], index=['a', 'b']))
+        pd.Series(
+            [pd.np.nan, pd.Series([80, 90]).std()],
+            index=['a', 'b'], name='b'))
