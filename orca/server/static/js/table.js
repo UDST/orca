@@ -64,10 +64,37 @@ var TablePreview = React.createClass({
   }
 });
 
-var TableDefinition = React.createClass({
+var TableDefinitionDF = React.createClass({
+  render: function() {
+    return (<p>DataFrame</p>);
+  }
+});
+
+var TableDefinitionFunc = React.createClass({
   render: function() {
     return (
-      <div><p>{this.props.table}</p></div>
+      <div dangerouslySetInnerHTML={{__html: this.props.funcData.html}}>
+      </div>
+    );
+  }
+});
+
+var TableDefinition = React.createClass({
+  componentDidMount: function() {
+    $.getJSON('/tables/' + this.props.table + '/definition')
+      .done(function(data) {
+        if (data.type === 'dataframe') {
+          var component = <TableDefinitionDF />;
+        } else if (data.type === 'function') {
+          var component = <TableDefinitionFunc funcData={data} />;
+        }
+
+        React.render(component, document.getElementById('table-definition'));
+      });
+  },
+  render: function() {
+    return (
+      <div id="table-definition"></div>
     );
   }
 });
