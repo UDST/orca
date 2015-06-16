@@ -72,8 +72,13 @@ var TableDefinitionDF = React.createClass({
 
 var TableDefinitionFunc = React.createClass({
   render: function() {
+    var f = this.props.funcData;
     return (
-      <div dangerouslySetInnerHTML={{__html: this.props.funcData.html}}>
+      <div className="tableDefinitionFunc">
+        <h3>Source</h3>
+        <p><code>{f.filename} @ line: {f.lineno}</code></p>
+        <div dangerouslySetInnerHTML={{__html: this.props.funcData.html}}>
+        </div>
       </div>
     );
   }
