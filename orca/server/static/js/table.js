@@ -121,11 +121,42 @@ var TableDescribe = React.createClass({
   }
 });
 
+var TableColumns = React.createClass({
+  getInitialState: function() {
+    return {columns: []};
+  },
+  componentDidMount: function() {
+    $.getJSON('/tables/' + this.props.table + '/columns')
+      .done(function(data) {
+        this.setState(data);
+      }.bind(this));
+  },
+  render: function() {
+    var col_els = _.map(this.state.columns, function(col) {
+      return (
+        <a
+            href={'#tables/' + this.props.table + '/columns/' + col}
+            className="list-group-item"
+            key={this.props.table + '.' + col}>
+          {col}
+        </a>
+      );
+    }.bind(this));
+
+    return (
+      <div className="tableColumns list-group">
+        {col_els}
+      </div>
+    );
+  }
+});
+
 var TableApp = React.createClass({
   tableButtons: [
     {text: 'Preview', view: 'preview'},
     {text: 'Definition', view: 'definition'},
-    {text: 'Describe', view: 'describe'}
+    {text: 'Describe', view: 'describe'},
+    {text: 'Columns', view: 'columns'}
   ],
   getInitialState: function() {
     return {view: this.tableButtons[0].view};
@@ -145,6 +176,8 @@ var TableApp = React.createClass({
       var tableComponent = <TableDefinition table={table} />;
     } else if (view === 'describe') {
       var tableComponent = <TableDescribe table={table} />;
+    } else if (view === 'columns') {
+      var tableComponent = <TableColumns table={table} />;
     }
 
     return (
