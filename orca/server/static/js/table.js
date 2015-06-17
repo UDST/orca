@@ -57,7 +57,7 @@ var TablePreview = React.createClass({
   },
   render: function() {
     return (
-      <div>
+      <div className="tablePreview">
         <table className="display" id="preview-table">
         </table>
       </div>);
@@ -104,10 +104,28 @@ var TableDefinition = React.createClass({
   }
 });
 
+var TableDescribe = React.createClass({
+  componentDidMount: function() {
+    $.getJSON('/tables/' + this.props.table + '/describe')
+      .done(function(data) {
+        $('#describe-table').DataTable(dtopts(data));
+      });
+  },
+  render: function() {
+    return (
+      <div className="tableDescribe">
+        <table className="display" id="describe-table">
+        </table>
+      </div>
+    );
+  }
+});
+
 var TableApp = React.createClass({
   tableButtons: [
     {text: 'Preview', view: 'preview'},
-    {text: 'Definition', view: 'definition'}
+    {text: 'Definition', view: 'definition'},
+    {text: 'Describe', view: 'describe'}
   ],
   getInitialState: function() {
     return {view: this.tableButtons[0].view};
@@ -119,10 +137,14 @@ var TableApp = React.createClass({
   },
   render: function() {
     var view = this.state.view;
+    var table = this.props.table;
+
     if (view === 'preview') {
-      var tableComponent = <TablePreview table={this.props.table} />;
+      var tableComponent = <TablePreview table={table} />;
     } else if (view === 'definition') {
-      var tableComponent = <TableDefinition table={this.props.table} />;
+      var tableComponent = <TableDefinition table={table} />;
+    } else if (view === 'describe') {
+      var tableComponent = <TableDescribe table={table} />;
     }
 
     return (
