@@ -22,6 +22,11 @@ function table_opts(data) {
 function series_opts(data) {
   var opts = {paging: false};
 
+  opts['columns'] = [
+    {title: 'Index'},
+    {title: data.name}
+  ];
+
   opts['data'] = _.map(data.data, function(val, i) {
     return [data.index[i], val];
   });
