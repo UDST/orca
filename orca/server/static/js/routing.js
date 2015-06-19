@@ -5,6 +5,7 @@ var SchemaApp = require('./schema.js');
 var TableApp = require('./table.js');
 var ColumnApp = require('./column.js');
 var StepApp = require('./step.js');
+var InjectableApp = require('./injectable.js');
 
 var router = new Grapnel();
 
@@ -31,4 +32,9 @@ router.get('tables/:table/columns/:column', function(req) {
 router.get('steps/:step', function(req) {
   var step_name = req.params.step;
   React.render(<StepApp step={step_name} />, content_div());
+});
+
+router.get('injectables/:inj_name', function(req) {
+  var inj_name = req.params.inj_name;
+  React.render(<InjectableApp inj_name={inj_name} />, content_div());
 });
