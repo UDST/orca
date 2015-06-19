@@ -3,6 +3,7 @@ var _ = require('lodash');
 
 var dtopts = require('./dtopts.js');
 var ViewButtonGroup = require('./buttons.js');
+var funcdef = require('./funcdef.js');
 
 
 var TablePreview = React.createClass({
@@ -21,34 +22,14 @@ var TablePreview = React.createClass({
   }
 });
 
-var TableDefinitionDF = React.createClass({
-  render: function() {
-    return (<p>DataFrame</p>);
-  }
-});
-
-var TableDefinitionFunc = React.createClass({
-  render: function() {
-    var f = this.props.funcData;
-    return (
-      <div className="tableDefinitionFunc">
-        <h3>Source</h3>
-        <p><code>{f.filename} @ line: {f.lineno}</code></p>
-        <div dangerouslySetInnerHTML={{__html: this.props.funcData.html}}>
-        </div>
-      </div>
-    );
-  }
-});
-
 var TableDefinition = React.createClass({
   componentDidMount: function() {
     $.getJSON('/tables/' + this.props.table + '/definition')
       .done(function(data) {
         if (data.type === 'dataframe') {
-          var component = <TableDefinitionDF />;
+          var component = <funcdef.LiteralDefinition text="DataFrame" />;
         } else if (data.type === 'function') {
-          var component = <TableDefinitionFunc funcData={data} />;
+          var component = <funcdef.FuncDefinition funcData={data} />;
         }
 
         React.render(component, document.getElementById('table-definition'));
