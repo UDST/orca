@@ -6,6 +6,7 @@ var TableApp = require('./table.js');
 var ColumnApp = require('./column.js');
 var StepApp = require('./step.js');
 var InjectableApp = require('./injectable.js');
+var BroadcastApp = require('./broadcast.js');
 
 var router = new Grapnel();
 
@@ -37,4 +38,10 @@ router.get('steps/:step', function(req) {
 router.get('injectables/:inj_name', function(req) {
   var inj_name = req.params.inj_name;
   React.render(<InjectableApp inj_name={inj_name} />, content_div());
+});
+
+router.get('broadcasts/:cast/:onto', function(req) {
+  var cast = req.params.cast;
+  var onto = req.params.onto;
+  React.render(<BroadcastApp cast={cast} onto={onto} />, content_div());
 });
