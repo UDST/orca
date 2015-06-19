@@ -254,6 +254,22 @@ def list_table_columns(table_name):
     return jsonify(columns=orca.get_table(table_name).columns)
 
 
+@app.route('/tables/<table_name>/columns/<col_name>/preview')
+@check_is_column
+def column_preview(table_name, col_name):
+    """
+    Return the first ten elements of a column as JSON in Pandas'
+    "split" format.
+
+    """
+    col = orca.get_table(table_name).get_column(col_name).head(10)
+
+    return (
+        col.to_json(orient='split', date_format='iso'),
+        200,
+        {'Content-Type': 'application/json'})
+
+
 @app.route('/tables/<table_name>/columns/<col_name>/definition')
 @check_is_column
 def column_definition(table_name, col_name):
