@@ -4,6 +4,7 @@ var React = require('react');
 var SchemaApp = require('./schema.js');
 var TableApp = require('./table.js');
 var ColumnApp = require('./column.js');
+var StepApp = require('./step.js');
 
 var router = new Grapnel();
 
@@ -25,4 +26,9 @@ router.get('tables/:table/columns/:column', function(req) {
   var col_name = req.params.column;
   React.render(
     <ColumnApp table={table_name} column={col_name} />, content_div());
+});
+
+router.get('steps/:step', function(req) {
+  var step_name = req.params.step;
+  React.render(<StepApp step={step_name} />, content_div());
 });
