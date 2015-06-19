@@ -9,7 +9,7 @@ var TablePreview = React.createClass({
   componentDidMount: function() {
     $.getJSON('/tables/' + this.props.table + '/preview')
       .done(function(data) {
-        $('#preview-table').DataTable(dtopts(data));
+        $('#preview-table').DataTable(dtopts.table_opts(data));
       });
   },
   render: function() {
@@ -65,7 +65,7 @@ var TableDescribe = React.createClass({
   componentDidMount: function() {
     $.getJSON('/tables/' + this.props.table + '/describe')
       .done(function(data) {
-        $('#describe-table').DataTable(dtopts(data));
+        $('#describe-table').DataTable(dtopts.table_opts(data));
       });
   },
   render: function() {

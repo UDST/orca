@@ -2,7 +2,7 @@ var _ = require('lodash');
 
 // Make an object of DataTable options from JSON data of a DataFrame
 // in "split" format.
-function dtopts(data) {
+function table_opts(data) {
   var opts = {paging: false};
 
   // Column heading values, including one for the index values
@@ -19,4 +19,15 @@ function dtopts(data) {
   return opts;
 }
 
-module.exports = dtopts;
+function series_opts(data) {
+  var opts = {paging: false};
+
+  opts['data'] = _.map(data.data, function(val, i) {
+    return [data.index[i], val];
+  });
+
+  return opts;
+}
+
+exports.table_opts = table_opts;
+exports.series_opts = series_opts;
