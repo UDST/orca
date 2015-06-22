@@ -6,6 +6,25 @@ var ViewButtonGroup = require('./buttons.js');
 var funcdef = require('./funcdef.js');
 
 
+var TableInfo = React.createClass({
+  getInitialState: function() {
+    return {info: ''};
+  },
+  componentDidMount: function() {
+    $.get('/tables/' + this.props.table + '/info')
+      .done(function(data) {
+        this.setState({info: data});
+      }.bind(this));
+  },
+  render: function() {
+    return (
+      <div className="tableInfo">
+        <pre>{this.state.info}</pre>
+      </div>
+    );
+  }
+});
+
 var TablePreview = React.createClass({
   componentDidMount: function() {
     $.getJSON('/tables/' + this.props.table + '/preview')
@@ -91,6 +110,7 @@ var TableColumns = React.createClass({
 
 var TableApp = React.createClass({
   tableButtons: [
+    {text: 'Info', view: 'info'},
     {text: 'Preview', view: 'preview'},
     {text: 'Definition', view: 'definition'},
     {text: 'Describe', view: 'describe'},
@@ -108,7 +128,9 @@ var TableApp = React.createClass({
     var view = this.state.view;
     var table = this.props.table;
 
-    if (view === 'preview') {
+    if (view === 'info') {
+      var tableComponent = <TableInfo table={table} />;
+    } else if (view === 'preview') {
       var tableComponent = <TablePreview table={table} />;
     } else if (view === 'definition') {
       var tableComponent = <TableDefinition table={table} />;
