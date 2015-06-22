@@ -11,6 +11,7 @@ from flask import (
 from pygments import highlight
 from pygments.lexers import PythonLexer
 from pygments.formatters import HtmlFormatter
+from six import StringIO
 
 app = Flask(__name__)
 
@@ -118,6 +119,20 @@ def list_tables():
     """
     tables = orca.list_tables()
     return jsonify(tables=tables)
+
+
+@app.route('/tables/<table_name>/info')
+@check_is_table
+def table_info(table_name):
+    """
+    Return the text result of table.info(verbose=True).
+
+    """
+    table = orca.get_table(table_name).to_frame()
+    buf = StringIO()
+    table.info(verbose=True, buf=buf)
+    info = buf.getvalue()
+    return info, 200, {'Content-Type': 'text/plain'}
 
 
 @app.route('/tables/<table_name>/preview')
