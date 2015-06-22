@@ -38,7 +38,7 @@ setup(
         'zbox >= 1.2'
     ],
     extras_require={
-        'server': ['flask >= 0.10', 'pygments >= 2.0']
+        'server': ['flask >= 0.10', 'pygments >= 2.0', 'six >= 1.9.0']
     },
     entry_points={
         'console_scripts': [
