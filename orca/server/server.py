@@ -458,6 +458,13 @@ def parse_args(args=None):
         description=(
             'Start a Flask server that has HTTP endpoints that provide data '
             'about an Orca configuration and data registered with Orca.'))
+    parser.add_argument(
+        '-d', '--debug', action='store_true',
+        help='Enable Flask\'s debug mode')
+    parser.add_argument(
+        '-H', '--host', type=str, help='Hostname on which to run the server')
+    parser.add_argument(
+        '-p', '--port', type=int, help='Port on which to run server')
     parser.add_argument('filename', type=str, help='File with Orca config')
     return parser.parse_args(args)
 
@@ -465,4 +472,4 @@ def parse_args(args=None):
 def main(args=None):
     args = parse_args(args)
     import_file(args.filename)
-    app.run(debug=True)
+    app.run(host=args.host, port=args.port, debug=args.debug)
