@@ -129,6 +129,11 @@ With the dependencies installed, install Orca with pip::
 
     pip install orca
 
+Orca may also be installed with conda::
+
+    conda install --channel jiffyclub orca
+
+(The jiffyclub channel is included for install zbox.)
 
 Links
 -----
