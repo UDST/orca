@@ -1,3 +1,7 @@
+from __future__ import print_function
+
+import subprocess
+
 # Install setuptools if not installed.
 try:
     import setuptools
@@ -6,7 +10,27 @@ except ImportError:
     use_setuptools()
 
 from setuptools import setup, find_packages
+from setuptools.command.build_py import build_py
+from setuptools.command.sdist import sdist
 
+
+# these make sure the js distribution bundle is created and
+# up-to-date when creating distribution packages.
+def build_js_bundle():
+    print('Building JS bundle')
+    subprocess.check_call(['./bin/build_js_bundle.sh'])
+
+
+class sdist_(sdist):
+    def run(self):
+        build_js_bundle()
+        sdist.run(self)
+
+
+class build_py_(build_py):
+    def run(self):
+        build_js_bundle()
+        build_py.run(self)
 
 # read README as the long description
 with open('README.rst', 'r') as f:
@@ -50,5 +74,9 @@ setup(
         'console_scripts': [
             'orca-server = orca.server.server:main [server]'
         ]
+    },
+    cmdclass={
+        'build_py': build_py_,
+        'sdist': sdist_
     }
 )
