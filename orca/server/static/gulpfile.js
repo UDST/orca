@@ -17,7 +17,7 @@ var config = {
 // Mostly copied from:
 // http://tylermcginnis.com/reactjs-tutorial-pt-2-building-react-applications-with-gulp-and-browserify/
 // https://github.com/gulpjs/gulp/blob/master/docs/recipes/fast-browserify-builds-with-watchify.md
-gulp.task('js', function() {
+gulp.task('js-watch', function() {
   var bfy_opts = {
     entries: [config.main],
     transform: [reactify],
@@ -39,4 +39,16 @@ gulp.task('js', function() {
   return bundle();
 });
 
-gulp.task('default', ['js']);
+gulp.task('js-build', function () {
+  var bfy_opts = {
+    entries: [config.main],
+    transform: [reactify]
+  };
+  return browserify(bfy_opts)
+    .bundle()
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe(source(config.out))
+    .pipe(gulp.dest(config.dest));
+});
+
+gulp.task('default', ['js-watch']);

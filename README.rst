@@ -27,3 +27,18 @@ Orca has many features for working with `Pandas <http://pandas.pydata.org/>`__
 data structures, but it can be used with anything.
 
 Learn more in the official docs at https://synthicity.github.io/orca/.
+
+Building the Orca UI JS Bundle
+------------------------------
+
+Orca ships with a bundle of JavaScript for the server UI.
+If you've installed Orca from ``pip`` or ``conda`` you already have the
+bundle, but if you're working on Orca you might need to build it manually:
+
+* Make sure `nodejs <https://nodejs.org/>`__ is installed.
+  (I use `Homebrew <http://brew.sh/>`__ on my Mac.)
+* Install `gulp <http://gulpjs.com/>`__: ``npm install -g gulp``
+* Change directories to ``orca/server/static``
+* Run ``npm install`` to install dependencies
+* Build the bundle: ``gulp js-build``, or
+* Watch JS files to rebuild the bundle on changes: ``gulp js-watch``
