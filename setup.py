@@ -10,12 +10,14 @@ except ImportError:
     use_setuptools()
 
 from setuptools import setup, find_packages
-from setuptools.command.build_py import build_py
 from setuptools.command.sdist import sdist
 
 
 # these make sure the js distribution bundle is created and
 # up-to-date when creating distribution packages.
+cmdclass = {}
+
+
 def build_js_bundle():
     print('Building JS bundle')
     subprocess.check_call(['./bin/build_js_bundle.sh'])
@@ -25,12 +27,18 @@ class sdist_(sdist):
     def run(self):
         build_js_bundle()
         sdist.run(self)
+cmdclass['sdist'] = sdist_
 
-
-class build_py_(build_py):
-    def run(self):
-        build_js_bundle()
-        build_py.run(self)
+try:
+    from wheel.bdist_wheel import bdist_wheel
+except ImportError:
+    pass
+else:
+    class build_wheel(bdist_wheel):
+        def run(self):
+            build_js_bundle()
+            bdist_wheel.run(self)
+    cmdclass['bdist_wheel'] = build_wheel
 
 # read README as the long description
 with open('README.rst', 'r') as f:
@@ -75,8 +83,5 @@ setup(
             'orca-server = orca.server.server:main [server]'
         ]
     },
-    cmdclass={
-        'build_py': build_py_,
-        'sdist': sdist_
-    }
+    cmdclass=cmdclass
 )
