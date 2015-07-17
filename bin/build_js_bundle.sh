@@ -5,4 +5,10 @@
 # installed locally using npm.
 
 cd orca/server/static
+
+if [[ $1 == 'complete' ]]; then
+    npm install -g gulp
+    npm install
+fi
+
 gulp js-build
