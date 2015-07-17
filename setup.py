@@ -31,6 +31,12 @@ setup(
         'License :: OSI Approved :: BSD License'
     ],
     packages=find_packages(exclude=['*.tests']),
+    package_data={
+        'orca': [
+            'server/static/css/*',
+            'server/static/js/dist/*',
+            'server/templates/*']
+    },
     install_requires=[
         'pandas >= 0.13.1',
         'tables >= 3.1.0',
