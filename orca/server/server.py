@@ -6,10 +6,12 @@ from functools import wraps
 from operator import methodcaller
 
 import orca
-from flask import Flask, abort, jsonify, request
+from flask import (
+    Flask, abort, jsonify, request, render_template, redirect, url_for)
 from pygments import highlight
 from pygments.lexers import PythonLexer
 from pygments.formatters import HtmlFormatter
+from six import StringIO
 
 app = Flask(__name__)
 
@@ -117,6 +119,20 @@ def list_tables():
     """
     tables = orca.list_tables()
     return jsonify(tables=tables)
+
+
+@app.route('/tables/<table_name>/info')
+@check_is_table
+def table_info(table_name):
+    """
+    Return the text result of table.info(verbose=True).
+
+    """
+    table = orca.get_table(table_name).to_frame()
+    buf = StringIO()
+    table.info(verbose=True, buf=buf)
+    info = buf.getvalue()
+    return info, 200, {'Content-Type': 'text/plain'}
 
 
 @app.route('/tables/<table_name>/preview')
@@ -251,6 +267,22 @@ def list_table_columns(table_name):
 
     """
     return jsonify(columns=orca.get_table(table_name).columns)
+
+
+@app.route('/tables/<table_name>/columns/<col_name>/preview')
+@check_is_column
+def column_preview(table_name, col_name):
+    """
+    Return the first ten elements of a column as JSON in Pandas'
+    "split" format.
+
+    """
+    col = orca.get_table(table_name).get_column(col_name).head(10)
+
+    return (
+        col.to_json(orient='split', date_format='iso'),
+        200,
+        {'Content-Type': 'application/json'})
 
 
 @app.route('/tables/<table_name>/columns/<col_name>/definition')
@@ -411,11 +443,28 @@ def step_definition(step_name):
     return jsonify(filename=filename, lineno=lineno, text=source, html=html)
 
 
+@app.route('/ui')
+def ui():
+    return render_template('ui.html')
+
+
+@app.route('/')
+def root():
+    return redirect(url_for('ui'))
+
+
 def parse_args(args=None):
     parser = argparse.ArgumentParser(
         description=(
             'Start a Flask server that has HTTP endpoints that provide data '
             'about an Orca configuration and data registered with Orca.'))
+    parser.add_argument(
+        '-d', '--debug', action='store_true',
+        help='Enable Flask\'s debug mode')
+    parser.add_argument(
+        '-H', '--host', type=str, help='Hostname on which to run the server')
+    parser.add_argument(
+        '-p', '--port', type=int, help='Port on which to run server')
     parser.add_argument('filename', type=str, help='File with Orca config')
     return parser.parse_args(args)
 
@@ -423,4 +472,4 @@ def parse_args(args=None):
 def main(args=None):
     args = parse_args(args)
     import_file(args.filename)
-    app.run(debug=True)
+    app.run(host=args.host, port=args.port, debug=args.debug)

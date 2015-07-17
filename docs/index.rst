@@ -135,6 +135,11 @@ Orca may also be installed with conda::
 
 (The jiffyclub channel is included for install zbox.)
 
+Add the server option to include the optional server dependencies::
+
+    pip install orca[server]
+
+
 Links
 -----
 
@@ -148,6 +153,7 @@ Contents
    :maxdepth: 2
 
    core
+   server
    utils
 
 Indices and tables

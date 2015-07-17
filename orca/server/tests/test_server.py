@@ -104,6 +104,15 @@ def test_list_tables(tapp):
     assert set(data['tables']) == {'dfa', 'dfb'}
 
 
+def test_table_info(tapp):
+    rv = tapp.get('/tables/dfa/info')
+    assert rv.status_code == 200
+
+    data = rv.data.decode('utf-8')
+
+    assert 'extra_acol' in data
+
+
 def test_table_preview(tapp):
     rv = tapp.get('/tables/dfa/preview')
     assert rv.status_code == 200
