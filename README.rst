@@ -1,23 +1,23 @@
 Orca
 ====
 
-.. image:: https://pypip.in/version/orca/badge.svg
+.. image:: https://img.shields.io/pypi/v/orca.svg
     :target: https://pypi.python.org/pypi/orca/
     :alt: PyPI Latest Version
 
-.. image:: https://pypip.in/py_versions/orca/badge.svg
+.. image:: https://img.shields.io/pypi/pyversions/orca.svg
     :target: https://pypi.python.org/pypi/orca/
     :alt: Supported Python versions
 
-.. image:: https://travis-ci.org/udst/orca.svg?branch=master
-    :target: https://travis-ci.org/udst/orca
+.. image:: https://travis-ci.org/UDST/orca.svg?branch=master
+    :target: https://travis-ci.org/UDST/orca
     :alt: Build Status
 
-.. image:: https://coveralls.io/repos/udst/orca/badge.svg?branch=master
-  :target: https://coveralls.io/r/udst/orca?branch=master
+.. image:: https://coveralls.io/repos/UDST/orca/badge.svg?branch=master
+  :target: https://coveralls.io/r/UDST/orca?branch=master
   :alt: Coverage
 
-.. image:: https://pypip.in/wheel/orca/badge.svg
+.. image:: https://img.shields.io/pypi/wheel/orca.svg
     :target: https://pypi.python.org/pypi/orca/
     :alt: Wheel Status
 
