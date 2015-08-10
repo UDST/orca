@@ -9,12 +9,12 @@ Orca
     :target: https://pypi.python.org/pypi/orca/
     :alt: Supported Python versions
 
-.. image:: https://travis-ci.org/synthicity/orca.svg?branch=master
-    :target: https://travis-ci.org/synthicity/orca
+.. image:: https://travis-ci.org/udst/orca.svg?branch=master
+    :target: https://travis-ci.org/udst/orca
     :alt: Build Status
 
-.. image:: https://coveralls.io/repos/synthicity/orca/badge.svg?branch=master
-  :target: https://coveralls.io/r/synthicity/orca?branch=master
+.. image:: https://coveralls.io/repos/udst/orca/badge.svg?branch=master
+  :target: https://coveralls.io/r/udst/orca?branch=master
   :alt: Coverage
 
 .. image:: https://pypip.in/wheel/orca/badge.svg
@@ -26,7 +26,7 @@ sources and explicitly connect them to processing functions.
 Orca has many features for working with `Pandas <http://pandas.pydata.org/>`__
 data structures, but it can be used with anything.
 
-Learn more in the official docs at https://synthicity.github.io/orca/.
+Learn more in the official docs at https://udst.github.io/orca/.
 
 Building the Orca UI JS Bundle
 ------------------------------

@@ -49,10 +49,10 @@ setup(
     version='1.2dev',
     description='A pipeline orchestration tool with Pandas support',
     long_description=long_description,
-    author='Synthicity',
-    author_email='mdavis@synthicity.com',
+    author='Autodesk',
+    author_email='matthew.davis@autodesk.com',
     license='BSD',
-    url='https://github.com/synthicity/orca',
+    url='https://github.com/udst/orca',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Programming Language :: Python :: 2',

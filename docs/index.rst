@@ -143,7 +143,7 @@ Add the server option to include the optional server dependencies::
 Links
 -----
 
-* `GitHub <https://github.com/synthicity/orca>`__
+* `GitHub <https://github.com/udst/orca>`__
 * `PyPi <https://pypi.python.org/pypi/orca>`__
 
 Contents
@@ -164,7 +164,7 @@ Indices and tables
 * :ref:`search`
 
 .. _Pandas: http://pandas.pydata.org/
-.. _UrbanSim: http://synthicity.github.io/urbansim/
+.. _UrbanSim: http://udst.github.io/urbansim/
 .. _DataFrame: http://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe
 .. _DataFrames: http://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe
 .. _Series: http://pandas.pydata.org/pandas-docs/stable/dsintro.html#series

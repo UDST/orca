@@ -62,7 +62,7 @@ test:
     # - nose
 
 about:
-  home: https://github.com/synthicity/orca
+  home: https://github.com/udst/orca
   license: BSD License
   summary: 'A pipeline orchestration tool with Pandas support'
 
