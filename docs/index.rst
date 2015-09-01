@@ -152,6 +152,7 @@ Contents
 .. toctree::
    :maxdepth: 2
 
+   example
    core
    server
    utils
