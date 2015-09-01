@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Python Module Index &mdash; Orca 1.0 documentation</title>
+  <title>Example &mdash; Orca 1.0 documentation</title>
   
 
   
@@ -31,9 +31,8 @@
 
   
     <link rel="top" title="Orca 1.0 documentation" href="index.html"/>
- 
-
-
+        <link rel="next" title="Orca Core" href="core.html"/>
+        <link rel="prev" title="Orca" href="index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -64,8 +63,8 @@
         
           
           
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="core.html">Orca Core</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="core.html#tables">Tables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core.html#columns">Columns</a></li>
@@ -111,8 +110,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li></li>
+    <li>Example</li>
       <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/example.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -120,38 +121,70 @@
 </div>
           <div role="main" class="document">
             
+  <div class="section" id="example">
+<h1>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h1>
+<p>The following is a very simple example of an Orca pipeline with none of the
+optional features such as caching:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">orca</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 
-   <h1>Python Module Index</h1>
 
-   <div class="modindex-jumpbox">
-   <a href="#cap-o"><strong>o</strong></a>
-   </div>
+<span class="nd">@orca.injectable</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">data_file</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">&#39;data.csv&#39;</span>
 
-   <table class="indextable modindextable" cellspacing="0" cellpadding="2">
-     <tr class="pcap"><td></td><td>&nbsp;</td><td></td></tr>
-     <tr class="cap" id="cap-o"><td></td><td>
-       <strong>o</strong></td><td></td></tr>
-     <tr>
-       <td><img src="_static/minus.png" class="toggler"
-              id="toggle-1" style="display: none" alt="-" /></td>
-       <td>
-       <tt class="xref">orca</tt></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="core.html#module-orca.orca"><tt class="xref">orca.orca</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="utils.html#module-orca.utils.testing"><tt class="xref">orca.utils.testing</tt></a></td><td>
-       <em></em></td></tr>
-   </table>
+
+<span class="nd">@orca.table</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">raw_data</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+
+
+<span class="nd">@orca.table</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">processed</span><span class="p">(</span><span class="n">raw_data</span><span class="p">):</span>
+    <span class="c"># do fancy stuff</span>
+    <span class="k">return</span> <span class="n">processed_data</span>
+
+<span class="nd">@orca.step</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">save_data</span><span class="p">(</span><span class="n">processed</span><span class="p">,</span> <span class="n">data_file</span><span class="p">):</span>
+    <span class="n">processed</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s">&#39;processed_&#39;</span> <span class="o">+</span> <span class="n">data_file</span><span class="p">)</span>
+
+<span class="nd">@orca.step</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">save_fig</span><span class="p">(</span><span class="n">processed</span><span class="p">):</span>
+    <span class="c"># save fancy figure</span>
+
+<span class="n">orca</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s">&#39;save_data&#39;</span><span class="p">,</span> <span class="s">&#39;save_fig&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>By declaring the data dependencies of your functions you can let Orca
+thread them all together instead of doing it manually yourself.</p>
+<p>The iterative capabilities of Orca are illustrated by imagining that there
+are many data files to be processed:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.injectable</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">data_file</span><span class="p">(</span><span class="n">iter_var</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">iter_var</span>
+
+<span class="c"># everything else the same as above</span>
+
+<span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">&#39;*.csv&#39;</span><span class="p">)</span>
+<span class="n">orca</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s">&#39;save_data&#39;</span><span class="p">,</span> <span class="s">&#39;save_fig&#39;</span><span class="p">],</span> <span class="n">iter_vars</span><span class="o">=</span><span class="n">files</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A more involved example is available at
+<a class="reference external" href="https://gist.github.com/jiffyclub/2a252333c8dcad1b99aa">https://gist.github.com/jiffyclub/2a252333c8dcad1b99aa</a>.</p>
+</div>
 
 
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="core.html" class="btn btn-neutral float-right" title="Orca Core">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Orca"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
