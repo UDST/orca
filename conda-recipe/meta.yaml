@@ -1,11 +1,11 @@
 package:
   name: orca
-  version: "1.1.0"
+  version: "1.3.0"
 
 source:
-  fn: orca-1.1.0.tar.gz
-  url: https://pypi.python.org/packages/source/o/orca/orca-1.1.0.tar.gz
-  md5: a87e66bb0b98b67e69ecc71611aa52c8
+  fn: orca-1.3.0.tar.gz
+  url: https://pypi.python.org/packages/source/o/orca/orca-1.3.0.tar.gz
+  md5: 002c69b47e0aa784fc866676b9bf9386
 #  patches:
    # List any patch files here
    # - fix.patch
