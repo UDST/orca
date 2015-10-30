@@ -1,3 +1,8 @@
+v1.3.0
+======
+
+* Add `temporary_tables` context manager
+
 v1.2.0
 ======
 
