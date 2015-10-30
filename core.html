@@ -134,13 +134,13 @@
 <div class="section" id="tables">
 <h2>Tables<a class="headerlink" href="#tables" title="Permalink to this headline">¶</a></h2>
 <p>Tables are Pandas <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe">DataFrames</a>.
-Use the <a class="reference internal" href="#orca.orca.add_table" title="orca.orca.add_table"><tt class="xref py py-func docutils literal"><span class="pre">add_table()</span></tt></a> function to register
+Use the <a class="reference internal" href="#orca.orca.add_table" title="orca.orca.add_table"><code class="xref py py-func docutils literal"><span class="pre">add_table()</span></code></a> function to register
 a DataFrame under a given name:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
 <span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Or you can use the decorator <a class="reference internal" href="#orca.orca.table" title="orca.orca.table"><tt class="xref py py-func docutils literal"><span class="pre">table()</span></tt></a>
+<p>Or you can use the decorator <a class="reference internal" href="#orca.orca.table" title="orca.orca.table"><code class="xref py py-func docutils literal"><span class="pre">table()</span></code></a>
 to register a function that returns a DataFrame:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.table</span><span class="p">(</span><span class="s">&#39;halve_my_table&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">halve_my_table</span><span class="p">(</span><span class="n">my_table</span><span class="p">):</span>
@@ -159,10 +159,10 @@ written more concisely:</p>
 </pre></div>
 </div>
 <p>Note that the decorator parentheses are still required.</p>
-<p>By registering <tt class="docutils literal"><span class="pre">halve_my_table</span></tt> as a function, its values will always be
-half those in <tt class="docutils literal"><span class="pre">my_table</span></tt>, even if <tt class="docutils literal"><span class="pre">my_table</span></tt> is later changed.
+<p>By registering <code class="docutils literal"><span class="pre">halve_my_table</span></code> as a function, its values will always be
+half those in <code class="docutils literal"><span class="pre">my_table</span></code>, even if <code class="docutils literal"><span class="pre">my_table</span></code> is later changed.
 If you&#8217;d like a function to <em>not</em> be evaluated every time it
-is used, pass the <tt class="docutils literal"><span class="pre">cache=True</span></tt> keyword when registering it.</p>
+is used, pass the <code class="docutils literal"><span class="pre">cache=True</span></code> keyword when registering it.</p>
 <p>Here&#8217;s a demo of the above table definitions shown in IPython:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="n">wrapped</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="s">&#39;halve_my_table&#39;</span><span class="p">)</span>
 
@@ -177,14 +177,14 @@ is used, pass the <tt class="docutils literal"><span class="pre">cache=True</spa
 <div class="section" id="table-wrappers">
 <h3>Table Wrappers<a class="headerlink" href="#table-wrappers" title="Permalink to this headline">¶</a></h3>
 <p>Notice in the table function above that we had to call a
-<a class="reference internal" href="#orca.orca.DataFrameWrapper.to_frame" title="orca.orca.DataFrameWrapper.to_frame"><tt class="xref py py-meth docutils literal"><span class="pre">to_frame()</span></tt></a> method
+<a class="reference internal" href="#orca.orca.DataFrameWrapper.to_frame" title="orca.orca.DataFrameWrapper.to_frame"><code class="xref py py-meth docutils literal"><span class="pre">to_frame()</span></code></a> method
 before using the table in a math operation. The values injected into
 functions are not DataFrames, but specialized wrappers.
 The wrappers facilitate caching, <a class="reference external" href="#columns">computed columns</a>,
 and lazy evaluation of table functions. Learn more in the API documentation:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#orca.orca.DataFrameWrapper" title="orca.orca.DataFrameWrapper"><tt class="xref py py-class docutils literal"><span class="pre">DataFrameWrapper</span></tt></a></li>
-<li><a class="reference internal" href="#orca.orca.TableFuncWrapper" title="orca.orca.TableFuncWrapper"><tt class="xref py py-class docutils literal"><span class="pre">TableFuncWrapper</span></tt></a></li>
+<li><a class="reference internal" href="#orca.orca.DataFrameWrapper" title="orca.orca.DataFrameWrapper"><code class="xref py py-class docutils literal"><span class="pre">DataFrameWrapper</span></code></a></li>
+<li><a class="reference internal" href="#orca.orca.TableFuncWrapper" title="orca.orca.TableFuncWrapper"><code class="xref py py-class docutils literal"><span class="pre">TableFuncWrapper</span></code></a></li>
 </ul>
 </div>
 <div class="section" id="automated-merges">
@@ -195,7 +195,7 @@ Orca can make these on-demand merges easy by letting you define table
 relationships up front and then performing the merges for you as needed.
 We call these relationships &#8220;broadcasts&#8221; (as in a rule for how to broadcast
 one table onto another) and you register them using the
-<a class="reference internal" href="#orca.orca.broadcast" title="orca.orca.broadcast"><tt class="xref py py-func docutils literal"><span class="pre">broadcast()</span></tt></a> function.</p>
+<a class="reference internal" href="#orca.orca.broadcast" title="orca.orca.broadcast"><code class="xref py py-func docutils literal"><span class="pre">broadcast()</span></code></a> function.</p>
 <p>For an example we&#8217;ll first define some DataFrames that contain links
 to one another and register them with Orca:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">df_a</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
@@ -222,7 +222,7 @@ to one another and register them with Orca:</p>
 </div>
 <p>The tables have data so that &#8216;a&#8217; can be broadcast onto &#8216;b&#8217;,
 and &#8216;b&#8217; and &#8216;c&#8217; can be broadcast onto &#8216;d&#8217;.
-We use the <a class="reference internal" href="#orca.orca.broadcast" title="orca.orca.broadcast"><tt class="xref py py-func docutils literal"><span class="pre">broadcast()</span></tt></a> function
+We use the <a class="reference internal" href="#orca.orca.broadcast" title="orca.orca.broadcast"><code class="xref py py-func docutils literal"><span class="pre">broadcast()</span></code></a> function
 to register those relationships:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">orca</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="n">onto</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="n">cast_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">onto_on</span><span class="o">=</span><span class="s">&#39;a_id&#39;</span><span class="p">)</span>
 <span class="n">orca</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="n">onto</span><span class="o">=</span><span class="s">&#39;d&#39;</span><span class="p">,</span> <span class="n">cast_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">onto_on</span><span class="o">=</span><span class="s">&#39;b_id&#39;</span><span class="p">)</span>
@@ -231,9 +231,9 @@ to register those relationships:</p>
 </div>
 <p>The syntax is similar to that of the
 <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.merge.html#pandas.merge">pandas merge function</a>,
-and indeed <tt class="docutils literal"><span class="pre">merge</span></tt> is used behind the scenes.
+and indeed <code class="docutils literal"><span class="pre">merge</span></code> is used behind the scenes.
 Once the broadcasts are defined, use the
-<a class="reference internal" href="#orca.orca.merge_tables" title="orca.orca.merge_tables"><tt class="xref py py-func docutils literal"><span class="pre">merge_tables()</span></tt></a> function to get a
+<a class="reference internal" href="#orca.orca.merge_tables" title="orca.orca.merge_tables"><code class="xref py py-func docutils literal"><span class="pre">merge_tables()</span></code></a> function to get a
 merged DataFrame. Some examples in IPython:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">merge_tables</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="n">tables</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span>
@@ -261,16 +261,16 @@ merged DataFrame. Some examples in IPython:</p>
 </div>
 <p>Note that it&#8217;s the target table&#8217;s index that you find in the final merged
 table, though the order may have changed.
-<a class="reference internal" href="#orca.orca.merge_tables" title="orca.orca.merge_tables"><tt class="xref py py-func docutils literal"><span class="pre">merge_tables()</span></tt></a> has an optional
-<tt class="docutils literal"><span class="pre">columns=</span></tt> keyword that can contain column names from any the tables
+<a class="reference internal" href="#orca.orca.merge_tables" title="orca.orca.merge_tables"><code class="xref py py-func docutils literal"><span class="pre">merge_tables()</span></code></a> has an optional
+<code class="docutils literal"><span class="pre">columns=</span></code> keyword that can contain column names from any the tables
 going into the merge so you can limit which columns end up in the final table.
 (Columns necessary for performing merges will be included whether or not
-they are in the <tt class="docutils literal"><span class="pre">columns=</span></tt> list.)</p>
+they are in the <code class="docutils literal"><span class="pre">columns=</span></code> list.)</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><a class="reference internal" href="#orca.orca.merge_tables" title="orca.orca.merge_tables"><tt class="xref py py-func docutils literal"><span class="pre">merge_tables()</span></tt></a> calls
+<p class="last"><a class="reference internal" href="#orca.orca.merge_tables" title="orca.orca.merge_tables"><code class="xref py py-func docutils literal"><span class="pre">merge_tables()</span></code></a> calls
 <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.merge.html#pandas.merge">pandas.merge</a>
-with <tt class="docutils literal"><span class="pre">how='inner'</span></tt>, meaning that only items that
+with <code class="docutils literal"><span class="pre">how='inner'</span></code>, meaning that only items that
 appear in both tables are kept in the merged table.</p>
 </div>
 </div>
@@ -281,8 +281,8 @@ appear in both tables are kept in the merged table.</p>
 You may need to collect information from other tables
 or perform a calculation to generate a column. Orca allows you to
 register a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#series">Series</a> or function as a column on a registered table.
-Use the <a class="reference internal" href="#orca.orca.add_column" title="orca.orca.add_column"><tt class="xref py py-func docutils literal"><span class="pre">add_column()</span></tt></a> function or
-the <a class="reference internal" href="#orca.orca.column" title="orca.orca.column"><tt class="xref py py-func docutils literal"><span class="pre">column()</span></tt></a> decorator:</p>
+Use the <a class="reference internal" href="#orca.orca.add_column" title="orca.orca.add_column"><code class="xref py py-func docutils literal"><span class="pre">add_column()</span></code></a> function or
+the <a class="reference internal" href="#orca.orca.column" title="orca.orca.column"><code class="xref py py-func docutils literal"><span class="pre">column()</span></code></a> decorator:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">])</span>
 <span class="n">orca</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">,</span> <span class="s">&#39;my_col&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
 
@@ -292,16 +292,16 @@ the <a class="reference internal" href="#orca.orca.column" title="orca.orca.colu
     <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="s">&#39;my_col&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
 </pre></div>
 </div>
-<p>In the <tt class="docutils literal"><span class="pre">my_col_x2</span></tt> function we use the <tt class="docutils literal"><span class="pre">columns=</span></tt> keyword on
-<a class="reference internal" href="#orca.orca.DataFrameWrapper.to_frame" title="orca.orca.DataFrameWrapper.to_frame"><tt class="xref py py-meth docutils literal"><span class="pre">to_frame()</span></tt></a> to get only
+<p>In the <code class="docutils literal"><span class="pre">my_col_x2</span></code> function we use the <code class="docutils literal"><span class="pre">columns=</span></code> keyword on
+<a class="reference internal" href="#orca.orca.DataFrameWrapper.to_frame" title="orca.orca.DataFrameWrapper.to_frame"><code class="xref py py-meth docutils literal"><span class="pre">to_frame()</span></code></a> to get only
 the one column necessary for our calculation. This can be useful for
 avoiding unnecessary computation or to avoid recursion (as would happen
-in this case if we called <tt class="docutils literal"><span class="pre">to_frame()</span></tt> with no arguments).</p>
+in this case if we called <code class="docutils literal"><span class="pre">to_frame()</span></code> with no arguments).</p>
 <p>Accessing columns on a table is such a common occurrence that there
-are additional ways to do so without first calling <tt class="docutils literal"><span class="pre">to_frame()</span></tt>
-to create an actual <tt class="docutils literal"><span class="pre">DataFrame</span></tt>.</p>
-<p><a class="reference internal" href="#orca.orca.DataFrameWrapper" title="orca.orca.DataFrameWrapper"><tt class="xref py py-class docutils literal"><span class="pre">DataFrameWrapper</span></tt></a> supports accessing
-individual columns in the same ways as <tt class="docutils literal"><span class="pre">DataFrames</span></tt>:</p>
+are additional ways to do so without first calling <code class="docutils literal"><span class="pre">to_frame()</span></code>
+to create an actual <code class="docutils literal"><span class="pre">DataFrame</span></code>.</p>
+<p><a class="reference internal" href="#orca.orca.DataFrameWrapper" title="orca.orca.DataFrameWrapper"><code class="xref py py-class docutils literal"><span class="pre">DataFrameWrapper</span></code></a> supports accessing
+individual columns in the same ways as <code class="docutils literal"><span class="pre">DataFrames</span></code>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.column</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">my_col_x2</span><span class="p">(</span><span class="n">my_table</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">my_table</span><span class="p">[</span><span class="s">&#39;my_col&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c"># or my_table.my_col * 2</span>
@@ -313,9 +313,9 @@ individual columns in the same ways as <tt class="docutils literal"><span class=
     <span class="k">return</span> <span class="n">data</span> <span class="o">*</span> <span class="mi">2</span>
 </pre></div>
 </div>
-<p>In this case, the label <tt class="docutils literal"><span class="pre">data</span></tt>, expressed as <tt class="docutils literal"><span class="pre">my_table.my_col</span></tt>,
-refers to the column <tt class="docutils literal"><span class="pre">my_col</span></tt>, which is a pandas <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#series">Series</a> within
-the table <tt class="docutils literal"><span class="pre">my_table</span></tt>.</p>
+<p>In this case, the label <code class="docutils literal"><span class="pre">data</span></code>, expressed as <code class="docutils literal"><span class="pre">my_table.my_col</span></code>,
+refers to the column <code class="docutils literal"><span class="pre">my_col</span></code>, which is a pandas <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#series">Series</a> within
+the table <code class="docutils literal"><span class="pre">my_table</span></code>.</p>
 <p>A demonstration in IPython using the column definitions from above:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">29</span><span class="p">]:</span> <span class="n">wrapped</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">)</span>
 
@@ -333,9 +333,9 @@ the table <tt class="docutils literal"><span class="pre">my_table</span></tt>.</
 <span class="mi">2</span>  <span class="mi">3</span>        <span class="n">cc</span>      <span class="n">c</span>
 </pre></div>
 </div>
-<p><a class="reference internal" href="#orca.orca.DataFrameWrapper" title="orca.orca.DataFrameWrapper"><tt class="xref py py-class docutils literal"><span class="pre">DataFrameWrapper</span></tt></a> has
-<a class="reference internal" href="#orca.orca.DataFrameWrapper.columns" title="orca.orca.DataFrameWrapper.columns"><tt class="xref py py-attr docutils literal"><span class="pre">columns</span></tt></a>
-and <a class="reference internal" href="#orca.orca.DataFrameWrapper.local_columns" title="orca.orca.DataFrameWrapper.local_columns"><tt class="xref py py-attr docutils literal"><span class="pre">local_columns</span></tt></a>
+<p><a class="reference internal" href="#orca.orca.DataFrameWrapper" title="orca.orca.DataFrameWrapper"><code class="xref py py-class docutils literal"><span class="pre">DataFrameWrapper</span></code></a> has
+<a class="reference internal" href="#orca.orca.DataFrameWrapper.columns" title="orca.orca.DataFrameWrapper.columns"><code class="xref py py-attr docutils literal"><span class="pre">columns</span></code></a>
+and <a class="reference internal" href="#orca.orca.DataFrameWrapper.local_columns" title="orca.orca.DataFrameWrapper.local_columns"><code class="xref py py-attr docutils literal"><span class="pre">local_columns</span></code></a>
 attributes that, respectively, list all the columns on a table and
 only those columns that are part of the underlying DataFrame.</p>
 <p>Columns are stored separate from tables so it is safe to define a column
@@ -347,8 +347,8 @@ will remain associated with the table.</p>
 <p>You will probably want to have things besides tables injected into functions,
 for which Orca has &#8220;injectables&#8221;. You can register <em>anything</em> and have
 it injected into functions.
-Use the <a class="reference internal" href="#orca.orca.add_injectable" title="orca.orca.add_injectable"><tt class="xref py py-func docutils literal"><span class="pre">add_injectable()</span></tt></a> function or the
-<a class="reference internal" href="#orca.orca.injectable" title="orca.orca.injectable"><tt class="xref py py-func docutils literal"><span class="pre">injectable()</span></tt></a> decorator:</p>
+Use the <a class="reference internal" href="#orca.orca.add_injectable" title="orca.orca.add_injectable"><code class="xref py py-func docutils literal"><span class="pre">add_injectable()</span></code></a> function or the
+<a class="reference internal" href="#orca.orca.injectable" title="orca.orca.injectable"><code class="xref py py-func docutils literal"><span class="pre">injectable()</span></code></a> decorator:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">orca</span><span class="o">.</span><span class="n">add_injectable</span><span class="p">(</span><span class="s">&#39;z&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 
 <span class="nd">@orca.injectable</span><span class="p">(</span><span class="n">autocall</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
@@ -366,21 +366,21 @@ Use the <a class="reference internal" href="#orca.orca.add_injectable" title="or
 </pre></div>
 </div>
 <p>Be default injectable functions are evaluated before injection and the return
-value is passed into other functions. Use <tt class="docutils literal"><span class="pre">autocall=False</span></tt> to disable this
+value is passed into other functions. Use <code class="docutils literal"><span class="pre">autocall=False</span></code> to disable this
 behavior and instead inject the function itself.
 Like tables and columns, injectable functions that are automatically evaluated
-can have their results cached with <tt class="docutils literal"><span class="pre">cache=True</span></tt>.</p>
+can have their results cached with <code class="docutils literal"><span class="pre">cache=True</span></code>.</p>
 <p>Functions that are not automatically evaluated can also have their results
-cached using the <tt class="docutils literal"><span class="pre">memoize=True</span></tt> keyword along with <tt class="docutils literal"><span class="pre">autocall=False</span></tt>.
+cached using the <code class="docutils literal"><span class="pre">memoize=True</span></code> keyword along with <code class="docutils literal"><span class="pre">autocall=False</span></code>.
 A memoized injectable will cache results based on the function inputs,
 so this only works if the function inputs are hashable
 (usable as dictionary keys).
 Memoized functions can have their caches cleared manually using their
-<tt class="docutils literal"><span class="pre">clear_cached</span></tt> function attribute.
+<code class="docutils literal"><span class="pre">clear_cached</span></code> function attribute.
 The caches of memoized functions are also hooked into the global Orca
 caching system,
-so you can also manage their caches via the <tt class="docutils literal"><span class="pre">cache_scope</span></tt> keyword argument
-and the <a class="reference internal" href="#orca.orca.clear_cache" title="orca.orca.clear_cache"><tt class="xref py py-func docutils literal"><span class="pre">clear_cache()</span></tt></a> function.</p>
+so you can also manage their caches via the <code class="docutils literal"><span class="pre">cache_scope</span></code> keyword argument
+and the <a class="reference internal" href="#orca.orca.clear_cache" title="orca.orca.clear_cache"><code class="xref py py-func docutils literal"><span class="pre">clear_cache()</span></code></a> function.</p>
 <p>An example of the above injectables in IPython:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">38</span><span class="p">]:</span> <span class="n">wrapped</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="s">&#39;ztable&#39;</span><span class="p">)</span>
 
@@ -398,12 +398,12 @@ and the <a class="reference internal" href="#orca.orca.clear_cache" title="orca.
 <p>Orca has cache system so that function results can be stored for re-use when it
 is not necessary to recompute them every time they are used.</p>
 <p>The decorators
-<a class="reference internal" href="#orca.orca.table" title="orca.orca.table"><tt class="xref py py-func docutils literal"><span class="pre">table()</span></tt></a>,
-<a class="reference internal" href="#orca.orca.column" title="orca.orca.column"><tt class="xref py py-func docutils literal"><span class="pre">column()</span></tt></a>, and
-<a class="reference internal" href="#orca.orca.injectable" title="orca.orca.injectable"><tt class="xref py py-func docutils literal"><span class="pre">injectable()</span></tt></a>
+<a class="reference internal" href="#orca.orca.table" title="orca.orca.table"><code class="xref py py-func docutils literal"><span class="pre">table()</span></code></a>,
+<a class="reference internal" href="#orca.orca.column" title="orca.orca.column"><code class="xref py py-func docutils literal"><span class="pre">column()</span></code></a>, and
+<a class="reference internal" href="#orca.orca.injectable" title="orca.orca.injectable"><code class="xref py py-func docutils literal"><span class="pre">injectable()</span></code></a>
 all take two keyword arguments related to caching:
-<tt class="docutils literal"><span class="pre">cache</span></tt> and <tt class="docutils literal"><span class="pre">cache_scope</span></tt>.</p>
-<p>By default results are not cached. Register functions with <tt class="docutils literal"><span class="pre">cache=True</span></tt>
+<code class="docutils literal"><span class="pre">cache</span></code> and <code class="docutils literal"><span class="pre">cache_scope</span></code>.</p>
+<p>By default results are not cached. Register functions with <code class="docutils literal"><span class="pre">cache=True</span></code>
 to enable caching of their results.</p>
 <div class="section" id="cache-scope">
 <h3>Cache Scope<a class="headerlink" href="#cache-scope" title="Permalink to this headline">¶</a></h3>
@@ -411,11 +411,11 @@ to enable caching of their results.</p>
 manage how long functions have their results cached before re-evaluating them.
 The three scope settings are:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">'forever'</span></tt> (the default setting) -
+<li><code class="docutils literal"><span class="pre">'forever'</span></code> (the default setting) -
 Results are cached until manually cleared by user commands.</li>
-<li><tt class="docutils literal"><span class="pre">'iteration'</span></tt> -
+<li><code class="docutils literal"><span class="pre">'iteration'</span></code> -
 Results are cached for the remainder of the current pipeline iteration.</li>
-<li><tt class="docutils literal"><span class="pre">'step'</span></tt> -
+<li><code class="docutils literal"><span class="pre">'step'</span></code> -
 Results are cached until the current pipeline step finishes.</li>
 </ul>
 </div>
@@ -425,27 +425,27 @@ Results are cached until the current pipeline step finishes.</li>
 cache scopes, but there may be situations, especially during testing,
 when more manual management is required.</p>
 <p>Caching can be turned off globally using the
-<a class="reference internal" href="#orca.orca.disable_cache" title="orca.orca.disable_cache"><tt class="xref py py-func docutils literal"><span class="pre">disable_cache()</span></tt></a> function
-(and turned back on by <a class="reference internal" href="#orca.orca.enable_cache" title="orca.orca.enable_cache"><tt class="xref py py-func docutils literal"><span class="pre">enable_cache()</span></tt></a>).</p>
+<a class="reference internal" href="#orca.orca.disable_cache" title="orca.orca.disable_cache"><code class="xref py py-func docutils literal"><span class="pre">disable_cache()</span></code></a> function
+(and turned back on by <a class="reference internal" href="#orca.orca.enable_cache" title="orca.orca.enable_cache"><code class="xref py py-func docutils literal"><span class="pre">enable_cache()</span></code></a>).</p>
 <p>To run a block of commands with the cache disabled, but have it automatically
-re-enabled, use the <tt class="xref py py-func docutils literal"><span class="pre">cache_disabled()</span></tt>
+re-enabled, use the <code class="xref py py-func docutils literal"><span class="pre">cache_disabled()</span></code>
 context manager:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">orca</span><span class="o">.</span><span class="n">cache_disabled</span><span class="p">():</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">eval_variable</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Finally, users can manually clear the cache using
-<a class="reference internal" href="#orca.orca.clear_cache" title="orca.orca.clear_cache"><tt class="xref py py-func docutils literal"><span class="pre">clear_cache()</span></tt></a>.</p>
+<a class="reference internal" href="#orca.orca.clear_cache" title="orca.orca.clear_cache"><code class="xref py py-func docutils literal"><span class="pre">clear_cache()</span></code></a>.</p>
 </div>
 </div>
 <div class="section" id="steps">
 <h2>Steps<a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h2>
 <p>A step is a function run by Orca with argument matching.
-Use the <a class="reference internal" href="#orca.orca.step" title="orca.orca.step"><tt class="xref py py-func docutils literal"><span class="pre">step()</span></tt></a> decorator to register a step function.
+Use the <a class="reference internal" href="#orca.orca.step" title="orca.orca.step"><code class="xref py py-func docutils literal"><span class="pre">step()</span></code></a> decorator to register a step function.
 Steps are generally important for their side-effects, their
 return values are discarded during pipeline runs.
 For example, a step might replace a column
-in a table (a new table, though similar to <tt class="docutils literal"><span class="pre">my_table</span></tt> above):</p>
+in a table (a new table, though similar to <code class="docutils literal"><span class="pre">my_table</span></code> above):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
 <span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s">&#39;new_table&#39;</span><span class="p">)</span>
 
@@ -470,11 +470,11 @@ in a table (a new table, though similar to <tt class="docutils literal"><span cl
     <span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s">&#39;new_table&#39;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The first two of the above examples update <tt class="docutils literal"><span class="pre">my_tables</span></tt>&#8216;s underlying
-DataFrame and so require it to be a <a class="reference internal" href="#orca.orca.DataFrameWrapper" title="orca.orca.DataFrameWrapper"><tt class="xref py py-class docutils literal"><span class="pre">DataFrameWrapper</span></tt></a>.
+<p>The first two of the above examples update <code class="docutils literal"><span class="pre">my_tables</span></code>&#8216;s underlying
+DataFrame and so require it to be a <a class="reference internal" href="#orca.orca.DataFrameWrapper" title="orca.orca.DataFrameWrapper"><code class="xref py py-class docutils literal"><span class="pre">DataFrameWrapper</span></code></a>.
 If your table is a wrapped function, not a DataFrame, you can update
 columns by replacing them entirely with a new <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#series">Series</a> using the
-<a class="reference internal" href="#orca.orca.add_column" title="orca.orca.add_column"><tt class="xref py py-func docutils literal"><span class="pre">add_column()</span></tt></a> function.</p>
+<a class="reference internal" href="#orca.orca.add_column" title="orca.orca.add_column"><code class="xref py py-func docutils literal"><span class="pre">add_column()</span></code></a> function.</p>
 <p>A demonstration of running the above steps:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">68</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s">&#39;replace_col&#39;</span><span class="p">,</span> <span class="s">&#39;update_col&#39;</span><span class="p">,</span> <span class="s">&#39;add_rows&#39;</span><span class="p">])</span>
 <span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;replace_col&#39;</span>
@@ -498,13 +498,13 @@ what they are allowed to do.</p>
 </div>
 <div class="section" id="running-pipelines">
 <h2>Running Pipelines<a class="headerlink" href="#running-pipelines" title="Permalink to this headline">¶</a></h2>
-<p>You start pipelines by calling the <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><tt class="xref py py-func docutils literal"><span class="pre">run()</span></tt></a> function and
+<p>You start pipelines by calling the <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><code class="xref py py-func docutils literal"><span class="pre">run()</span></code></a> function and
 listing which steps you want to run.
-Calling <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><tt class="xref py py-func docutils literal"><span class="pre">run()</span></tt></a> with just a list of steps,
+Calling <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><code class="xref py py-func docutils literal"><span class="pre">run()</span></code></a> with just a list of steps,
 as in the above example, will run through the steps once.
 To run the pipeline over some a sequence, provide those values as a sequence
-to <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><tt class="xref py py-func docutils literal"><span class="pre">run()</span></tt></a> using the <tt class="docutils literal"><span class="pre">iter_vars</span></tt> argument.
-The variable <tt class="docutils literal"><span class="pre">iter_var</span></tt> is provided as an injectable to Orca functions:</p>
+to <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><code class="xref py py-func docutils literal"><span class="pre">run()</span></code></a> using the <code class="docutils literal"><span class="pre">iter_vars</span></code> argument.
+The variable <code class="docutils literal"><span class="pre">iter_var</span></code> is provided as an injectable to Orca functions:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">77</span><span class="p">]:</span> <span class="nd">@orca.step</span><span class="p">()</span>
    <span class="o">....</span><span class="p">:</span> <span class="k">def</span> <span class="nf">print_year</span><span class="p">(</span><span class="n">iter_var</span><span class="p">):</span>
    <span class="o">....</span><span class="p">:</span>         <span class="k">print</span> <span class="s">&#39;*** the iteration value is {} ***&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iter_var</span><span class="p">)</span>
@@ -543,23 +543,23 @@ The variable <tt class="docutils literal"><span class="pre">iter_var</span></tt>
 <p>It can be useful to have Orca evaluate single variables and steps,
 especially during development and testing.
 To achieve this, use the
-<a class="reference internal" href="#orca.orca.eval_variable" title="orca.orca.eval_variable"><tt class="xref py py-func docutils literal"><span class="pre">eval_variable()</span></tt></a> and
-<a class="reference internal" href="#orca.orca.eval_step" title="orca.orca.eval_step"><tt class="xref py py-func docutils literal"><span class="pre">eval_step()</span></tt></a> functions.</p>
-<p><tt class="docutils literal"><span class="pre">eval_variable</span></tt> takes the name of a variable (including variable expressions)
+<a class="reference internal" href="#orca.orca.eval_variable" title="orca.orca.eval_variable"><code class="xref py py-func docutils literal"><span class="pre">eval_variable()</span></code></a> and
+<a class="reference internal" href="#orca.orca.eval_step" title="orca.orca.eval_step"><code class="xref py py-func docutils literal"><span class="pre">eval_step()</span></code></a> functions.</p>
+<p><code class="docutils literal"><span class="pre">eval_variable</span></code> takes the name of a variable (including variable expressions)
 and returns that variable as it would be injected into a function Orca.
-<tt class="docutils literal"><span class="pre">eval_step</span></tt> takes the name of a step, runs that
+<code class="docutils literal"><span class="pre">eval_step</span></code> takes the name of a step, runs that
 step with variable injection, and returns any result.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Most steps don&#8217;t have return values because Orca
 ignores them, but they can be useful for testing.</p>
 </div>
-<p>Both <a class="reference internal" href="#orca.orca.eval_variable" title="orca.orca.eval_variable"><tt class="xref py py-func docutils literal"><span class="pre">eval_variable()</span></tt></a> and <a class="reference internal" href="#orca.orca.eval_step" title="orca.orca.eval_step"><tt class="xref py py-func docutils literal"><span class="pre">eval_step()</span></tt></a>
+<p>Both <a class="reference internal" href="#orca.orca.eval_variable" title="orca.orca.eval_variable"><code class="xref py py-func docutils literal"><span class="pre">eval_variable()</span></code></a> and <a class="reference internal" href="#orca.orca.eval_step" title="orca.orca.eval_step"><code class="xref py py-func docutils literal"><span class="pre">eval_step()</span></code></a>
 take arbitrary keyword arguments that are temporarily turned into injectables
 within Orca while the evaluation is taking place.
 When the evaluation is complete Orca&#8217;s state is reset to whatever
-it was before calling the <tt class="docutils literal"><span class="pre">eval</span></tt> function.</p>
-<p>An example of <a class="reference internal" href="#orca.orca.eval_variable" title="orca.orca.eval_variable"><tt class="xref py py-func docutils literal"><span class="pre">eval_variable()</span></tt></a>:</p>
+it was before calling the <code class="docutils literal"><span class="pre">eval</span></code> function.</p>
+<p>An example of <a class="reference internal" href="#orca.orca.eval_variable" title="orca.orca.eval_variable"><code class="xref py py-func docutils literal"><span class="pre">eval_variable()</span></code></a>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">]:</span> <span class="nd">@orca.injectable</span><span class="p">()</span>
    <span class="o">....</span><span class="p">:</span> <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
    <span class="o">....</span><span class="p">:</span>     <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
@@ -572,7 +572,7 @@ it was before calling the <tt class="docutils literal"><span class="pre">eval</s
 <p>The keyword arguments are only temporarily set as injectables,
 which can lead to errors in a situation like this with a table
 where the evaluation of the table is delayed until
-<a class="reference internal" href="#orca.orca.DataFrameWrapper.to_frame" title="orca.orca.DataFrameWrapper.to_frame"><tt class="xref py py-meth docutils literal"><span class="pre">to_frame()</span></tt></a> is called:</p>
+<a class="reference internal" href="#orca.orca.DataFrameWrapper.to_frame" title="orca.orca.DataFrameWrapper.to_frame"><code class="xref py py-meth docutils literal"><span class="pre">to_frame()</span></code></a> is called:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="nd">@orca.table</span><span class="p">()</span>
    <span class="o">....</span><span class="p">:</span> <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
    <span class="o">....</span><span class="p">:</span>     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">y</span><span class="p">]})</span>
@@ -593,7 +593,7 @@ where the evaluation of the table is delayed until
 </pre></div>
 </div>
 <p>In order to get the injectables to be set for a controlled term you can
-use the <a class="reference internal" href="#orca.orca.injectables" title="orca.orca.injectables"><tt class="xref py py-func docutils literal"><span class="pre">injectables()</span></tt></a> context manager
+use the <a class="reference internal" href="#orca.orca.injectables" title="orca.orca.injectables"><code class="xref py py-func docutils literal"><span class="pre">injectables()</span></code></a> context manager
 to set the injectables:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="nd">@orca.table</span><span class="p">()</span>
    <span class="o">....</span><span class="p">:</span> <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -613,20 +613,20 @@ to set the injectables:</p>
 </div>
 <div class="section" id="archiving-data">
 <h3>Archiving Data<a class="headerlink" href="#archiving-data" title="Permalink to this headline">¶</a></h3>
-<p>An option to the <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><tt class="xref py py-func docutils literal"><span class="pre">run()</span></tt></a> function is to have
+<p>An option to the <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><code class="xref py py-func docutils literal"><span class="pre">run()</span></code></a> function is to have
 it save table data at set intervals.
 Tables (and only tables) are saved as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe">DataFrames</a> to an HDF5 file via pandas&#8217;
 <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/io.html#hdf5-pytables">HDFStore</a>
 feature. If Orca is running only one loop the tables are stored
 under their registered names. If it is running multiple iterations the tables are
-stored under names like <tt class="docutils literal"><span class="pre">'&lt;iter_var&gt;/&lt;table</span> <span class="pre">name&gt;'</span></tt>.
-For example, if <tt class="docutils literal"><span class="pre">iter_var</span></tt> is <tt class="docutils literal"><span class="pre">2020</span></tt> the &#8220;buildings&#8221; table would be stored
-as <tt class="docutils literal"><span class="pre">'2020/buildings'</span></tt>.
-The <tt class="docutils literal"><span class="pre">out_interval</span></tt> keyword to <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><tt class="xref py py-func docutils literal"><span class="pre">run()</span></tt></a>
-controls how often the tables are saved out. For example, <tt class="docutils literal"><span class="pre">out_interval=5</span></tt>
+stored under names like <code class="docutils literal"><span class="pre">'&lt;iter_var&gt;/&lt;table</span> <span class="pre">name&gt;'</span></code>.
+For example, if <code class="docutils literal"><span class="pre">iter_var</span></code> is <code class="docutils literal"><span class="pre">2020</span></code> the &#8220;buildings&#8221; table would be stored
+as <code class="docutils literal"><span class="pre">'2020/buildings'</span></code>.
+The <code class="docutils literal"><span class="pre">out_interval</span></code> keyword to <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><code class="xref py py-func docutils literal"><span class="pre">run()</span></code></a>
+controls how often the tables are saved out. For example, <code class="docutils literal"><span class="pre">out_interval=5</span></code>
 saves tables every fifth iteration.
 In addition, the final data is always saved
-under the key <tt class="docutils literal"><span class="pre">'final/&lt;table</span> <span class="pre">name&gt;'</span></tt>.</p>
+under the key <code class="docutils literal"><span class="pre">'final/&lt;table</span> <span class="pre">name&gt;'</span></code>.</p>
 </div>
 </div>
 <div class="section" id="argument-matching">
@@ -649,18 +649,18 @@ variable expressions:</p>
     <span class="k">return</span> <span class="n">df</span> <span class="o">/</span> <span class="mi">2</span>
 </pre></div>
 </div>
-<p>The variable registered as <tt class="docutils literal"><span class="pre">'my_table'</span></tt> is injected into this function
-as the argument <tt class="docutils literal"><span class="pre">data</span></tt>.</p>
+<p>The variable registered as <code class="docutils literal"><span class="pre">'my_table'</span></code> is injected into this function
+as the argument <code class="docutils literal"><span class="pre">data</span></code>.</p>
 <p>Expressions can also be used to refer to columns within a registered table:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.column</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">halved</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s">&#39;my_table.a&#39;</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">data</span> <span class="o">/</span> <span class="mi">2</span>
 </pre></div>
 </div>
-<p>In this case, the expression <tt class="docutils literal"><span class="pre">my_table.a</span></tt> refers to the column <tt class="docutils literal"><span class="pre">a</span></tt>,
-which is a pandas <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#series">Series</a> within the table <tt class="docutils literal"><span class="pre">my_table</span></tt>. We return
-a new Series to register a new column on <tt class="docutils literal"><span class="pre">my_table</span></tt> using the
-<a class="reference internal" href="#orca.orca.column" title="orca.orca.column"><tt class="xref py py-func docutils literal"><span class="pre">column()</span></tt></a> decorator. We can take a
+<p>In this case, the expression <code class="docutils literal"><span class="pre">my_table.a</span></code> refers to the column <code class="docutils literal"><span class="pre">a</span></code>,
+which is a pandas <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#series">Series</a> within the table <code class="docutils literal"><span class="pre">my_table</span></code>. We return
+a new Series to register a new column on <code class="docutils literal"><span class="pre">my_table</span></code> using the
+<a class="reference internal" href="#orca.orca.column" title="orca.orca.column"><code class="xref py py-func docutils literal"><span class="pre">column()</span></code></a> decorator. We can take a
 look in IPython:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">21</span><span class="p">]:</span>
@@ -685,22 +685,22 @@ like to specifically document that in the function&#8217;s arguments.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.add_table" title="orca.orca.add_table"><tt class="xref py py-obj docutils literal"><span class="pre">add_table</span></tt></a>(table_name,&nbsp;table[,&nbsp;cache,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.add_table" title="orca.orca.add_table"><code class="xref py py-obj docutils literal"><span class="pre">add_table</span></code></a>(table_name,&nbsp;table[,&nbsp;cache,&nbsp;...])</td>
 <td>Register a table with Orca.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#orca.orca.table" title="orca.orca.table"><tt class="xref py py-obj docutils literal"><span class="pre">table</span></tt></a>([table_name,&nbsp;cache,&nbsp;cache_scope,&nbsp;copy_col])</td>
+<tr class="row-even"><td><a class="reference internal" href="#orca.orca.table" title="orca.orca.table"><code class="xref py py-obj docutils literal"><span class="pre">table</span></code></a>([table_name,&nbsp;cache,&nbsp;cache_scope,&nbsp;copy_col])</td>
 <td>Decorates functions that return DataFrames.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.get_table" title="orca.orca.get_table"><tt class="xref py py-obj docutils literal"><span class="pre">get_table</span></tt></a>(table_name)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.get_table" title="orca.orca.get_table"><code class="xref py py-obj docutils literal"><span class="pre">get_table</span></code></a>(table_name)</td>
 <td>Get a registered table.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#orca.orca.list_tables" title="orca.orca.list_tables"><tt class="xref py py-obj docutils literal"><span class="pre">list_tables</span></tt></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#orca.orca.list_tables" title="orca.orca.list_tables"><code class="xref py py-obj docutils literal"><span class="pre">list_tables</span></code></a>()</td>
 <td>List of table names.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.DataFrameWrapper" title="orca.orca.DataFrameWrapper"><tt class="xref py py-obj docutils literal"><span class="pre">DataFrameWrapper</span></tt></a>(name,&nbsp;frame[,&nbsp;copy_col])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.DataFrameWrapper" title="orca.orca.DataFrameWrapper"><code class="xref py py-obj docutils literal"><span class="pre">DataFrameWrapper</span></code></a>(name,&nbsp;frame[,&nbsp;copy_col])</td>
 <td>Wraps a DataFrame so it can provide certain columns and handle computed columns.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#orca.orca.TableFuncWrapper" title="orca.orca.TableFuncWrapper"><tt class="xref py py-obj docutils literal"><span class="pre">TableFuncWrapper</span></tt></a>(name,&nbsp;func[,&nbsp;cache,&nbsp;...])</td>
+<tr class="row-even"><td><a class="reference internal" href="#orca.orca.TableFuncWrapper" title="orca.orca.TableFuncWrapper"><code class="xref py py-obj docutils literal"><span class="pre">TableFuncWrapper</span></code></a>(name,&nbsp;func[,&nbsp;cache,&nbsp;...])</td>
 <td>Wrap a function that provides a DataFrame.</td>
 </tr>
 </tbody>
@@ -714,13 +714,13 @@ like to specifically document that in the function&#8217;s arguments.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.add_column" title="orca.orca.add_column"><tt class="xref py py-obj docutils literal"><span class="pre">add_column</span></tt></a>(table_name,&nbsp;column_name,&nbsp;column)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.add_column" title="orca.orca.add_column"><code class="xref py py-obj docutils literal"><span class="pre">add_column</span></code></a>(table_name,&nbsp;column_name,&nbsp;column)</td>
 <td>Add a new column to a table from a Series or callable.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#orca.orca.column" title="orca.orca.column"><tt class="xref py py-obj docutils literal"><span class="pre">column</span></tt></a>(table_name[,&nbsp;column_name,&nbsp;cache,&nbsp;...])</td>
+<tr class="row-even"><td><a class="reference internal" href="#orca.orca.column" title="orca.orca.column"><code class="xref py py-obj docutils literal"><span class="pre">column</span></code></a>(table_name[,&nbsp;column_name,&nbsp;cache,&nbsp;...])</td>
 <td>Decorates functions that return a Series.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.list_columns" title="orca.orca.list_columns"><tt class="xref py py-obj docutils literal"><span class="pre">list_columns</span></tt></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.list_columns" title="orca.orca.list_columns"><code class="xref py py-obj docutils literal"><span class="pre">list_columns</span></code></a>()</td>
 <td>List of (table name, registered column name) pairs.</td>
 </tr>
 </tbody>
@@ -734,16 +734,16 @@ like to specifically document that in the function&#8217;s arguments.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.add_injectable" title="orca.orca.add_injectable"><tt class="xref py py-obj docutils literal"><span class="pre">add_injectable</span></tt></a>(name,&nbsp;value[,&nbsp;autocall,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.add_injectable" title="orca.orca.add_injectable"><code class="xref py py-obj docutils literal"><span class="pre">add_injectable</span></code></a>(name,&nbsp;value[,&nbsp;autocall,&nbsp;...])</td>
 <td>Add a value that will be injected into other functions.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#orca.orca.injectable" title="orca.orca.injectable"><tt class="xref py py-obj docutils literal"><span class="pre">injectable</span></tt></a>([name,&nbsp;autocall,&nbsp;cache,&nbsp;...])</td>
+<tr class="row-even"><td><a class="reference internal" href="#orca.orca.injectable" title="orca.orca.injectable"><code class="xref py py-obj docutils literal"><span class="pre">injectable</span></code></a>([name,&nbsp;autocall,&nbsp;cache,&nbsp;...])</td>
 <td>Decorates functions that will be injected into other functions.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.get_injectable" title="orca.orca.get_injectable"><tt class="xref py py-obj docutils literal"><span class="pre">get_injectable</span></tt></a>(name)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.get_injectable" title="orca.orca.get_injectable"><code class="xref py py-obj docutils literal"><span class="pre">get_injectable</span></code></a>(name)</td>
 <td>Get an injectable by name.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#orca.orca.list_injectables" title="orca.orca.list_injectables"><tt class="xref py py-obj docutils literal"><span class="pre">list_injectables</span></tt></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#orca.orca.list_injectables" title="orca.orca.list_injectables"><code class="xref py py-obj docutils literal"><span class="pre">list_injectables</span></code></a>()</td>
 <td>List of registered injectables.</td>
 </tr>
 </tbody>
@@ -757,13 +757,13 @@ like to specifically document that in the function&#8217;s arguments.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.broadcast" title="orca.orca.broadcast"><tt class="xref py py-obj docutils literal"><span class="pre">broadcast</span></tt></a>(cast,&nbsp;onto[,&nbsp;cast_on,&nbsp;onto_on,&nbsp;...])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.broadcast" title="orca.orca.broadcast"><code class="xref py py-obj docutils literal"><span class="pre">broadcast</span></code></a>(cast,&nbsp;onto[,&nbsp;cast_on,&nbsp;onto_on,&nbsp;...])</td>
 <td>Register a rule for merging two tables by broadcasting one onto the other.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#orca.orca.list_broadcasts" title="orca.orca.list_broadcasts"><tt class="xref py py-obj docutils literal"><span class="pre">list_broadcasts</span></tt></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#orca.orca.list_broadcasts" title="orca.orca.list_broadcasts"><code class="xref py py-obj docutils literal"><span class="pre">list_broadcasts</span></code></a>()</td>
 <td>List of registered broadcasts as (cast table name, onto table name).</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.merge_tables" title="orca.orca.merge_tables"><tt class="xref py py-obj docutils literal"><span class="pre">merge_tables</span></tt></a>(target,&nbsp;tables[,&nbsp;columns])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.merge_tables" title="orca.orca.merge_tables"><code class="xref py py-obj docutils literal"><span class="pre">merge_tables</span></code></a>(target,&nbsp;tables[,&nbsp;columns])</td>
 <td>Merge a number of tables onto a target table.</td>
 </tr>
 </tbody>
@@ -777,19 +777,19 @@ like to specifically document that in the function&#8217;s arguments.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.add_step" title="orca.orca.add_step"><tt class="xref py py-obj docutils literal"><span class="pre">add_step</span></tt></a>(step_name,&nbsp;func)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.add_step" title="orca.orca.add_step"><code class="xref py py-obj docutils literal"><span class="pre">add_step</span></code></a>(step_name,&nbsp;func)</td>
 <td>Add a step function to Orca.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#orca.orca.step" title="orca.orca.step"><tt class="xref py py-obj docutils literal"><span class="pre">step</span></tt></a>([step_name])</td>
+<tr class="row-even"><td><a class="reference internal" href="#orca.orca.step" title="orca.orca.step"><code class="xref py py-obj docutils literal"><span class="pre">step</span></code></a>([step_name])</td>
 <td>Decorates functions that will be called by the <cite>run</cite> function.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.get_step" title="orca.orca.get_step"><tt class="xref py py-obj docutils literal"><span class="pre">get_step</span></tt></a>(step_name)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.get_step" title="orca.orca.get_step"><code class="xref py py-obj docutils literal"><span class="pre">get_step</span></code></a>(step_name)</td>
 <td>Get a wrapped step by name.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#orca.orca.list_steps" title="orca.orca.list_steps"><tt class="xref py py-obj docutils literal"><span class="pre">list_steps</span></tt></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#orca.orca.list_steps" title="orca.orca.list_steps"><code class="xref py py-obj docutils literal"><span class="pre">list_steps</span></code></a>()</td>
 <td>List of registered step names.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><tt class="xref py py-obj docutils literal"><span class="pre">run</span></tt></a>(steps[,&nbsp;iter_vars,&nbsp;data_out,&nbsp;out_interval])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><code class="xref py py-obj docutils literal"><span class="pre">run</span></code></a>(steps[,&nbsp;iter_vars,&nbsp;data_out,&nbsp;out_interval])</td>
 <td>Run steps in series, optionally repeatedly over some sequence.</td>
 </tr>
 </tbody>
@@ -803,19 +803,19 @@ like to specifically document that in the function&#8217;s arguments.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.clear_cache" title="orca.orca.clear_cache"><tt class="xref py py-obj docutils literal"><span class="pre">clear_cache</span></tt></a>([scope])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.clear_cache" title="orca.orca.clear_cache"><code class="xref py py-obj docutils literal"><span class="pre">clear_cache</span></code></a>([scope])</td>
 <td>Clear all cached data.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#orca.orca.disable_cache" title="orca.orca.disable_cache"><tt class="xref py py-obj docutils literal"><span class="pre">disable_cache</span></tt></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#orca.orca.disable_cache" title="orca.orca.disable_cache"><code class="xref py py-obj docutils literal"><span class="pre">disable_cache</span></code></a>()</td>
 <td>Turn off caching across Orca, even for registered variables that have caching enabled.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.enable_cache" title="orca.orca.enable_cache"><tt class="xref py py-obj docutils literal"><span class="pre">enable_cache</span></tt></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.enable_cache" title="orca.orca.enable_cache"><code class="xref py py-obj docutils literal"><span class="pre">enable_cache</span></code></a>()</td>
 <td>Allow caching of registered variables that explicitly have caching enabled.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#orca.orca.cache_on" title="orca.orca.cache_on"><tt class="xref py py-obj docutils literal"><span class="pre">cache_on</span></tt></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#orca.orca.cache_on" title="orca.orca.cache_on"><code class="xref py py-obj docutils literal"><span class="pre">cache_on</span></code></a>()</td>
 <td>Whether caching is currently enabled or disabled.</td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">cache_disabled</span></tt>(*args,&nbsp;**kwds)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">cache_disabled</span></code>(*args,&nbsp;**kwds)</td>
 <td></td>
 </tr>
 </tbody>
@@ -825,40 +825,40 @@ like to specifically document that in the function&#8217;s arguments.</p>
 <span id="api-docs"></span><h3>API Docs<a class="headerlink" href="#module-orca.orca" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="orca.orca.Broadcast">
-<em class="property">class </em><tt class="descclassname">orca.orca.</tt><tt class="descname">Broadcast</tt><a class="headerlink" href="#orca.orca.Broadcast" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">orca.orca.</code><code class="descname">Broadcast</code><a class="headerlink" href="#orca.orca.Broadcast" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
 <dt id="orca.orca.Broadcast.cast">
-<tt class="descname">cast</tt><a class="headerlink" href="#orca.orca.Broadcast.cast" title="Permalink to this definition">¶</a></dt>
+<code class="descname">cast</code><a class="headerlink" href="#orca.orca.Broadcast.cast" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="orca.orca.Broadcast.cast_index">
-<tt class="descname">cast_index</tt><a class="headerlink" href="#orca.orca.Broadcast.cast_index" title="Permalink to this definition">¶</a></dt>
+<code class="descname">cast_index</code><a class="headerlink" href="#orca.orca.Broadcast.cast_index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 4</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="orca.orca.Broadcast.cast_on">
-<tt class="descname">cast_on</tt><a class="headerlink" href="#orca.orca.Broadcast.cast_on" title="Permalink to this definition">¶</a></dt>
+<code class="descname">cast_on</code><a class="headerlink" href="#orca.orca.Broadcast.cast_on" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="orca.orca.Broadcast.onto">
-<tt class="descname">onto</tt><a class="headerlink" href="#orca.orca.Broadcast.onto" title="Permalink to this definition">¶</a></dt>
+<code class="descname">onto</code><a class="headerlink" href="#orca.orca.Broadcast.onto" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="orca.orca.Broadcast.onto_index">
-<tt class="descname">onto_index</tt><a class="headerlink" href="#orca.orca.Broadcast.onto_index" title="Permalink to this definition">¶</a></dt>
+<code class="descname">onto_index</code><a class="headerlink" href="#orca.orca.Broadcast.onto_index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 5</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="orca.orca.Broadcast.onto_on">
-<tt class="descname">onto_on</tt><a class="headerlink" href="#orca.orca.Broadcast.onto_on" title="Permalink to this definition">¶</a></dt>
+<code class="descname">onto_on</code><a class="headerlink" href="#orca.orca.Broadcast.onto_on" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 3</p>
 </dd></dl>
 
@@ -866,22 +866,22 @@ like to specifically document that in the function&#8217;s arguments.</p>
 
 <dl class="class">
 <dt id="orca.orca.CacheItem">
-<em class="property">class </em><tt class="descclassname">orca.orca.</tt><tt class="descname">CacheItem</tt><a class="headerlink" href="#orca.orca.CacheItem" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">orca.orca.</code><code class="descname">CacheItem</code><a class="headerlink" href="#orca.orca.CacheItem" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
 <dt id="orca.orca.CacheItem.name">
-<tt class="descname">name</tt><a class="headerlink" href="#orca.orca.CacheItem.name" title="Permalink to this definition">¶</a></dt>
+<code class="descname">name</code><a class="headerlink" href="#orca.orca.CacheItem.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="orca.orca.CacheItem.scope">
-<tt class="descname">scope</tt><a class="headerlink" href="#orca.orca.CacheItem.scope" title="Permalink to this definition">¶</a></dt>
+<code class="descname">scope</code><a class="headerlink" href="#orca.orca.CacheItem.scope" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="orca.orca.CacheItem.value">
-<tt class="descname">value</tt><a class="headerlink" href="#orca.orca.CacheItem.value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">value</code><a class="headerlink" href="#orca.orca.CacheItem.value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
@@ -889,7 +889,7 @@ like to specifically document that in the function&#8217;s arguments.</p>
 
 <dl class="class">
 <dt id="orca.orca.DataFrameWrapper">
-<em class="property">class </em><tt class="descclassname">orca.orca.</tt><tt class="descname">DataFrameWrapper</tt><big>(</big><em>name</em>, <em>frame</em>, <em>copy_col=True</em><big>)</big><a class="headerlink" href="#orca.orca.DataFrameWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">orca.orca.</code><code class="descname">DataFrameWrapper</code><span class="sig-paren">(</span><em>name</em>, <em>frame</em>, <em>copy_col=True</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wraps a DataFrame so it can provide certain columns and handle
 computed columns.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -929,13 +929,13 @@ computed columns.</p>
 </table>
 <dl class="method">
 <dt id="orca.orca.DataFrameWrapper.clear_cached">
-<tt class="descname">clear_cached</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.DataFrameWrapper.clear_cached" title="Permalink to this definition">¶</a></dt>
+<code class="descname">clear_cached</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.clear_cached" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove cached results from this table&#8217;s computed columns.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="orca.orca.DataFrameWrapper.column_type">
-<tt class="descname">column_type</tt><big>(</big><em>column_name</em><big>)</big><a class="headerlink" href="#orca.orca.DataFrameWrapper.column_type" title="Permalink to this definition">¶</a></dt>
+<code class="descname">column_type</code><span class="sig-paren">(</span><em>column_name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.column_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Report column type as one of &#8216;local&#8217;, &#8216;series&#8217;, or &#8216;function&#8217;.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -959,13 +959,13 @@ a Pandas Series.</p>
 
 <dl class="attribute">
 <dt id="orca.orca.DataFrameWrapper.columns">
-<tt class="descname">columns</tt><a class="headerlink" href="#orca.orca.DataFrameWrapper.columns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">columns</code><a class="headerlink" href="#orca.orca.DataFrameWrapper.columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Columns in this table.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="orca.orca.DataFrameWrapper.get_column">
-<tt class="descname">get_column</tt><big>(</big><em>column_name</em><big>)</big><a class="headerlink" href="#orca.orca.DataFrameWrapper.get_column" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_column</code><span class="sig-paren">(</span><em>column_name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.get_column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a column as a Series.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -981,19 +981,19 @@ a Pandas Series.</p>
 
 <dl class="attribute">
 <dt id="orca.orca.DataFrameWrapper.index">
-<tt class="descname">index</tt><a class="headerlink" href="#orca.orca.DataFrameWrapper.index" title="Permalink to this definition">¶</a></dt>
+<code class="descname">index</code><a class="headerlink" href="#orca.orca.DataFrameWrapper.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Table index.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="orca.orca.DataFrameWrapper.local_columns">
-<tt class="descname">local_columns</tt><a class="headerlink" href="#orca.orca.DataFrameWrapper.local_columns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">local_columns</code><a class="headerlink" href="#orca.orca.DataFrameWrapper.local_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Columns that are part of the wrapped DataFrame.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="orca.orca.DataFrameWrapper.to_frame">
-<tt class="descname">to_frame</tt><big>(</big><em>columns=None</em><big>)</big><a class="headerlink" href="#orca.orca.DataFrameWrapper.to_frame" title="Permalink to this definition">¶</a></dt>
+<code class="descname">to_frame</code><span class="sig-paren">(</span><em>columns=None</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.to_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a DataFrame with the given columns.</p>
 <p>Will always return a copy of the underlying table.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1016,7 +1016,7 @@ If None all columns are returned, including registered columns.</p>
 
 <dl class="method">
 <dt id="orca.orca.DataFrameWrapper.update_col">
-<tt class="descname">update_col</tt><big>(</big><em>column_name</em>, <em>series</em><big>)</big><a class="headerlink" href="#orca.orca.DataFrameWrapper.update_col" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_col</code><span class="sig-paren">(</span><em>column_name</em>, <em>series</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.update_col" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add or replace a column in the underlying DataFrame.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1038,7 +1038,7 @@ If None all columns are returned, including registered columns.</p>
 
 <dl class="method">
 <dt id="orca.orca.DataFrameWrapper.update_col_from_series">
-<tt class="descname">update_col_from_series</tt><big>(</big><em>column_name</em>, <em>series</em><big>)</big><a class="headerlink" href="#orca.orca.DataFrameWrapper.update_col_from_series" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_col_from_series</code><span class="sig-paren">(</span><em>column_name</em>, <em>series</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.update_col_from_series" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update existing values in a column from another series.
 Index values must match in both column and series.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1057,7 +1057,7 @@ Index values must match in both column and series.</p>
 
 <dl class="class">
 <dt id="orca.orca.TableFuncWrapper">
-<em class="property">class </em><tt class="descclassname">orca.orca.</tt><tt class="descname">TableFuncWrapper</tt><big>(</big><em>name</em>, <em>func</em>, <em>cache=False</em>, <em>cache_scope='forever'</em>, <em>copy_col=True</em><big>)</big><a class="headerlink" href="#orca.orca.TableFuncWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">orca.orca.</code><code class="descname">TableFuncWrapper</code><span class="sig-paren">(</span><em>name</em>, <em>func</em>, <em>cache=False</em>, <em>cache_scope='forever'</em>, <em>copy_col=True</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrap a function that provides a DataFrame.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1110,13 +1110,13 @@ a single step of the pipeline.</p>
 </table>
 <dl class="method">
 <dt id="orca.orca.TableFuncWrapper.clear_cached">
-<tt class="descname">clear_cached</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.TableFuncWrapper.clear_cached" title="Permalink to this definition">¶</a></dt>
+<code class="descname">clear_cached</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.clear_cached" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove this table&#8217;s cached result and that of associated columns.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="orca.orca.TableFuncWrapper.column_type">
-<tt class="descname">column_type</tt><big>(</big><em>column_name</em><big>)</big><a class="headerlink" href="#orca.orca.TableFuncWrapper.column_type" title="Permalink to this definition">¶</a></dt>
+<code class="descname">column_type</code><span class="sig-paren">(</span><em>column_name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.column_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Report column type as one of &#8216;local&#8217;, &#8216;series&#8217;, or &#8216;function&#8217;.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1140,14 +1140,14 @@ a Pandas Series.</p>
 
 <dl class="attribute">
 <dt id="orca.orca.TableFuncWrapper.columns">
-<tt class="descname">columns</tt><a class="headerlink" href="#orca.orca.TableFuncWrapper.columns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">columns</code><a class="headerlink" href="#orca.orca.TableFuncWrapper.columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Columns in this table. (May contain only computed columns
 if the wrapped function has not been called yet.)</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="orca.orca.TableFuncWrapper.func_source_data">
-<tt class="descname">func_source_data</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.TableFuncWrapper.func_source_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">func_source_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.func_source_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return data about the wrapped function source, including file name,
 line number, and source code.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1168,7 +1168,7 @@ line number, and source code.</p>
 
 <dl class="method">
 <dt id="orca.orca.TableFuncWrapper.get_column">
-<tt class="descname">get_column</tt><big>(</big><em>column_name</em><big>)</big><a class="headerlink" href="#orca.orca.TableFuncWrapper.get_column" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_column</code><span class="sig-paren">(</span><em>column_name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.get_column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a column as a Series.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1184,21 +1184,21 @@ line number, and source code.</p>
 
 <dl class="attribute">
 <dt id="orca.orca.TableFuncWrapper.index">
-<tt class="descname">index</tt><a class="headerlink" href="#orca.orca.TableFuncWrapper.index" title="Permalink to this definition">¶</a></dt>
+<code class="descname">index</code><a class="headerlink" href="#orca.orca.TableFuncWrapper.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Index of the underlying table. Will be None if that index is
 unknown.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="orca.orca.TableFuncWrapper.local_columns">
-<tt class="descname">local_columns</tt><a class="headerlink" href="#orca.orca.TableFuncWrapper.local_columns" title="Permalink to this definition">¶</a></dt>
+<code class="descname">local_columns</code><a class="headerlink" href="#orca.orca.TableFuncWrapper.local_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Only the columns contained in the DataFrame returned by the
 wrapped function. (No registered columns included.)</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="orca.orca.TableFuncWrapper.to_frame">
-<tt class="descname">to_frame</tt><big>(</big><em>columns=None</em><big>)</big><a class="headerlink" href="#orca.orca.TableFuncWrapper.to_frame" title="Permalink to this definition">¶</a></dt>
+<code class="descname">to_frame</code><span class="sig-paren">(</span><em>columns=None</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.to_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a DataFrame with the given columns.</p>
 <p>Will always return a copy of the underlying table.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1223,7 +1223,7 @@ If None all columns are returned.</p>
 
 <dl class="function">
 <dt id="orca.orca.add_column">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">add_column</tt><big>(</big><em>table_name</em>, <em>column_name</em>, <em>column</em>, <em>cache=False</em>, <em>cache_scope='forever'</em><big>)</big><a class="headerlink" href="#orca.orca.add_column" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">add_column</code><span class="sig-paren">(</span><em>table_name</em>, <em>column_name</em>, <em>column</em>, <em>cache=False</em>, <em>cache_scope='forever'</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.add_column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new column to a table from a Series or callable.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1265,7 +1265,7 @@ a single step of the pipeline.</p>
 
 <dl class="function">
 <dt id="orca.orca.add_injectable">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">add_injectable</tt><big>(</big><em>name</em>, <em>value</em>, <em>autocall=True</em>, <em>cache=False</em>, <em>cache_scope='forever'</em>, <em>memoize=False</em><big>)</big><a class="headerlink" href="#orca.orca.add_injectable" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">add_injectable</code><span class="sig-paren">(</span><em>name</em>, <em>value</em>, <em>autocall=True</em>, <em>cache=False</em>, <em>cache_scope='forever'</em>, <em>memoize=False</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.add_injectable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a value that will be injected into other functions.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1315,7 +1315,7 @@ rules as universal caching.</p>
 
 <dl class="function">
 <dt id="orca.orca.add_step">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">add_step</tt><big>(</big><em>step_name</em>, <em>func</em><big>)</big><a class="headerlink" href="#orca.orca.add_step" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">add_step</code><span class="sig-paren">(</span><em>step_name</em>, <em>func</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.add_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a step function to Orca.</p>
 <p>The function&#8217;s argument names and keyword argument values
 will be matched to registered variables when the function
@@ -1336,7 +1336,7 @@ iteration variable injected.</p>
 
 <dl class="function">
 <dt id="orca.orca.add_table">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">add_table</tt><big>(</big><em>table_name</em>, <em>table</em>, <em>cache=False</em>, <em>cache_scope='forever'</em>, <em>copy_col=True</em><big>)</big><a class="headerlink" href="#orca.orca.add_table" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">add_table</code><span class="sig-paren">(</span><em>table_name</em>, <em>table</em>, <em>cache=False</em>, <em>cache_scope='forever'</em>, <em>copy_col=True</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.add_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Register a table with Orca.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1380,7 +1380,7 @@ a single step of the pipeline.</p>
 
 <dl class="function">
 <dt id="orca.orca.broadcast">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">broadcast</tt><big>(</big><em>cast</em>, <em>onto</em>, <em>cast_on=None</em>, <em>onto_on=None</em>, <em>cast_index=False</em>, <em>onto_index=False</em><big>)</big><a class="headerlink" href="#orca.orca.broadcast" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">broadcast</code><span class="sig-paren">(</span><em>cast</em>, <em>onto</em>, <em>cast_on=None</em>, <em>onto_on=None</em>, <em>cast_index=False</em>, <em>onto_index=False</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.broadcast" title="Permalink to this definition">¶</a></dt>
 <dd><p>Register a rule for merging two tables by broadcasting one onto
 the other.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1393,13 +1393,13 @@ the other.</p>
 </div></blockquote>
 <p><strong>cast_on, onto_on</strong> : str, optional</p>
 <blockquote>
-<div><p>Column names used for merge, equivalent of <tt class="docutils literal"><span class="pre">left_on</span></tt>/<tt class="docutils literal"><span class="pre">right_on</span></tt>
+<div><p>Column names used for merge, equivalent of <code class="docutils literal"><span class="pre">left_on</span></code>/<code class="docutils literal"><span class="pre">right_on</span></code>
 parameters of pandas.merge.</p>
 </div></blockquote>
 <p><strong>cast_index, onto_index</strong> : bool, optional</p>
 <blockquote class="last">
 <div><p>Whether to use table indexes for merge. Equivalent of
-<tt class="docutils literal"><span class="pre">left_index</span></tt>/<tt class="docutils literal"><span class="pre">right_index</span></tt> parameters of pandas.merge.</p>
+<code class="docutils literal"><span class="pre">left_index</span></code>/<code class="docutils literal"><span class="pre">right_index</span></code> parameters of pandas.merge.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -1409,7 +1409,7 @@ parameters of pandas.merge.</p>
 
 <dl class="function">
 <dt id="orca.orca.cache_on">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">cache_on</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.cache_on" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">cache_on</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.cache_on" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether caching is currently enabled or disabled.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1427,13 +1427,13 @@ parameters of pandas.merge.</p>
 
 <dl class="function">
 <dt id="orca.orca.clear_all">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">clear_all</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.clear_all" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">clear_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.clear_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear any and all stored state from Orca.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="orca.orca.clear_cache">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">clear_cache</tt><big>(</big><em>scope=None</em><big>)</big><a class="headerlink" href="#orca.orca.clear_cache" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">clear_cache</code><span class="sig-paren">(</span><em>scope=None</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.clear_cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear all cached data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1452,7 +1452,7 @@ By default all cached values are removed.</p>
 
 <dl class="function">
 <dt id="orca.orca.column">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">column</tt><big>(</big><em>table_name</em>, <em>column_name=None</em>, <em>cache=False</em>, <em>cache_scope='forever'</em><big>)</big><a class="headerlink" href="#orca.orca.column" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">column</code><span class="sig-paren">(</span><em>table_name</em>, <em>column_name=None</em>, <em>cache=False</em>, <em>cache_scope='forever'</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorates functions that return a Series.</p>
 <p>Decorator version of <cite>add_column</cite>. Series index must match
 the named table. Column name defaults to name of function.</p>
@@ -1466,7 +1466,7 @@ The index of the returned Series must match the named table.</p>
 
 <dl class="function">
 <dt id="orca.orca.column_map">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">column_map</tt><big>(</big><em>tables</em>, <em>columns</em><big>)</big><a class="headerlink" href="#orca.orca.column_map" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">column_map</code><span class="sig-paren">(</span><em>tables</em>, <em>columns</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.column_map" title="Permalink to this definition">¶</a></dt>
 <dd><p>Take a list of tables and a list of column names and resolve which
 columns come from which table.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1476,7 +1476,7 @@ columns come from which table.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>tables</strong> : sequence of _DataFrameWrapper or _TableFuncWrapper</p>
 <blockquote>
 <div><p>Could also be sequence of modified pandas.DataFrames, the important
-thing is that they have <tt class="docutils literal"><span class="pre">.name</span></tt> and <tt class="docutils literal"><span class="pre">.columns</span></tt> attributes.</p>
+thing is that they have <code class="docutils literal"><span class="pre">.name</span></code> and <code class="docutils literal"><span class="pre">.columns</span></code> attributes.</p>
 </div></blockquote>
 <p><strong>columns</strong> : sequence of str</p>
 <blockquote>
@@ -1496,21 +1496,21 @@ thing is that they have <tt class="docutils literal"><span class="pre">.name</sp
 
 <dl class="function">
 <dt id="orca.orca.disable_cache">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">disable_cache</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.disable_cache" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">disable_cache</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.disable_cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turn off caching across Orca, even for registered variables
 that have caching enabled.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="orca.orca.enable_cache">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">enable_cache</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.enable_cache" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">enable_cache</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.enable_cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Allow caching of registered variables that explicitly have
 caching enabled.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="orca.orca.eval_step">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">eval_step</tt><big>(</big><em>name</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#orca.orca.eval_step" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">eval_step</code><span class="sig-paren">(</span><em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.eval_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate a step as would be done within the pipeline environment
 and return the result. Any keyword arguments are temporarily set
 as injectables.</p>
@@ -1537,7 +1537,7 @@ return values from steps are ignored.)</p>
 
 <dl class="function">
 <dt id="orca.orca.eval_variable">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">eval_variable</tt><big>(</big><em>name</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#orca.orca.eval_variable" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">eval_variable</code><span class="sig-paren">(</span><em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.eval_variable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a single variable function registered with Orca
 and return the result. Any keyword arguments are temporarily set
 as injectables. This gives the value as would be injected into a function.</p>
@@ -1567,7 +1567,7 @@ had been injected into a function.</p>
 
 <dl class="function">
 <dt id="orca.orca.get_broadcast">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">get_broadcast</tt><big>(</big><em>cast_name</em>, <em>onto_name</em><big>)</big><a class="headerlink" href="#orca.orca.get_broadcast" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">get_broadcast</code><span class="sig-paren">(</span><em>cast_name</em>, <em>onto_name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_broadcast" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a single broadcast.</p>
 <p>Broadcasts are stored data about how to do a Pandas join.
 A Broadcast object is a namedtuple with these attributes:</p>
@@ -1606,7 +1606,7 @@ None if the table index will be used instead.</li>
 
 <dl class="function">
 <dt id="orca.orca.get_injectable">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">get_injectable</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#orca.orca.get_injectable" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">get_injectable</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_injectable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get an injectable by name. <em>Does not</em> evaluate wrapped functions.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1627,7 +1627,7 @@ None if the table index will be used instead.</li>
 
 <dl class="function">
 <dt id="orca.orca.get_injectable_func_source_data">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">get_injectable_func_source_data</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#orca.orca.get_injectable_func_source_data" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">get_injectable_func_source_data</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_injectable_func_source_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return data about an injectable function&#8217;s source, including file name,
 line number, and source code.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1651,7 +1651,7 @@ line number, and source code.</p>
 
 <dl class="function">
 <dt id="orca.orca.get_raw_column">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">get_raw_column</tt><big>(</big><em>table_name</em>, <em>column_name</em><big>)</big><a class="headerlink" href="#orca.orca.get_raw_column" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">get_raw_column</code><span class="sig-paren">(</span><em>table_name</em>, <em>column_name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_raw_column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a wrapped, registered column.</p>
 <p>This function cannot return columns that are part of wrapped
 DataFrames, it&#8217;s only for columns registered directly through Orca.</p>
@@ -1672,7 +1672,7 @@ DataFrames, it&#8217;s only for columns registered directly through Orca.</p>
 
 <dl class="function">
 <dt id="orca.orca.get_raw_injectable">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">get_raw_injectable</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#orca.orca.get_raw_injectable" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">get_raw_injectable</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_raw_injectable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a raw, possibly wrapped injectable.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1688,7 +1688,7 @@ DataFrames, it&#8217;s only for columns registered directly through Orca.</p>
 
 <dl class="function">
 <dt id="orca.orca.get_raw_table">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">get_raw_table</tt><big>(</big><em>table_name</em><big>)</big><a class="headerlink" href="#orca.orca.get_raw_table" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">get_raw_table</code><span class="sig-paren">(</span><em>table_name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_raw_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a wrapped table by name and don&#8217;t do anything to it.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1704,13 +1704,13 @@ DataFrames, it&#8217;s only for columns registered directly through Orca.</p>
 
 <dl class="function">
 <dt id="orca.orca.get_step">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">get_step</tt><big>(</big><em>step_name</em><big>)</big><a class="headerlink" href="#orca.orca.get_step" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">get_step</code><span class="sig-paren">(</span><em>step_name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a wrapped step by name.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="orca.orca.get_table">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">get_table</tt><big>(</big><em>table_name</em><big>)</big><a class="headerlink" href="#orca.orca.get_table" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">get_table</code><span class="sig-paren">(</span><em>table_name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a registered table.</p>
 <p>Decorated functions will be converted to <cite>DataFrameWrapper</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1727,7 +1727,7 @@ DataFrames, it&#8217;s only for columns registered directly through Orca.</p>
 
 <dl class="function">
 <dt id="orca.orca.injectable">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">injectable</tt><big>(</big><em>name=None</em>, <em>autocall=True</em>, <em>cache=False</em>, <em>cache_scope='forever'</em>, <em>memoize=False</em><big>)</big><a class="headerlink" href="#orca.orca.injectable" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">injectable</code><span class="sig-paren">(</span><em>name=None</em>, <em>autocall=True</em>, <em>cache=False</em>, <em>cache_scope='forever'</em>, <em>memoize=False</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.injectable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorates functions that will be injected into other functions.</p>
 <p>Decorator version of <cite>add_injectable</cite>. Name defaults to
 name of function.</p>
@@ -1740,7 +1740,7 @@ iteration variable injected.</p>
 
 <dl class="function">
 <dt id="orca.orca.injectable_type">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">injectable_type</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#orca.orca.injectable_type" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">injectable_type</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.injectable_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Classify an injectable as either &#8216;variable&#8217; or &#8216;function&#8217;.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1763,7 +1763,7 @@ will be have type &#8216;variable&#8217;.</p>
 
 <dl class="function">
 <dt id="orca.orca.injectables">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">injectables</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#orca.orca.injectables" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">injectables</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.injectables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Temporarily add injectables to the pipeline environment.
 Takes only keyword arguments.</p>
 <p>Injectables will be returned to their original state when the context
@@ -1772,14 +1772,14 @@ manager exits.</p>
 
 <dl class="function">
 <dt id="orca.orca.is_broadcast">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">is_broadcast</tt><big>(</big><em>cast_name</em>, <em>onto_name</em><big>)</big><a class="headerlink" href="#orca.orca.is_broadcast" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">is_broadcast</code><span class="sig-paren">(</span><em>cast_name</em>, <em>onto_name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_broadcast" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether a relationship exists for broadcast <cite>cast_name</cite>
 onto <cite>onto_name</cite>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="orca.orca.is_expression">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">is_expression</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#orca.orca.is_expression" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">is_expression</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_expression" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether a given name is a simple variable name or a compound
 variable expression.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1796,37 +1796,37 @@ variable expression.</p>
 
 <dl class="function">
 <dt id="orca.orca.is_injectable">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">is_injectable</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#orca.orca.is_injectable" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">is_injectable</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_injectable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether a given name can be mapped to an injectable.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="orca.orca.is_step">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">is_step</tt><big>(</big><em>step_name</em><big>)</big><a class="headerlink" href="#orca.orca.is_step" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">is_step</code><span class="sig-paren">(</span><em>step_name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether a given name refers to a registered step.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="orca.orca.is_table">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">is_table</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#orca.orca.is_table" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">is_table</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns whether a given name refers to a registered table.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="orca.orca.list_broadcasts">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">list_broadcasts</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.list_broadcasts" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">list_broadcasts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_broadcasts" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of registered broadcasts as (cast table name, onto table name).</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="orca.orca.list_columns">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">list_columns</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.list_columns" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">list_columns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of (table name, registered column name) pairs.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="orca.orca.list_columns_for_table">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">list_columns_for_table</tt><big>(</big><em>table_name</em><big>)</big><a class="headerlink" href="#orca.orca.list_columns_for_table" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">list_columns_for_table</code><span class="sig-paren">(</span><em>table_name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_columns_for_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of all the extra columns registered for a given table.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1842,25 +1842,25 @@ variable expression.</p>
 
 <dl class="function">
 <dt id="orca.orca.list_injectables">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">list_injectables</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.list_injectables" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">list_injectables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_injectables" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of registered injectables.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="orca.orca.list_steps">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">list_steps</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.list_steps" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">list_steps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_steps" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of registered step names.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="orca.orca.list_tables">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">list_tables</tt><big>(</big><big>)</big><a class="headerlink" href="#orca.orca.list_tables" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">list_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of table names.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="orca.orca.merge_tables">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">merge_tables</tt><big>(</big><em>target</em>, <em>tables</em>, <em>columns=None</em><big>)</big><a class="headerlink" href="#orca.orca.merge_tables" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">merge_tables</code><span class="sig-paren">(</span><em>target</em>, <em>tables</em>, <em>columns=None</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.merge_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Merge a number of tables onto a target table. Tables must have
 registered merge rules via the <cite>broadcast</cite> function.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1893,10 +1893,10 @@ table.</p>
 
 <dl class="function">
 <dt id="orca.orca.run">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">run</tt><big>(</big><em>steps</em>, <em>iter_vars=None</em>, <em>data_out=None</em>, <em>out_interval=1</em><big>)</big><a class="headerlink" href="#orca.orca.run" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">run</code><span class="sig-paren">(</span><em>steps</em>, <em>iter_vars=None</em>, <em>data_out=None</em>, <em>out_interval=1</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run steps in series, optionally repeatedly over some sequence.
 The current iteration variable is set as a global injectable
-called <tt class="docutils literal"><span class="pre">iter_var</span></tt>.</p>
+called <code class="docutils literal"><span class="pre">iter_var</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1908,7 +1908,7 @@ called <tt class="docutils literal"><span class="pre">iter_var</span></tt>.</p>
 <p><strong>iter_vars</strong> : iterable, optional</p>
 <blockquote>
 <div><p>The values of <cite>iter_vars</cite> will be made available as an injectable
-called <tt class="docutils literal"><span class="pre">iter_var</span></tt> when repeatedly running <cite>steps</cite>.</p>
+called <code class="docutils literal"><span class="pre">iter_var</span></code> when repeatedly running <cite>steps</cite>.</p>
 </div></blockquote>
 <p><strong>data_out</strong> : str, optional</p>
 <blockquote>
@@ -1931,7 +1931,7 @@ The first and last iterations are always included.</p>
 
 <dl class="function">
 <dt id="orca.orca.step">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">step</tt><big>(</big><em>step_name=None</em><big>)</big><a class="headerlink" href="#orca.orca.step" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">step</code><span class="sig-paren">(</span><em>step_name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorates functions that will be called by the <cite>run</cite> function.</p>
 <p>Decorator version of <cite>add_step</cite>. step name defaults to
 name of function.</p>
@@ -1944,7 +1944,7 @@ iteration variable injected.</p>
 
 <dl class="function">
 <dt id="orca.orca.table">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">table</tt><big>(</big><em>table_name=None</em>, <em>cache=False</em>, <em>cache_scope='forever'</em>, <em>copy_col=True</em><big>)</big><a class="headerlink" href="#orca.orca.table" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">table</code><span class="sig-paren">(</span><em>table_name=None</em>, <em>cache=False</em>, <em>cache_scope='forever'</em>, <em>copy_col=True</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorates functions that return DataFrames.</p>
 <p>Decorator version of <cite>add_table</cite>. Table name defaults to
 name of function.</p>
@@ -1957,7 +1957,7 @@ iteration variable injected.</p>
 
 <dl class="function">
 <dt id="orca.orca.table_type">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">table_type</tt><big>(</big><em>table_name</em><big>)</big><a class="headerlink" href="#orca.orca.table_type" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">table_type</code><span class="sig-paren">(</span><em>table_name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.table_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the type of a registered table.</p>
 <p>The type can be either &#8220;dataframe&#8221; or &#8220;function&#8221;.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1973,8 +1973,17 @@ iteration variable injected.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="orca.orca.temporary_tables">
+<code class="descclassname">orca.orca.</code><code class="descname">temporary_tables</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.temporary_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Temporarily set DataFrames as registered tables.</p>
+<p>Tables will be returned to their original state when the context
+manager exits. Caching is not enabled for tables registered via
+this function.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="orca.orca.write_tables">
-<tt class="descclassname">orca.orca.</tt><tt class="descname">write_tables</tt><big>(</big><em>fname</em>, <em>steps</em>, <em>iter_var</em><big>)</big><a class="headerlink" href="#orca.orca.write_tables" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">write_tables</code><span class="sig-paren">(</span><em>fname</em>, <em>steps</em>, <em>iter_var</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.write_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write all tables injected into <cite>steps</cite> to a pandas.HDFStore file.
 If var is not None it will be used to prefix the table names so that
 multiple iterations can go in the same file.</p>
