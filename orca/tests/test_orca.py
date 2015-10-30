@@ -1026,6 +1026,18 @@ def test_injectables_cm():
     }
 
 
+def test_temporary_tables_cm():
+    orca.add_table('a', pd.DataFrame())
+
+    with orca.temporary_tables():
+        assert sorted(orca._TABLES.keys()) == ['a']
+
+    with orca.temporary_tables(a=pd.DataFrame(), b=pd.DataFrame()):
+        assert sorted(orca._TABLES.keys()) == ['a', 'b']
+
+    assert sorted(orca._TABLES.keys()) == ['a']
+
+
 def test_is_expression():
     assert orca.is_expression('name') is False
     assert orca.is_expression('table.column') is True
