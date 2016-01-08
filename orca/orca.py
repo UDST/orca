@@ -210,10 +210,11 @@ class DataFrameWrapper(object):
         extra_cols = _columns_for_table(self.name)
 
         if columns:
-            local_cols = [c for c in self.local.columns
-                          if c in columns and c not in extra_cols]
-            extra_cols = tz.keyfilter(lambda c: c in columns, extra_cols)
-            df = self.local[local_cols].copy()
+            columns = set(columns)
+            set_extra_cols = set(extra_cols)
+            local_cols = set(self.local.columns) & columns - set_extra_cols
+            df = self.local[list(local_cols)].copy()
+            extra_cols = {k: extra_cols[k] for k in (columns & set_extra_cols)}
         else:
             df = self.local.copy()
 
