@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Example &mdash; Orca 1.0 documentation</title>
@@ -14,7 +15,6 @@
   
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 
   
   
@@ -35,7 +35,7 @@
         <link rel="prev" title="Orca" href="index.html"/> 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -45,11 +45,27 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        
-          <a href="index.html" class="fa fa-home"> Orca</a>
-        
-        
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Orca
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -57,41 +73,25 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-      </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
           
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
-              <ul class="current">
+            
+            
+                <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="">Example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="core.html">Orca Core</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="core.html#tables">Tables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#columns">Columns</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#injectables">Injectables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#caching">Caching</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#steps">Steps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#running-pipelines">Running Pipelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#argument-matching">Argument Matching</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#api">API</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="server.html">Orca Server</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="server.html#requirements">Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="server.html#start-the-server">Start the Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="server.html#server-routes">Server Routes</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="utils.html">Orca Utilities</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="utils.html#module-orca.utils.testing">Testing Helpers</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Orca Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Orca Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Orca Utilities</a></li>
 </ul>
 
+            
           
-        
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -106,32 +106,41 @@
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
     <li>Example</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="_sources/example.txt" rel="nofollow"> View page source</a>
+          
+            <a href="_sources/example.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
   </ul>
   <hr/>
 </div>
-          <div role="main" class="document">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="example">
 <h1>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h1>
 <p>The following is a very simple example of an Orca pipeline with none of the
 optional features such as caching:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">orca</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">orca</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 
 
 <span class="nd">@orca.injectable</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">data_file</span><span class="p">():</span>
-    <span class="k">return</span> <span class="s">&#39;data.csv&#39;</span>
+    <span class="k">return</span> <span class="s1">&#39;data.csv&#39;</span>
 
 
 <span class="nd">@orca.table</span><span class="p">()</span>
@@ -141,32 +150,32 @@ optional features such as caching:</p>
 
 <span class="nd">@orca.table</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">processed</span><span class="p">(</span><span class="n">raw_data</span><span class="p">):</span>
-    <span class="c"># do fancy stuff</span>
+    <span class="c1"># do fancy stuff</span>
     <span class="k">return</span> <span class="n">processed_data</span>
 
 <span class="nd">@orca.step</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">save_data</span><span class="p">(</span><span class="n">processed</span><span class="p">,</span> <span class="n">data_file</span><span class="p">):</span>
-    <span class="n">processed</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s">&#39;processed_&#39;</span> <span class="o">+</span> <span class="n">data_file</span><span class="p">)</span>
+    <span class="n">processed</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;processed_&#39;</span> <span class="o">+</span> <span class="n">data_file</span><span class="p">)</span>
 
 <span class="nd">@orca.step</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">save_fig</span><span class="p">(</span><span class="n">processed</span><span class="p">):</span>
-    <span class="c"># save fancy figure</span>
+    <span class="c1"># save fancy figure</span>
 
-<span class="n">orca</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s">&#39;save_data&#39;</span><span class="p">,</span> <span class="s">&#39;save_fig&#39;</span><span class="p">])</span>
+<span class="n">orca</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;save_data&#39;</span><span class="p">,</span> <span class="s1">&#39;save_fig&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>By declaring the data dependencies of your functions you can let Orca
 thread them all together instead of doing it manually yourself.</p>
 <p>The iterative capabilities of Orca are illustrated by imagining that there
 are many data files to be processed:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.injectable</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.injectable</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">data_file</span><span class="p">(</span><span class="n">iter_var</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">iter_var</span>
 
-<span class="c"># everything else the same as above</span>
+<span class="c1"># everything else the same as above</span>
 
-<span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">&#39;*.csv&#39;</span><span class="p">)</span>
-<span class="n">orca</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s">&#39;save_data&#39;</span><span class="p">,</span> <span class="s">&#39;save_fig&#39;</span><span class="p">],</span> <span class="n">iter_vars</span><span class="o">=</span><span class="n">files</span><span class="p">)</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;*.csv&#39;</span><span class="p">)</span>
+<span class="n">orca</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;save_data&#39;</span><span class="p">,</span> <span class="s1">&#39;save_fig&#39;</span><span class="p">],</span> <span class="n">iter_vars</span><span class="o">=</span><span class="n">files</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>A more involved example is available at
@@ -174,15 +183,16 @@ are many data files to be processed:</p>
 </div>
 
 
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="core.html" class="btn btn-neutral float-right" title="Orca Core">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="core.html" class="btn btn-neutral float-right" title="Orca Core" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Orca"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="Orca" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -191,13 +201,14 @@ are many data files to be processed:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, Autodesk.
+        &copy; Copyright 2016, UrbanSim Inc..
+
     </p>
   </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-  
 </footer>
+
         </div>
       </div>
 

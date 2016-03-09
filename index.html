@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Orca &mdash; Orca 1.0 documentation</title>
@@ -14,7 +15,6 @@
   
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 
   
   
@@ -34,7 +34,7 @@
         <link rel="next" title="Example" href="example.html"/> 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -44,11 +44,27 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        
-          <a href="#" class="fa fa-home"> Orca</a>
-        
-        
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> Orca
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -56,41 +72,25 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-      </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
           
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
-              <ul>
+            
+            
+                <ul>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="core.html">Orca Core</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="core.html#tables">Tables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#columns">Columns</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#injectables">Injectables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#caching">Caching</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#steps">Steps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#running-pipelines">Running Pipelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#argument-matching">Argument Matching</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#api">API</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="server.html">Orca Server</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="server.html#requirements">Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="server.html#start-the-server">Start the Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="server.html#server-routes">Server Routes</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="utils.html">Orca Utilities</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="utils.html#module-orca.utils.testing">Testing Helpers</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Orca Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Orca Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Orca Utilities</a></li>
 </ul>
 
+            
           
-        
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -105,20 +105,29 @@
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="#">Docs</a> &raquo;</li>
       
     <li>Orca</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+          
+            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
   </ul>
   <hr/>
 </div>
-          <div role="main" class="document">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="orca">
 <h1>Orca<a class="headerlink" href="#orca" title="Permalink to this headline">¶</a></h1>
@@ -164,7 +173,7 @@ Orca calls these functions by matching their arguments to other registered
 data.
 (This format is heavily inspired by
 <a class="reference external" href="http://pytest.org/latest/fixture.html#fixture">pytest&#8217;s fixtures</a>.)
-The main components of a pipeline include:</p>
+The main components of a pipeline Inc.de:</p>
 <ul class="simple">
 <li>Steps<ul>
 <li>Steps are Python functions registered with Orca whose main utility
@@ -237,21 +246,21 @@ to an HDF5 file during every iteration or at set intervals.</li>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>Orca depends on Pandas, PyTables, toolz (or cytoolz), and zbox.
-Pandas and PyTables are included in <a class="reference external" href="http://docs.continuum.io/anaconda/">Anaconda</a>.
+Pandas and PyTables are Inc.ded in <a class="reference external" href="http://docs.continuum.io/anaconda/">Anaconda</a>.
 Toolz and zbox may be installed with <a class="reference external" href="https://pip.pypa.io/en/latest/index.html">pip</a>,
 and both toolz and cytoolz are can be installed by
 <a class="reference external" href="http://conda.pydata.org/">conda</a> (if you are using Anaconda or miniconda).</p>
 <p>With the dependencies installed, install Orca with pip:</p>
-<div class="highlight-python"><div class="highlight"><pre>pip install orca
+<div class="highlight-python"><div class="highlight"><pre><span></span>pip install orca
 </pre></div>
 </div>
 <p>Orca may also be installed with conda:</p>
-<div class="highlight-python"><div class="highlight"><pre>conda install --channel jiffyclub orca
+<div class="highlight-python"><div class="highlight"><pre><span></span>conda install --channel jiffyclub orca
 </pre></div>
 </div>
-<p>(The jiffyclub channel is included for install zbox.)</p>
-<p>Add the server option to include the optional server dependencies:</p>
-<div class="highlight-python"><div class="highlight"><pre>pip install orca[server]
+<p>(The jiffyclub channel is Inc.ded for install zbox.)</p>
+<p>Add the server option to Inc.de the optional server dependencies:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pip install orca[server]
 </pre></div>
 </div>
 </div>
@@ -302,12 +311,13 @@ and both toolz and cytoolz are can be installed by
 </div>
 
 
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="example.html" class="btn btn-neutral float-right" title="Example">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="example.html" class="btn btn-neutral float-right" title="Example" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>
@@ -317,13 +327,14 @@ and both toolz and cytoolz are can be installed by
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, Autodesk.
+        &copy; Copyright 2016, UrbanSim Inc..
+
     </p>
   </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-  
 </footer>
+
         </div>
       </div>
 

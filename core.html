@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Orca Core &mdash; Orca 1.0 documentation</title>
@@ -14,7 +15,6 @@
   
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 
   
   
@@ -35,7 +35,7 @@
         <link rel="prev" title="Example" href="example.html"/> 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -45,11 +45,27 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        
-          <a href="index.html" class="fa fa-home"> Orca</a>
-        
-        
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Orca
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -57,41 +73,59 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-      </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
           
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
-              <ul class="current">
+            
+            
+                <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Orca Core</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#tables">Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tables">Tables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#table-wrappers">Table Wrappers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#automated-merges">Automated Merges</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#columns">Columns</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#injectables">Injectables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#caching">Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#caching">Caching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cache-scope">Cache Scope</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#managing-the-cache">Managing the Cache</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#steps">Steps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#running-pipelines">Running Pipelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#argument-matching">Argument Matching</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-pipelines">Running Pipelines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#running-orca-components-a-la-carte">Running Orca Components a la Carte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#archiving-data">Archiving Data</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="server.html">Orca Server</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="server.html#requirements">Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="server.html#start-the-server">Start the Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="server.html#server-routes">Server Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#argument-matching">Argument Matching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#variable-expressions">Variable Expressions</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="utils.html">Orca Utilities</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="utils.html#module-orca.utils.testing">Testing Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#table-api">Table API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#column-api">Column API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#injectable-api">Injectable API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#merge-api">Merge API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-api">Step API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cache-api">Cache API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-orca.orca">API Docs</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Orca Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Orca Utilities</a></li>
 </ul>
 
+            
           
-        
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -106,27 +140,36 @@
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
     <li>Orca Core</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="_sources/core.txt" rel="nofollow"> View page source</a>
+          
+            <a href="_sources/core.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
   </ul>
   <hr/>
 </div>
-          <div role="main" class="document">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="orca-core">
 <h1>Orca Core<a class="headerlink" href="#orca-core" title="Permalink to this headline">¶</a></h1>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>In the documentation below the following imports are implied:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">orca</span>
+<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">orca</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
@@ -136,13 +179,13 @@
 <p>Tables are Pandas <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe">DataFrames</a>.
 Use the <a class="reference internal" href="#orca.orca.add_table" title="orca.orca.add_table"><code class="xref py py-func docutils literal"><span class="pre">add_table()</span></code></a> function to register
 a DataFrame under a given name:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
-<span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
+<span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Or you can use the decorator <a class="reference internal" href="#orca.orca.table" title="orca.orca.table"><code class="xref py py-func docutils literal"><span class="pre">table()</span></code></a>
 to register a function that returns a DataFrame:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.table</span><span class="p">(</span><span class="s">&#39;halve_my_table&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.table</span><span class="p">(</span><span class="s1">&#39;halve_my_table&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">halve_my_table</span><span class="p">(</span><span class="n">my_table</span><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">my_table</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">df</span> <span class="o">/</span> <span class="mi">2</span>
@@ -152,7 +195,7 @@ to register a function that returns a DataFrame:</p>
 is optional. If left out, the table is registered under the name of the
 function that is being decorated. The decorator example above could be
 written more concisely:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.table</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.table</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">halve_my_table</span><span class="p">(</span><span class="n">my_table</span><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">my_table</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">df</span> <span class="o">/</span> <span class="mi">2</span>
@@ -164,7 +207,7 @@ half those in <code class="docutils literal"><span class="pre">my_table</span></
 If you&#8217;d like a function to <em>not</em> be evaluated every time it
 is used, pass the <code class="docutils literal"><span class="pre">cache=True</span></code> keyword when registering it.</p>
 <p>Here&#8217;s a demo of the above table definitions shown in IPython:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="n">wrapped</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="s">&#39;halve_my_table&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="n">wrapped</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="s1">&#39;halve_my_table&#39;</span><span class="p">)</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="n">wrapped</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">20</span><span class="p">]:</span>
@@ -198,35 +241,35 @@ one table onto another) and you register them using the
 <a class="reference internal" href="#orca.orca.broadcast" title="orca.orca.broadcast"><code class="xref py py-func docutils literal"><span class="pre">broadcast()</span></code></a> function.</p>
 <p>For an example we&#8217;ll first define some DataFrames that contain links
 to one another and register them with Orca:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">df_a</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]},</span>
-    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;a0&#39;</span><span class="p">,</span> <span class="s">&#39;a1&#39;</span><span class="p">])</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">df_a</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]},</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;a0&#39;</span><span class="p">,</span> <span class="s1">&#39;a1&#39;</span><span class="p">])</span>
 <span class="n">df_b</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span><span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
-     <span class="s">&#39;a_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;a0&#39;</span><span class="p">,</span> <span class="s">&#39;a1&#39;</span><span class="p">,</span> <span class="s">&#39;a1&#39;</span><span class="p">,</span> <span class="s">&#39;a0&#39;</span><span class="p">,</span> <span class="s">&#39;a1&#39;</span><span class="p">]},</span>
-    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;b0&#39;</span><span class="p">,</span> <span class="s">&#39;b1&#39;</span><span class="p">,</span> <span class="s">&#39;b2&#39;</span><span class="p">,</span> <span class="s">&#39;b3&#39;</span><span class="p">,</span> <span class="s">&#39;b4&#39;</span><span class="p">])</span>
+    <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+     <span class="s1">&#39;a_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;a0&#39;</span><span class="p">,</span> <span class="s1">&#39;a1&#39;</span><span class="p">,</span> <span class="s1">&#39;a1&#39;</span><span class="p">,</span> <span class="s1">&#39;a0&#39;</span><span class="p">,</span> <span class="s1">&#39;a1&#39;</span><span class="p">]},</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;b0&#39;</span><span class="p">,</span> <span class="s1">&#39;b1&#39;</span><span class="p">,</span> <span class="s1">&#39;b2&#39;</span><span class="p">,</span> <span class="s1">&#39;b3&#39;</span><span class="p">,</span> <span class="s1">&#39;b4&#39;</span><span class="p">])</span>
 <span class="n">df_c</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span><span class="s">&#39;c&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]},</span>
-    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;c0&#39;</span><span class="p">,</span> <span class="s">&#39;c1&#39;</span><span class="p">,</span> <span class="s">&#39;c2&#39;</span><span class="p">])</span>
+    <span class="p">{</span><span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]},</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;c0&#39;</span><span class="p">,</span> <span class="s1">&#39;c1&#39;</span><span class="p">,</span> <span class="s1">&#39;c2&#39;</span><span class="p">])</span>
 <span class="n">df_d</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="p">{</span><span class="s">&#39;d&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">],</span>
-     <span class="s">&#39;b_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;b2&#39;</span><span class="p">,</span> <span class="s">&#39;b0&#39;</span><span class="p">,</span> <span class="s">&#39;b3&#39;</span><span class="p">,</span> <span class="s">&#39;b3&#39;</span><span class="p">,</span> <span class="s">&#39;b1&#39;</span><span class="p">,</span> <span class="s">&#39;b4&#39;</span><span class="p">,</span> <span class="s">&#39;b1&#39;</span><span class="p">,</span> <span class="s">&#39;b4&#39;</span><span class="p">,</span> <span class="s">&#39;b3&#39;</span><span class="p">,</span> <span class="s">&#39;b3&#39;</span><span class="p">],</span>
-     <span class="s">&#39;c_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;c0&#39;</span><span class="p">,</span> <span class="s">&#39;c1&#39;</span><span class="p">,</span> <span class="s">&#39;c1&#39;</span><span class="p">,</span> <span class="s">&#39;c0&#39;</span><span class="p">,</span> <span class="s">&#39;c0&#39;</span><span class="p">,</span> <span class="s">&#39;c2&#39;</span><span class="p">,</span> <span class="s">&#39;c1&#39;</span><span class="p">,</span> <span class="s">&#39;c2&#39;</span><span class="p">,</span> <span class="s">&#39;c1&#39;</span><span class="p">,</span> <span class="s">&#39;c2&#39;</span><span class="p">]},</span>
-    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;d0&#39;</span><span class="p">,</span> <span class="s">&#39;d1&#39;</span><span class="p">,</span> <span class="s">&#39;d2&#39;</span><span class="p">,</span> <span class="s">&#39;d3&#39;</span><span class="p">,</span> <span class="s">&#39;d4&#39;</span><span class="p">,</span> <span class="s">&#39;d5&#39;</span><span class="p">,</span> <span class="s">&#39;d6&#39;</span><span class="p">,</span> <span class="s">&#39;d7&#39;</span><span class="p">,</span> <span class="s">&#39;d8&#39;</span><span class="p">,</span> <span class="s">&#39;d9&#39;</span><span class="p">])</span>
+    <span class="p">{</span><span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">],</span>
+     <span class="s1">&#39;b_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;b2&#39;</span><span class="p">,</span> <span class="s1">&#39;b0&#39;</span><span class="p">,</span> <span class="s1">&#39;b3&#39;</span><span class="p">,</span> <span class="s1">&#39;b3&#39;</span><span class="p">,</span> <span class="s1">&#39;b1&#39;</span><span class="p">,</span> <span class="s1">&#39;b4&#39;</span><span class="p">,</span> <span class="s1">&#39;b1&#39;</span><span class="p">,</span> <span class="s1">&#39;b4&#39;</span><span class="p">,</span> <span class="s1">&#39;b3&#39;</span><span class="p">,</span> <span class="s1">&#39;b3&#39;</span><span class="p">],</span>
+     <span class="s1">&#39;c_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;c0&#39;</span><span class="p">,</span> <span class="s1">&#39;c1&#39;</span><span class="p">,</span> <span class="s1">&#39;c1&#39;</span><span class="p">,</span> <span class="s1">&#39;c0&#39;</span><span class="p">,</span> <span class="s1">&#39;c0&#39;</span><span class="p">,</span> <span class="s1">&#39;c2&#39;</span><span class="p">,</span> <span class="s1">&#39;c1&#39;</span><span class="p">,</span> <span class="s1">&#39;c2&#39;</span><span class="p">,</span> <span class="s1">&#39;c1&#39;</span><span class="p">,</span> <span class="s1">&#39;c2&#39;</span><span class="p">]},</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;d0&#39;</span><span class="p">,</span> <span class="s1">&#39;d1&#39;</span><span class="p">,</span> <span class="s1">&#39;d2&#39;</span><span class="p">,</span> <span class="s1">&#39;d3&#39;</span><span class="p">,</span> <span class="s1">&#39;d4&#39;</span><span class="p">,</span> <span class="s1">&#39;d5&#39;</span><span class="p">,</span> <span class="s1">&#39;d6&#39;</span><span class="p">,</span> <span class="s1">&#39;d7&#39;</span><span class="p">,</span> <span class="s1">&#39;d8&#39;</span><span class="p">,</span> <span class="s1">&#39;d9&#39;</span><span class="p">])</span>
 
-<span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="n">df_a</span><span class="p">)</span>
-<span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="n">df_b</span><span class="p">)</span>
-<span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="n">df_c</span><span class="p">)</span>
-<span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s">&#39;d&#39;</span><span class="p">,</span> <span class="n">df_d</span><span class="p">)</span>
+<span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">df_a</span><span class="p">)</span>
+<span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">df_b</span><span class="p">)</span>
+<span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">df_c</span><span class="p">)</span>
+<span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">df_d</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The tables have data so that &#8216;a&#8217; can be broadcast onto &#8216;b&#8217;,
 and &#8216;b&#8217; and &#8216;c&#8217; can be broadcast onto &#8216;d&#8217;.
 We use the <a class="reference internal" href="#orca.orca.broadcast" title="orca.orca.broadcast"><code class="xref py py-func docutils literal"><span class="pre">broadcast()</span></code></a> function
 to register those relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">orca</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="n">onto</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="n">cast_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">onto_on</span><span class="o">=</span><span class="s">&#39;a_id&#39;</span><span class="p">)</span>
-<span class="n">orca</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="n">onto</span><span class="o">=</span><span class="s">&#39;d&#39;</span><span class="p">,</span> <span class="n">cast_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">onto_on</span><span class="o">=</span><span class="s">&#39;b_id&#39;</span><span class="p">)</span>
-<span class="n">orca</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="n">onto</span><span class="o">=</span><span class="s">&#39;d&#39;</span><span class="p">,</span> <span class="n">cast_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">onto_on</span><span class="o">=</span><span class="s">&#39;c_id&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">orca</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">onto</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">cast_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">onto_on</span><span class="o">=</span><span class="s1">&#39;a_id&#39;</span><span class="p">)</span>
+<span class="n">orca</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">onto</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">cast_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">onto_on</span><span class="o">=</span><span class="s1">&#39;b_id&#39;</span><span class="p">)</span>
+<span class="n">orca</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">onto</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">cast_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">onto_on</span><span class="o">=</span><span class="s1">&#39;c_id&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The syntax is similar to that of the
@@ -235,7 +278,7 @@ and indeed <code class="docutils literal"><span class="pre">merge</span></code> 
 Once the broadcasts are defined, use the
 <a class="reference internal" href="#orca.orca.merge_tables" title="orca.orca.merge_tables"><code class="xref py py-func docutils literal"><span class="pre">merge_tables()</span></code></a> function to get a
 merged DataFrame. Some examples in IPython:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">merge_tables</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="n">tables</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">merge_tables</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">tables</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span>
    <span class="n">a_id</span>  <span class="n">b</span>  <span class="n">a</span>
 <span class="n">b0</span>   <span class="n">a0</span>  <span class="mi">2</span>  <span class="mi">0</span>
@@ -244,7 +287,7 @@ merged DataFrame. Some examples in IPython:</p>
 <span class="n">b2</span>   <span class="n">a1</span>  <span class="mi">4</span>  <span class="mi">1</span>
 <span class="n">b4</span>   <span class="n">a1</span>  <span class="mi">6</span>  <span class="mi">1</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">merge_tables</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s">&#39;d&#39;</span><span class="p">,</span> <span class="n">tables</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">merge_tables</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">tables</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span>
    <span class="n">b_id</span> <span class="n">c_id</span>   <span class="n">d</span>  <span class="n">c</span> <span class="n">a_id</span>  <span class="n">b</span>  <span class="n">a</span>
 <span class="n">d0</span>   <span class="n">b2</span>   <span class="n">c0</span>  <span class="mi">10</span>  <span class="mi">7</span>   <span class="n">a1</span>  <span class="mi">4</span>  <span class="mi">1</span>
@@ -264,7 +307,7 @@ table, though the order may have changed.
 <a class="reference internal" href="#orca.orca.merge_tables" title="orca.orca.merge_tables"><code class="xref py py-func docutils literal"><span class="pre">merge_tables()</span></code></a> has an optional
 <code class="docutils literal"><span class="pre">columns=</span></code> keyword that can contain column names from any the tables
 going into the merge so you can limit which columns end up in the final table.
-(Columns necessary for performing merges will be included whether or not
+(Columns necessary for performing merges will be Inc.ded whether or not
 they are in the <code class="docutils literal"><span class="pre">columns=</span></code> list.)</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -283,13 +326,13 @@ or perform a calculation to generate a column. Orca allows you to
 register a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#series">Series</a> or function as a column on a registered table.
 Use the <a class="reference internal" href="#orca.orca.add_column" title="orca.orca.add_column"><code class="xref py py-func docutils literal"><span class="pre">add_column()</span></code></a> function or
 the <a class="reference internal" href="#orca.orca.column" title="orca.orca.column"><code class="xref py py-func docutils literal"><span class="pre">column()</span></code></a> decorator:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">])</span>
-<span class="n">orca</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">,</span> <span class="s">&#39;my_col&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">])</span>
+<span class="n">orca</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">,</span> <span class="s1">&#39;my_col&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
 
-<span class="nd">@orca.column</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">)</span>
+<span class="nd">@orca.column</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">my_col_x2</span><span class="p">(</span><span class="n">my_table</span><span class="p">):</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">my_table</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;my_col&#39;</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="s">&#39;my_col&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">my_table</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;my_col&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;my_col&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
 </pre></div>
 </div>
 <p>In the <code class="docutils literal"><span class="pre">my_col_x2</span></code> function we use the <code class="docutils literal"><span class="pre">columns=</span></code> keyword on
@@ -302,14 +345,14 @@ are additional ways to do so without first calling <code class="docutils literal
 to create an actual <code class="docutils literal"><span class="pre">DataFrame</span></code>.</p>
 <p><a class="reference internal" href="#orca.orca.DataFrameWrapper" title="orca.orca.DataFrameWrapper"><code class="xref py py-class docutils literal"><span class="pre">DataFrameWrapper</span></code></a> supports accessing
 individual columns in the same ways as <code class="docutils literal"><span class="pre">DataFrames</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.column</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.column</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">my_col_x2</span><span class="p">(</span><span class="n">my_table</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">my_table</span><span class="p">[</span><span class="s">&#39;my_col&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c"># or my_table.my_col * 2</span>
+    <span class="k">return</span> <span class="n">my_table</span><span class="p">[</span><span class="s1">&#39;my_col&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># or my_table.my_col * 2</span>
 </pre></div>
 </div>
 <p>Or you can use an expression to have a single column injected into a function:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.column</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">my_col_x2</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s">&#39;my_table.my_col&#39;</span><span class="p">):</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.column</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">my_col_x2</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;my_table.my_col&#39;</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">data</span> <span class="o">*</span> <span class="mi">2</span>
 </pre></div>
 </div>
@@ -317,13 +360,13 @@ individual columns in the same ways as <code class="docutils literal"><span clas
 refers to the column <code class="docutils literal"><span class="pre">my_col</span></code>, which is a pandas <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#series">Series</a> within
 the table <code class="docutils literal"><span class="pre">my_table</span></code>.</p>
 <p>A demonstration in IPython using the column definitions from above:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">29</span><span class="p">]:</span> <span class="n">wrapped</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">29</span><span class="p">]:</span> <span class="n">wrapped</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">30</span><span class="p">]:</span> <span class="n">wrapped</span><span class="o">.</span><span class="n">columns</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">30</span><span class="p">]:</span> <span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;my_col&#39;</span><span class="p">,</span> <span class="s">&#39;my_col_x2&#39;</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">30</span><span class="p">]:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;my_col&#39;</span><span class="p">,</span> <span class="s1">&#39;my_col_x2&#39;</span><span class="p">]</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">31</span><span class="p">]:</span> <span class="n">wrapped</span><span class="o">.</span><span class="n">local_columns</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">31</span><span class="p">]:</span> <span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">]</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">31</span><span class="p">]:</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">32</span><span class="p">]:</span> <span class="n">wrapped</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">32</span><span class="p">]:</span>
@@ -349,7 +392,7 @@ for which Orca has &#8220;injectables&#8221;. You can register <em>anything</em>
 it injected into functions.
 Use the <a class="reference internal" href="#orca.orca.add_injectable" title="orca.orca.add_injectable"><code class="xref py py-func docutils literal"><span class="pre">add_injectable()</span></code></a> function or the
 <a class="reference internal" href="#orca.orca.injectable" title="orca.orca.injectable"><code class="xref py py-func docutils literal"><span class="pre">injectable()</span></code></a> decorator:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">orca</span><span class="o">.</span><span class="n">add_injectable</span><span class="p">(</span><span class="s">&#39;z&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">orca</span><span class="o">.</span><span class="n">add_injectable</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 
 <span class="nd">@orca.injectable</span><span class="p">(</span><span class="n">autocall</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -361,7 +404,7 @@ Use the <a class="reference internal" href="#orca.orca.add_injectable" title="or
 
 <span class="nd">@orca.table</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">ztable</span><span class="p">(</span><span class="n">my_table</span><span class="p">,</span> <span class="n">zsquared</span><span class="p">):</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">my_table</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">])</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">my_table</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">df</span> <span class="o">*</span> <span class="n">zsquared</span>
 </pre></div>
 </div>
@@ -382,7 +425,7 @@ caching system,
 so you can also manage their caches via the <code class="docutils literal"><span class="pre">cache_scope</span></code> keyword argument
 and the <a class="reference internal" href="#orca.orca.clear_cache" title="orca.orca.clear_cache"><code class="xref py py-func docutils literal"><span class="pre">clear_cache()</span></code></a> function.</p>
 <p>An example of the above injectables in IPython:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">38</span><span class="p">]:</span> <span class="n">wrapped</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="s">&#39;ztable&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">38</span><span class="p">]:</span> <span class="n">wrapped</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="s1">&#39;ztable&#39;</span><span class="p">)</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">39</span><span class="p">]:</span> <span class="n">wrapped</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">39</span><span class="p">]:</span>
@@ -430,8 +473,8 @@ when more manual management is required.</p>
 <p>To run a block of commands with the cache disabled, but have it automatically
 re-enabled, use the <code class="xref py py-func docutils literal"><span class="pre">cache_disabled()</span></code>
 context manager:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">orca</span><span class="o">.</span><span class="n">cache_disabled</span><span class="p">():</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">eval_variable</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">orca</span><span class="o">.</span><span class="n">cache_disabled</span><span class="p">():</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">eval_variable</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Finally, users can manually clear the cache using
@@ -446,28 +489,28 @@ Steps are generally important for their side-effects, their
 return values are discarded during pipeline runs.
 For example, a step might replace a column
 in a table (a new table, though similar to <code class="docutils literal"><span class="pre">my_table</span></code> above):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
-<span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s">&#39;new_table&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
+<span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s1">&#39;new_table&#39;</span><span class="p">)</span>
 
 <span class="nd">@orca.step</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">replace_col</span><span class="p">(</span><span class="n">new_table</span><span class="p">):</span>
-    <span class="n">new_table</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+    <span class="n">new_table</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Or update some values in a column:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.step</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.step</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">update_col</span><span class="p">(</span><span class="n">new_table</span><span class="p">):</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">99</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">new_table</span><span class="o">.</span><span class="n">update_col_from_series</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+    <span class="n">new_table</span><span class="o">.</span><span class="n">update_col_from_series</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Or add rows to a table:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.step</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.step</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">add_rows</span><span class="p">(</span><span class="n">new_table</span><span class="p">):</span>
-    <span class="n">new_rows</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">]},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="n">new_rows</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">]},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">new_table</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span> <span class="n">new_rows</span><span class="p">])</span>
-    <span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s">&#39;new_table&#39;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
+    <span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s1">&#39;new_table&#39;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The first two of the above examples update <code class="docutils literal"><span class="pre">my_tables</span></code>&#8216;s underlying
@@ -476,12 +519,12 @@ If your table is a wrapped function, not a DataFrame, you can update
 columns by replacing them entirely with a new <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#series">Series</a> using the
 <a class="reference internal" href="#orca.orca.add_column" title="orca.orca.add_column"><code class="xref py py-func docutils literal"><span class="pre">add_column()</span></code></a> function.</p>
 <p>A demonstration of running the above steps:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">68</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s">&#39;replace_col&#39;</span><span class="p">,</span> <span class="s">&#39;update_col&#39;</span><span class="p">,</span> <span class="s">&#39;add_rows&#39;</span><span class="p">])</span>
-<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;replace_col&#39;</span>
-<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;update_col&#39;</span>
-<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;add_rows&#39;</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">68</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;replace_col&#39;</span><span class="p">,</span> <span class="s1">&#39;update_col&#39;</span><span class="p">,</span> <span class="s1">&#39;add_rows&#39;</span><span class="p">])</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s1">&#39;replace_col&#39;</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s1">&#39;update_col&#39;</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s1">&#39;add_rows&#39;</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">69</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="s">&#39;new_table&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">69</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="s1">&#39;new_table&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">69</span><span class="p">]:</span>
      <span class="n">a</span>
 <span class="mi">0</span>    <span class="mi">4</span>
@@ -505,36 +548,36 @@ as in the above example, will run through the steps once.
 To run the pipeline over some a sequence, provide those values as a sequence
 to <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><code class="xref py py-func docutils literal"><span class="pre">run()</span></code></a> using the <code class="docutils literal"><span class="pre">iter_vars</span></code> argument.
 The variable <code class="docutils literal"><span class="pre">iter_var</span></code> is provided as an injectable to Orca functions:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">77</span><span class="p">]:</span> <span class="nd">@orca.step</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">77</span><span class="p">]:</span> <span class="nd">@orca.step</span><span class="p">()</span>
    <span class="o">....</span><span class="p">:</span> <span class="k">def</span> <span class="nf">print_year</span><span class="p">(</span><span class="n">iter_var</span><span class="p">):</span>
-   <span class="o">....</span><span class="p">:</span>         <span class="k">print</span> <span class="s">&#39;*** the iteration value is {} ***&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iter_var</span><span class="p">)</span>
+   <span class="o">....</span><span class="p">:</span>         <span class="k">print</span> <span class="s1">&#39;*** the iteration value is {} ***&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iter_var</span><span class="p">)</span>
    <span class="o">....</span><span class="p">:</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">78</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s">&#39;print_year&#39;</span><span class="p">],</span> <span class="n">iter_vars</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">2015</span><span class="p">))</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">78</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;print_year&#39;</span><span class="p">],</span> <span class="n">iter_vars</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">2015</span><span class="p">))</span>
 <span class="n">Running</span> <span class="n">iteration</span> <span class="mi">1</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2010</span>
-<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span>
 <span class="o">***</span> <span class="n">the</span> <span class="n">iteration</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">2010</span> <span class="o">***</span>
-<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
+<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">1</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2010</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Running</span> <span class="n">iteration</span> <span class="mi">2</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2011</span>
-<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span>
 <span class="o">***</span> <span class="n">the</span> <span class="n">iteration</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">2011</span> <span class="o">***</span>
-<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
+<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">2</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2011</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Running</span> <span class="n">iteration</span> <span class="mi">3</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2012</span>
-<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span>
 <span class="o">***</span> <span class="n">the</span> <span class="n">iteration</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">2012</span> <span class="o">***</span>
-<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
+<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">3</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2012</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Running</span> <span class="n">iteration</span> <span class="mi">4</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2013</span>
-<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span>
 <span class="o">***</span> <span class="n">the</span> <span class="n">iteration</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">2013</span> <span class="o">***</span>
-<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
+<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">4</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2013</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Running</span> <span class="n">iteration</span> <span class="mi">5</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2014</span>
-<span class="n">Running</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span>
+<span class="n">Running</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span>
 <span class="o">***</span> <span class="n">the</span> <span class="n">iteration</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">2014</span> <span class="o">***</span>
-<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
+<span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">5</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2014</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 </pre></div>
 </div>
@@ -545,7 +588,7 @@ especially during development and testing.
 To achieve this, use the
 <a class="reference internal" href="#orca.orca.eval_variable" title="orca.orca.eval_variable"><code class="xref py py-func docutils literal"><span class="pre">eval_variable()</span></code></a> and
 <a class="reference internal" href="#orca.orca.eval_step" title="orca.orca.eval_step"><code class="xref py py-func docutils literal"><span class="pre">eval_step()</span></code></a> functions.</p>
-<p><code class="docutils literal"><span class="pre">eval_variable</span></code> takes the name of a variable (including variable expressions)
+<p><code class="docutils literal"><span class="pre">eval_variable</span></code> takes the name of a variable (Inc.ding variable expressions)
 and returns that variable as it would be injected into a function Orca.
 <code class="docutils literal"><span class="pre">eval_step</span></code> takes the name of a step, runs that
 step with variable injection, and returns any result.</p>
@@ -560,12 +603,12 @@ within Orca while the evaluation is taking place.
 When the evaluation is complete Orca&#8217;s state is reset to whatever
 it was before calling the <code class="docutils literal"><span class="pre">eval</span></code> function.</p>
 <p>An example of <a class="reference internal" href="#orca.orca.eval_variable" title="orca.orca.eval_variable"><code class="xref py py-func docutils literal"><span class="pre">eval_variable()</span></code></a>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">]:</span> <span class="nd">@orca.injectable</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">]:</span> <span class="nd">@orca.injectable</span><span class="p">()</span>
    <span class="o">....</span><span class="p">:</span> <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
    <span class="o">....</span><span class="p">:</span>     <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
    <span class="o">....</span><span class="p">:</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">16</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">eval_variable</span><span class="p">(</span><span class="s">&#39;func&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">16</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">eval_variable</span><span class="p">(</span><span class="s1">&#39;func&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">16</span><span class="p">]:</span> <span class="mi">3</span>
 </pre></div>
 </div>
@@ -573,35 +616,35 @@ it was before calling the <code class="docutils literal"><span class="pre">eval<
 which can lead to errors in a situation like this with a table
 where the evaluation of the table is delayed until
 <a class="reference internal" href="#orca.orca.DataFrameWrapper.to_frame" title="orca.orca.DataFrameWrapper.to_frame"><code class="xref py py-meth docutils literal"><span class="pre">to_frame()</span></code></a> is called:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="nd">@orca.table</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="nd">@orca.table</span><span class="p">()</span>
    <span class="o">....</span><span class="p">:</span> <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-   <span class="o">....</span><span class="p">:</span>     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">y</span><span class="p">]})</span>
+   <span class="o">....</span><span class="p">:</span>     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">y</span><span class="p">]})</span>
    <span class="o">....</span><span class="p">:</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">eval_variable</span><span class="p">(</span><span class="s">&#39;table&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">eval_variable</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="o">&lt;</span><span class="n">orca</span><span class="o">.</span><span class="n">TableFuncWrapper</span> <span class="n">at</span> <span class="mh">0x100733850</span><span class="o">&gt;</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">eval_variable</span><span class="p">(</span><span class="s">&#39;table&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">eval_variable</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
 <span class="o">---------------------------------------------------------------------------</span>
 <span class="ne">KeyError</span>                                  <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
 <span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">14</span><span class="o">-</span><span class="mi">5</span><span class="n">bf660fb07b7</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
-<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">orca</span><span class="o">.</span><span class="n">eval_variable</span><span class="p">(</span><span class="s">&#39;table&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">orca</span><span class="o">.</span><span class="n">eval_variable</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
 
 <span class="o">&lt;</span><span class="n">truncated</span><span class="o">&gt;</span>
 
-<span class="ne">KeyError</span><span class="p">:</span> <span class="s">&#39;y&#39;</span>
+<span class="ne">KeyError</span><span class="p">:</span> <span class="s1">&#39;y&#39;</span>
 </pre></div>
 </div>
 <p>In order to get the injectables to be set for a controlled term you can
 use the <a class="reference internal" href="#orca.orca.injectables" title="orca.orca.injectables"><code class="xref py py-func docutils literal"><span class="pre">injectables()</span></code></a> context manager
 to set the injectables:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="nd">@orca.table</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="nd">@orca.table</span><span class="p">()</span>
    <span class="o">....</span><span class="p">:</span> <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-   <span class="o">....</span><span class="p">:</span>     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">y</span><span class="p">]})</span>
+   <span class="o">....</span><span class="p">:</span>     <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">y</span><span class="p">]})</span>
    <span class="o">....</span><span class="p">:</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="k">with</span> <span class="n">orca</span><span class="o">.</span><span class="n">injectables</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-   <span class="o">....</span><span class="p">:</span>     <span class="n">df</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">eval_variable</span><span class="p">(</span><span class="s">&#39;table&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+   <span class="o">....</span><span class="p">:</span>     <span class="n">df</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">eval_variable</span><span class="p">(</span><span class="s1">&#39;table&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
    <span class="o">....</span><span class="p">:</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="n">df</span>
@@ -643,8 +686,8 @@ that are also
 Expressions allow you to specify a variable to inject with Python keyword
 arguments. Here&#8217;s an example redone from above using
 variable expressions:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.table</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">halve_my_table</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s">&#39;my_table&#39;</span><span class="p">):</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.table</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">halve_my_table</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;my_table&#39;</span><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">df</span> <span class="o">/</span> <span class="mi">2</span>
 </pre></div>
@@ -652,8 +695,8 @@ variable expressions:</p>
 <p>The variable registered as <code class="docutils literal"><span class="pre">'my_table'</span></code> is injected into this function
 as the argument <code class="docutils literal"><span class="pre">data</span></code>.</p>
 <p>Expressions can also be used to refer to columns within a registered table:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="nd">@orca.column</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">halved</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s">&#39;my_table.a&#39;</span><span class="p">):</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.column</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">halved</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;my_table.a&#39;</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">data</span> <span class="o">/</span> <span class="mi">2</span>
 </pre></div>
 </div>
@@ -662,7 +705,7 @@ which is a pandas <a class="reference external" href="http://pandas.pydata.org/p
 a new Series to register a new column on <code class="docutils literal"><span class="pre">my_table</span></code> using the
 <a class="reference internal" href="#orca.orca.column" title="orca.orca.column"><code class="xref py py-func docutils literal"><span class="pre">column()</span></code></a> decorator. We can take a
 look in IPython:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="s">&#39;my_table&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">get_table</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
 <span class="n">Out</span><span class="p">[</span><span class="mi">21</span><span class="p">]:</span>
    <span class="n">a</span>  <span class="n">halved</span>
 <span class="mi">0</span>  <span class="mi">1</span>     <span class="mf">0.5</span>
@@ -1003,7 +1046,7 @@ a Pandas Series.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>columns</strong> : sequence, optional</p>
 <blockquote>
 <div><p>Sequence of the column names desired in the DataFrame.
-If None all columns are returned, including registered columns.</p>
+If None all columns are returned, Inc.ding registered columns.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -1148,7 +1191,7 @@ if the wrapped function has not been called yet.)</p>
 <dl class="method">
 <dt id="orca.orca.TableFuncWrapper.func_source_data">
 <code class="descname">func_source_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.func_source_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return data about the wrapped function source, including file name,
+<dd><p>Return data about the wrapped function source, Inc.ding file name,
 line number, and source code.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1193,7 +1236,7 @@ unknown.</p>
 <dt id="orca.orca.TableFuncWrapper.local_columns">
 <code class="descname">local_columns</code><a class="headerlink" href="#orca.orca.TableFuncWrapper.local_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Only the columns contained in the DataFrame returned by the
-wrapped function. (No registered columns included.)</p>
+wrapped function. (No registered columns Inc.ded.)</p>
 </dd></dl>
 
 <dl class="method">
@@ -1628,7 +1671,7 @@ None if the table index will be used instead.</li>
 <dl class="function">
 <dt id="orca.orca.get_injectable_func_source_data">
 <code class="descclassname">orca.orca.</code><code class="descname">get_injectable_func_source_data</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_injectable_func_source_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return data about an injectable function&#8217;s source, including file name,
+<dd><p>Return data about an injectable function&#8217;s source, Inc.ding file name,
 line number, and source code.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1873,7 +1916,7 @@ registered merge rules via the <cite>broadcast</cite> function.</p>
 </div></blockquote>
 <p><strong>tables</strong> : list of <cite>DataFrameWrapper</cite>, <cite>TableFuncWrapper</cite>, or str</p>
 <blockquote>
-<div><p>All of the tables to merge. Should include the target table.</p>
+<div><p>All of the tables to merge. Should Inc.de the target table.</p>
 </div></blockquote>
 <p><strong>columns</strong> : list of str, optional</p>
 <blockquote>
@@ -1921,7 +1964,7 @@ File will be a pandas HDF data store.</p>
 <div><p>Iteration interval on which to save data to <cite>data_out</cite>. For example,
 2 will save out every 2 iterations, 5 every 5 iterations.
 Default is every iteration.
-The first and last iterations are always included.</p>
+The first and last iterations are always Inc.ded.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -2016,15 +2059,16 @@ labeling DataFrames in the HDFStore.</p>
 </div>
 
 
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="server.html" class="btn btn-neutral float-right" title="Orca Server">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="server.html" class="btn btn-neutral float-right" title="Orca Server" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="example.html" class="btn btn-neutral" title="Example"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="example.html" class="btn btn-neutral" title="Example" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -2033,13 +2077,14 @@ labeling DataFrames in the HDFStore.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, Autodesk.
+        &copy; Copyright 2016, UrbanSim Inc..
+
     </p>
   </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-  
 </footer>
+
         </div>
       </div>
 

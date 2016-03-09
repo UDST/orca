@@ -5,6 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Orca Server &mdash; Orca 1.0 documentation</title>
@@ -14,7 +15,6 @@
   
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
 
   
   
@@ -35,7 +35,7 @@
         <link rel="prev" title="Orca Core" href="core.html"/> 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -45,11 +45,27 @@
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        
-          <a href="index.html" class="fa fa-home"> Orca</a>
-        
-        
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Orca
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -57,41 +73,53 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-      </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
           
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
-              <ul class="current">
+            
+            
+                <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
-<li class="toctree-l1"><a class="reference internal" href="core.html">Orca Core</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="core.html#tables">Tables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#columns">Columns</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#injectables">Injectables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#caching">Caching</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#steps">Steps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#running-pipelines">Running Pipelines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#argument-matching">Argument Matching</a></li>
-<li class="toctree-l2"><a class="reference internal" href="core.html#api">API</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Orca Core</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Orca Server</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#start-the-server">Start the Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#server-routes">Server Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#server-routes">Server Routes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ui">UI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#schema">Schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#list-tables">List Tables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-info">Table Info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-preview">Table Preview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-describe">Table Describe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-definition">Table Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-csv">Table CSV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#table-groupby-aggregation">Table Groupby Aggregation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#list-columns-for-table">List Columns For Table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#column-preview">Column Preview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#column-definition">Column Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#column-describe">Column Describe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#column-csv">Column CSV</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#list-injectables">List Injectables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#injectable-repr">Injectable Repr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#injectable-definition">Injectable Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#list-broadcasts">List Broadcasts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#broadcast-definition">Broadcast Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#list-steps">List Steps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-definition">Step Definition</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="utils.html">Orca Utilities</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="utils.html#module-orca.utils.testing">Testing Helpers</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Orca Utilities</a></li>
 </ul>
 
+            
           
-        
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
@@ -106,20 +134,29 @@
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
     <li>Orca Server</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="_sources/server.txt" rel="nofollow"> View page source</a>
+          
+            <a href="_sources/server.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
   </ul>
   <hr/>
 </div>
-          <div role="main" class="document">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="orca-server">
 <h1>Orca Server<a class="headerlink" href="#orca-server" title="Permalink to this headline">¶</a></h1>
@@ -138,15 +175,15 @@ bundled UI to browse an Orca configuration.</p>
 <p>You can get these libraries individually (they are available via
 <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> and
 <a class="reference external" href="http://conda.pydata.org/">conda</a>), or get them when you install
-Orca by including the <code class="docutils literal"><span class="pre">[server]</span></code> option:</p>
-<div class="highlight-python"><div class="highlight"><pre>pip install orca[server]
+Orca by Inc.ding the <code class="docutils literal"><span class="pre">[server]</span></code> option:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>pip install orca[server]
 </pre></div>
 </div>
 </div>
 <div class="section" id="start-the-server">
 <h2>Start the Server<a class="headerlink" href="#start-the-server" title="Permalink to this headline">¶</a></h2>
 <p>Use the <code class="docutils literal"><span class="pre">orca-server</span></code> command line utility to start the Orca server:</p>
-<div class="highlight-python"><div class="highlight"><pre>&gt; orca-server --help
+<div class="highlight-python"><div class="highlight"><pre><span></span>&gt; orca-server --help
 usage: orca-server [-h] [-d] [-H HOST] [-p PORT] filename
 
 Start a Flask server that has HTTP endpoints that provide data about an Orca
@@ -222,7 +259,7 @@ can load some third-party CSS and JavaScript.</p>
 </ul>
 <p>The &#8220;schema&#8221; route returns a complete list of available tables, columns, steps,
 injectables, and broadcasts.
-Columns include both those registered on a table via Orca and those that
+Columns Inc.de both those registered on a table via Orca and those that
 are local to a table.
 The returned JSON object has keys <code class="docutils literal"><span class="pre">tables</span></code>, <code class="docutils literal"><span class="pre">steps</span></code>, <code class="docutils literal"><span class="pre">injectables</span></code>,
 <code class="docutils literal"><span class="pre">columns</span></code>, and <code class="docutils literal"><span class="pre">broadcasts</span></code>.
@@ -232,7 +269,7 @@ of the &#8220;cast&#8221; and &#8220;onto&#8221; tables, respectively.
 The <code class="docutils literal"><span class="pre">columns</span></code> value is an object whose keys are table names and values
 are arrays of strings (column names).</p>
 <p>Example:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;tables&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my_table&quot;</span><span class="p">,</span> <span class="s2">&quot;another_table&quot;</span><span class="p">],</span>
   <span class="nt">&quot;columns&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;my_table&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">,</span> <span class="s2">&quot;col2&quot;</span><span class="p">,</span> <span class="s2">&quot;col3&quot;</span><span class="p">],</span>
@@ -252,7 +289,7 @@ are arrays of strings (column names).</p>
 <li>Returns: JSON</li>
 </ul>
 <p>The &#8220;tables&#8221; route returns a list of the tables registered with Orca.</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;tables&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my_table&quot;</span><span class="p">,</span> <span class="s2">&quot;another_table&quot;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
@@ -265,7 +302,7 @@ are arrays of strings (column names).</p>
 <li>Returns: Text</li>
 </ul>
 <p>Returns the text result of <code class="docutils literal"><span class="pre">table.info(verbose=True)</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
 Int64Index: 2478 entries, 0 to 2477
 Data columns (total 10 columns):
 region          2478 non-null object
@@ -290,7 +327,7 @@ memory usage: 213.0+ KB
 <li>Returns: JSON</li>
 </ul>
 <p>Returns the result of <code class="docutils literal"><span class="pre">table.head()</span></code> as JSON in Pandas&#8217; &#8220;split&#8221; format.</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;columns&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">,</span> <span class="s2">&quot;col2&quot;</span><span class="p">],</span>
   <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">[</span><span class="s2">&quot;datum1&quot;</span><span class="p">,</span> <span class="mi">19</span><span class="p">],</span>
@@ -309,7 +346,7 @@ memory usage: 213.0+ KB
 <li>Returns: JSON</li>
 </ul>
 <p>Returns the result of <code class="docutils literal"><span class="pre">table.describe()</span></code> as JSON in Pandas&#8217; &#8220;split&#8221; format.</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;columns&quot;</span><span class="p">:</span> <span class="p">[</span>
     <span class="s2">&quot;elevation&quot;</span><span class="p">,</span>
     <span class="s2">&quot;precip&quot;</span><span class="p">,</span>
@@ -372,12 +409,12 @@ memory usage: 213.0+ KB
 it is a registered DataFrame or function.
 If the table is a registered function this returns the text of the function.</p>
 <p>If the table is a registered DataFrame all that is returned is:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;dataframe&quot;</span><span class="p">}</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;dataframe&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>If the table is registered as a function the returned data will include the
+<p>If the table is registered as a function the returned data will Inc.de the
 filename, line number, and text of the function:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
   <span class="nt">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;data.py&quot;</span><span class="p">,</span>
   <span class="nt">&quot;lineno&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
@@ -396,7 +433,7 @@ filename, line number, and text of the function:</p>
 <li>Returns: Text</li>
 </ul>
 <p>Returns the entire table as CSV using Pandas&#8217; default CSV output.</p>
-<div class="highlight-python"><div class="highlight"><pre>,col1,col2
+<div class="highlight-python"><div class="highlight"><pre><span></span>,col1,col2
 12,datum1,19
 26,datum2,42
 40,datum3,99
@@ -422,11 +459,11 @@ in Pandas&#8217; &#8220;split&#8221; format.</p>
 </ul>
 <p>One of <cite>by</cite> or <cite>level</cite> must be provided, but not both.
 For example, the URL might read:</p>
-<div class="highlight-python"><div class="highlight"><pre>/groupbyagg?by=region&amp;column=precip&amp;agg=median
+<div class="highlight-python"><div class="highlight"><pre><span></span>/groupbyagg?by=region&amp;column=precip&amp;agg=median
 </pre></div>
 </div>
 <p>The data is returned as JSON in Pandas&#8217; &#8220;split&#8221; format:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">10.225</span><span class="p">,</span> <span class="mf">2.15</span><span class="p">],</span>
   <span class="nt">&quot;index&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;CENTRAL COAST&quot;</span><span class="p">,</span> <span class="s2">&quot;COLORADO RIVER&quot;</span><span class="p">],</span>
   <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;precip&quot;</span>
@@ -440,8 +477,8 @@ For example, the URL might read:</p>
 <li>Route: <code class="docutils literal"><span class="pre">/tables/&lt;table_name&gt;/columns</span></code></li>
 <li>Returns: JSON</li>
 </ul>
-<p>List all columns for a table including both local and registered columns.</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<p>List all columns for a table Inc.ding both local and registered columns.</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;columns&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">,</span> <span class="s2">&quot;col2&quot;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
@@ -454,7 +491,7 @@ For example, the URL might read:</p>
 <li>Returns: JSON</li>
 </ul>
 <p>Return the first ten elements of a column as JSON in Pandas&#8217; &#8220;split&#8221; format:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">60.92</span><span class="p">,</span> <span class="mf">12.63</span><span class="p">,</span> <span class="mf">12.06</span><span class="p">,</span> <span class="mf">12.11</span><span class="p">,</span> <span class="mf">26.08</span><span class="p">],</span>
   <span class="nt">&quot;index&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">68</span><span class="p">],</span>
   <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;precip&quot;</span>
@@ -472,16 +509,16 @@ For example, the URL might read:</p>
 it is a registered Series or function.
 If the column is a registered function this returns the text of the function.</p>
 <p>If the column is a registered Series all that is returned is:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;series&quot;</span><span class="p">}</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;series&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
 <p>or if the column is local to a DataFrame the return value is:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;local&quot;</span><span class="p">}</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;local&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>If the column is registered as a function the returned data will include the
+<p>If the column is registered as a function the returned data will Inc.de the
 filename, line number, and text of the function:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
   <span class="nt">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;data.py&quot;</span><span class="p">,</span>
   <span class="nt">&quot;lineno&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
@@ -500,7 +537,7 @@ filename, line number, and text of the function:</p>
 <li>Returns: JSON</li>
 </ul>
 <p>Return summary statistics for a column as JSON in Pandas&#8217; &#8220;split&#8221; format:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
     <span class="mf">1771.0</span><span class="p">,</span>
     <span class="mf">1.3995482778</span><span class="p">,</span>
@@ -533,7 +570,7 @@ filename, line number, and text of the function:</p>
 <li>Returns: Text</li>
 </ul>
 <p>Return an entire column as CSV using Pandas&#8217; default output:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="mi">0</span><span class="p">,</span><span class="mf">0.04</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="mi">0</span><span class="p">,</span><span class="mf">0.04</span>
 <span class="mi">1</span><span class="p">,</span><span class="mf">5.02</span>
 <span class="mi">2</span><span class="p">,</span><span class="mf">2.35</span>
 <span class="mi">3</span><span class="p">,</span><span class="mf">3.72</span>
@@ -548,7 +585,7 @@ filename, line number, and text of the function:</p>
 <li>Returns: JSON</li>
 </ul>
 <p>Returns a list of all registered injectables:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;injectables&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;var1&quot;</span><span class="p">,</span> <span class="s2">&quot;var2&quot;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
@@ -562,7 +599,7 @@ filename, line number, and text of the function:</p>
 </ul>
 <p>Return the string representations of an injectable and the type of an
 injectable:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;repr&quot;</span><span class="p">:</span> <span class="s2">&quot;2014&quot;</span><span class="p">,</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;class &#39;int&#39;&gt;&quot;</span>
 <span class="p">}</span>
@@ -579,14 +616,14 @@ Use care with variables where that might be large.</p>
 </ul>
 <p>Get the definition of an injectable. If the injectable is anything other
 than a function the result will be:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;variable&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>If the injectable is a function the returned data will include the
+<p>If the injectable is a function the returned data will Inc.de the
 filename, line number, and text of the function:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
   <span class="nt">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;data.py&quot;</span><span class="p">,</span>
   <span class="nt">&quot;lineno&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
@@ -605,7 +642,7 @@ filename, line number, and text of the function:</p>
 <li>Returns: JSON</li>
 </ul>
 <p>List all registered broadcasts as objects with &#8220;cast&#8221; and &#8220;onto&#8221; keys:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;broadcasts&quot;</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span><span class="nt">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;table1&quot;</span><span class="p">,</span> <span class="nt">&quot;onto&quot;</span><span class="p">:</span> <span class="s2">&quot;table2&quot;</span><span class="p">},</span>
     <span class="p">{</span><span class="nt">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;table3&quot;</span><span class="p">,</span> <span class="nt">&quot;onto&quot;</span><span class="p">:</span> <span class="s2">&quot;table2&quot;</span><span class="p">}</span>
@@ -623,7 +660,7 @@ filename, line number, and text of the function:</p>
 <p>Get the definition of a broadcast, which is essentially the arguments that
 were passed to the <a class="reference internal" href="core.html#orca.orca.broadcast" title="orca.orca.broadcast"><code class="xref py py-func docutils literal"><span class="pre">broadcast()</span></code></a> function to register
 the broadcast:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;table1&quot;</span><span class="p">,</span>
   <span class="nt">&quot;cast_index&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
   <span class="nt">&quot;cast_on&quot;</span><span class="p">:</span> <span class="s2">&quot;onto_id&quot;</span><span class="p">,</span>
@@ -641,7 +678,7 @@ the broadcast:</p>
 <li>Returns: JSON</li>
 </ul>
 <p>Returns a list of registered step names:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;steps&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;concat_yearly&quot;</span><span class="p">,</span> <span class="s2">&quot;concat_monthly&quot;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
@@ -654,9 +691,9 @@ the broadcast:</p>
 <li>Returns: JSON</li>
 </ul>
 <p>Get the source of a step function.
-The returned data will include the
+The returned data will Inc.de the
 filename, line number, and text of the function:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
   <span class="nt">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;data.py&quot;</span><span class="p">,</span>
   <span class="nt">&quot;lineno&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
@@ -672,15 +709,16 @@ filename, line number, and text of the function:</p>
 </div>
 
 
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="utils.html" class="btn btn-neutral float-right" title="Orca Utilities">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="utils.html" class="btn btn-neutral float-right" title="Orca Utilities" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="core.html" class="btn btn-neutral" title="Orca Core"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="core.html" class="btn btn-neutral" title="Orca Core" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -689,13 +727,14 @@ filename, line number, and text of the function:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, Autodesk.
+        &copy; Copyright 2016, UrbanSim Inc..
+
     </p>
   </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
-  
 </footer>
+
         </div>
       </div>
 
