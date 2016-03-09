@@ -49,8 +49,8 @@ setup(
     version='1.2dev',
     description='A pipeline orchestration tool with Pandas support',
     long_description=long_description,
-    author='Autodesk',
-    author_email='matthew.davis@autodesk.com',
+    author='UrbanSim Inc.',
+    author_email='info@urbansim.com',
     license='BSD',
     url='https://github.com/udst/orca',
     classifiers=[
