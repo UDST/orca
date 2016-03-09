@@ -21,8 +21,8 @@ source:
     # Would create an entry point called orca that calls orca.main()
 
 
-  # If this is a new build for the same version, increment the build
-  # number. If you do not include this key, it defaults to 0.
+  # If this is a new build for the same version, Inc.ment the build
+  # number. If you do not Inc.de this key, it defaults to 0.
   # number: 1
 
 requirements:
