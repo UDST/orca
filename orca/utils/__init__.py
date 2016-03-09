@@ -1,6 +1,5 @@
 # Orca
-# Copyright (C) 2014-2015 Synthicity, LLC
-# Copyright (C) 2015 Autodesk
+# Copyright (C) 2016 UrbanSim Inc.
 # See full license in LICENSE.
 
 from .utils import *
