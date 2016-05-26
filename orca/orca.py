@@ -1846,12 +1846,19 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1):
         Iteration interval on which to save data to `data_out`. For example,
         2 will save out every 2 iterations, 5 every 5 iterations.
         Default is every iteration.
-        The first and last iterations are always included.
+        The results of the first and last iterations are always included.
+        The input (base) tables are also included and prefixed with `base/`,
+        these represent the state of the system before any steps have been
+        executed.
+        The interval is defined relative to the first iteration. For example,
+        a run begining in 2015 with an out_interval of 2, will write out
+        results for 2015, 2017, etc.
 
     """
     iter_vars = iter_vars or [None]
-    iter_counter = 1
+    max_i = len(iter_vars)
 
+    # write out the base (inputs)
     if data_out:
         write_tables(data_out, steps, 'base')
 
@@ -1883,15 +1890,12 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1):
              'with iteration value {!r}: '
              '{:.2f} s').format(i, var, time.time() - t1))
 
-        if data_out and iter_counter == out_interval:
-            write_tables(data_out, steps, var)
-            iter_counter = 0
+        # write out the results for the current iteration
+        if data_out:
+            if (i - 1) % out_interval == 0 or i == max_i:
+                write_tables(data_out, steps, var)
 
-        iter_counter += 1
         clear_cache(scope=_CS_ITER)
-
-    if data_out and iter_counter != 1:
-        write_tables(data_out, steps, 'final')
 
 
 @contextmanager
