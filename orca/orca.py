@@ -1850,7 +1850,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1):
 
     """
     iter_vars = iter_vars or [None]
-    iter_counter = 0
+    iter_counter = 1
 
     if data_out:
         write_tables(data_out, steps, 'base')
