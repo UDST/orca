@@ -900,17 +900,27 @@ def test_write_tables(df, store_name):
     def step(table):
         pass
 
-    orca.write_tables(store_name, ['step'], None)
-
+    step_tables = orca.get_step_table_names(['step'])
+    
+    orca.write_tables(store_name, step_tables, None)
     with pd.get_store(store_name, mode='r') as store:
         assert 'table' in store
         pdt.assert_frame_equal(store['table'], df)
 
-    orca.write_tables(store_name, ['step'], 1969)
+    orca.write_tables(store_name, step_tables, 1969)
 
     with pd.get_store(store_name, mode='r') as store:
         assert '1969/table' in store
         pdt.assert_frame_equal(store['1969/table'], df)
+
+
+def test_write_all_tables(df, store_name):
+    orca.add_table('table', df)
+    orca.write_tables(store_name)
+    
+    with pd.get_store(store_name, mode='r') as store:
+        for t in orca.list_tables():
+            assert t in store
 
 
 def test_run_and_write_tables(df, store_name):

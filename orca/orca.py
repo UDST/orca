@@ -1795,36 +1795,55 @@ def merge_tables(target, tables, columns=None):
     return frames[target]
 
 
-def write_tables(fname, steps, iter_var):
+def get_step_table_names(steps):
     """
-    Write all tables injected into `steps` to a pandas.HDFStore file.
-    If var is not None it will be used to prefix the table names so that
-    multiple iterations can go in the same file.
+    Returns a list of table names injected into the provided steps.
+
+    Parameters
+    ----------
+    steps: list of str
+        Steps to gather table inputs from.
+
+    Returns
+    -------
+    list of str
+
+    """
+    table_names = set()
+    for s in steps:
+        table_names |= get_step(s)._tables_used()
+    return list(table_names)
+
+
+def write_tables(fname, table_names=None, prefix=None): 
+    """
+    Writes tables to a pandas.HDFStore file.
 
     Parameters
     ----------
     fname : str
         File name for HDFStore. Will be opened in append mode and closed
         at the end of this function.
-    steps : list of str
-        steps from which to gather injected tables for saving.
-    iter_var : object or None
-        If not None, used as a prefix along with table names for
-        labeling DataFrames in the HDFStore.
+    table_names: list of str, optional, default None
+        List of tables to write. If None, all registered tables will be written.
+    prefix: str 
+        If not None, used to prefix the output table names so that
+        multiple iterations can go in the same file. 
 
     """
-    steps = (get_step(w) for w in tz.unique(steps))
-    table_names = tz.unique(tz.concat(w._tables_used() for w in steps))
+    if table_names is None:
+        table_names = list_tables()
+    
     tables = (get_table(t) for t in table_names)
-
-    key_template = '{}/{{}}'.format(iter_var) if iter_var is not None else '{}'
+    key_template = '{}/{{}}'.format(prefix) if prefix is not None else '{}'
 
     with pd.get_store(fname, mode='a') as store:
         for t in tables:
             store[key_template.format(t.name)] = t.to_frame()
+        store.close()
 
 
-def run(steps, iter_vars=None, data_out=None, out_interval=1):
+def run(steps, iter_vars=None, data_out=None, out_interval=1, base_tables=None, run_tables=None):
     """
     Run steps in series, optionally repeatedly over some sequence.
     The current iteration variable is set as a global injectable
@@ -1852,15 +1871,31 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1):
         The interval is defined relative to the first iteration. For example,
         a run begining in 2015 with an out_interval of 2, will write out
         results for 2015, 2017, etc.
-
+    base_tables: list of str, optional, default None
+        List of base tables to write. If not provided, tables injected
+        into 'steps' will be written.
+    run_tables: list of str, optional, default None
+        List of run tables to write. If not provided, tables injected
+        into 'steps' will be written.
     """
     iter_vars = iter_vars or [None]
     max_i = len(iter_vars)
 
+    # get the tables to write out
+    if base_tables is None or run_tables is None:
+        step_tables = get_step_table_names(steps)
+
+        if base_tables is None:
+            base_tables = step_tables
+
+        if run_tables is None:
+            run_tables = step_tables
+
     # write out the base (inputs)
     if data_out:
-        write_tables(data_out, steps, 'base')
+        write_tables(data_out, base_tables, 'base')
 
+    # run the steps
     for i, var in enumerate(iter_vars, start=1):
         add_injectable('iter_var', var)
 
@@ -1892,7 +1927,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1):
         # write out the results for the current iteration
         if data_out:
             if (i - 1) % out_interval == 0 or i == max_i:
-                write_tables(data_out, steps, var)
+                write_tables(data_out, run_tables, var)
 
         clear_cache(scope=_CS_ITER)
 
