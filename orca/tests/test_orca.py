@@ -955,6 +955,32 @@ def test_run_and_write_tables(df, store_name):
                 store['10/table'][year_key(x)], series_year(x))
 
 
+def test_run_and_write_tables_out_tables_provided(df, store_name):
+    table_names = ['table', 'table2', 'table3']
+    for t in table_names:
+        orca.add_table(t, df)
+
+    @orca.step()
+    def step(iter_var, table, table2):
+        return
+
+    orca.run(
+        ['step'],
+        iter_vars=range(1),
+        data_out=store_name,
+        out_base_tables=table_names,
+        out_run_tables=['table'])
+
+    with pd.get_store(store_name, mode='r') as store:
+
+        for t in table_names:
+            assert 'base/{}'.format(t) in store
+
+        assert '0/table' in store
+        assert '0/table2' not in store
+        assert '0/table3' not in store
+
+
 def test_get_raw_table(df):
     orca.add_table('table1', df)
 

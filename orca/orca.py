@@ -1841,11 +1841,10 @@ def write_tables(fname, table_names=None, prefix=None):
     with pd.get_store(fname, mode='a') as store:
         for t in tables:
             store[key_template.format(t.name)] = t.to_frame()
-        store.close()
 
 
 def run(steps, iter_vars=None, data_out=None, out_interval=1,
-        base_tables=None, run_tables=None):
+        out_base_tables=None, out_run_tables=None):
     """
     Run steps in series, optionally repeatedly over some sequence.
     The current iteration variable is set as a global injectable
@@ -1884,18 +1883,18 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
     max_i = len(iter_vars)
 
     # get the tables to write out
-    if base_tables is None or run_tables is None:
+    if out_base_tables is None or out_run_tables is None:
         step_tables = get_step_table_names(steps)
 
-        if base_tables is None:
-            base_tables = step_tables
+        if out_base_tables is None:
+            out_base_tables = step_tables
 
-        if run_tables is None:
-            run_tables = step_tables
+        if out_run_tables is None:
+            out_run_tables = step_tables
 
     # write out the base (inputs)
     if data_out:
-        write_tables(data_out, base_tables, 'base')
+        write_tables(data_out, out_base_tables, 'base')
 
     # run the steps
     for i, var in enumerate(iter_vars, start=1):
@@ -1929,7 +1928,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
         # write out the results for the current iteration
         if data_out:
             if (i - 1) % out_interval == 0 or i == max_i:
-                write_tables(data_out, run_tables, var)
+                write_tables(data_out, out_run_tables, var)
 
         clear_cache(scope=_CS_ITER)
 
