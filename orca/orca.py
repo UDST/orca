@@ -1815,7 +1815,7 @@ def get_step_table_names(steps):
     return list(table_names)
 
 
-def write_tables(fname, table_names=None, prefix=None): 
+def write_tables(fname, table_names=None, prefix=None):
     """
     Writes tables to a pandas.HDFStore file.
 
@@ -1825,15 +1825,16 @@ def write_tables(fname, table_names=None, prefix=None):
         File name for HDFStore. Will be opened in append mode and closed
         at the end of this function.
     table_names: list of str, optional, default None
-        List of tables to write. If None, all registered tables will be written.
-    prefix: str 
+        List of tables to write. If None, all registered tables will
+        be written.
+    prefix: str
         If not None, used to prefix the output table names so that
-        multiple iterations can go in the same file. 
+        multiple iterations can go in the same file.
 
     """
     if table_names is None:
         table_names = list_tables()
-    
+
     tables = (get_table(t) for t in table_names)
     key_template = '{}/{{}}'.format(prefix) if prefix is not None else '{}'
 
@@ -1843,7 +1844,8 @@ def write_tables(fname, table_names=None, prefix=None):
         store.close()
 
 
-def run(steps, iter_vars=None, data_out=None, out_interval=1, base_tables=None, run_tables=None):
+def run(steps, iter_vars=None, data_out=None, out_interval=1,
+        base_tables=None, run_tables=None):
     """
     Run steps in series, optionally repeatedly over some sequence.
     The current iteration variable is set as a global injectable

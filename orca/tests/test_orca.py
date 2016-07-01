@@ -901,7 +901,7 @@ def test_write_tables(df, store_name):
         pass
 
     step_tables = orca.get_step_table_names(['step'])
-    
+
     orca.write_tables(store_name, step_tables, None)
     with pd.get_store(store_name, mode='r') as store:
         assert 'table' in store
@@ -917,7 +917,7 @@ def test_write_tables(df, store_name):
 def test_write_all_tables(df, store_name):
     orca.add_table('table', df)
     orca.write_tables(store_name)
-    
+
     with pd.get_store(store_name, mode='r') as store:
         for t in orca.list_tables():
             assert t in store
