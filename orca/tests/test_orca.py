@@ -356,8 +356,19 @@ def test_update_col(df):
     pdt.assert_series_equal(
         wrapped['b'], pd.Series([7, 8, 9], index=df.index, name='b'))
 
-    wrapped.update_col_from_series('a', pd.Series([]))
+    a_dtype = wrapped['a'].dtype
+
+    # test 1 - cast the data type before the update
+    wrapped.update_col_from_series('a', pd.Series(dtype=a_dtype))
     pdt.assert_series_equal(wrapped['a'], df['a'])
+
+    # test 2 - let the update method do the cast
+    wrapped.update_col_from_series('a', pd.Series(), True)
+    pdt.assert_series_equal(wrapped['a'], df['a'])
+
+    # test 3 - don't cast, should raise an error
+    with pytest.raises(ValueError):
+        wrapped.update_col_from_series('a', pd.Series())
 
     wrapped.update_col_from_series('a', pd.Series([99], index=['y']))
     pdt.assert_series_equal(

@@ -317,19 +317,30 @@ class DataFrameWrapper(object):
 
         raise KeyError('column {!r} not found'.format(column_name))
 
-    def update_col_from_series(self, column_name, series):
+    def update_col_from_series(self, column_name, series, cast=False):
         """
         Update existing values in a column from another series.
-        Index values must match in both column and series.
+        Index values must match in both column and series. Optionally
+        casts data type to match the existing column.
 
         Parameters
         ---------------
         column_name : str
         series : panas.Series
-
+        case: bool, optional, default False
         """
         logger.debug('updating column {!r} in table {!r}'.format(
             column_name, self.name))
+
+        col_dtype = self.local[column_name].dtype
+        if series.dtype != col_dtype:
+            if cast:
+                series = series.astype(col_dtype)
+            else:
+                err_msg = "Data type mismatch, existing:{}, update:{}"
+                err_msg = err_msg.format(col_dtype, series.dtype)
+                raise ValueError(err_msg)
+
         self.local.loc[series.index, column_name] = series
 
     def __len__(self):
