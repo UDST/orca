@@ -327,7 +327,7 @@ class DataFrameWrapper(object):
         ---------------
         column_name : str
         series : panas.Series
-        case: bool, optional, default False
+        cast: bool, optional, default False
         """
         logger.debug('updating column {!r} in table {!r}'.format(
             column_name, self.name))
