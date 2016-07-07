@@ -84,7 +84,7 @@
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="core.html">Orca Core</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Orca Server</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Orca Server</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#start-the-server">Start the Server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#server-routes">Server Routes</a><ul>
@@ -136,7 +136,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -176,27 +176,27 @@ bundled UI to browse an Orca configuration.</p>
 <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> and
 <a class="reference external" href="http://conda.pydata.org/">conda</a>), or get them when you install
 Orca by Inc.ding the <code class="docutils literal"><span class="pre">[server]</span></code> option:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>pip install orca[server]
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">orca</span><span class="p">[</span><span class="n">server</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="start-the-server">
 <h2>Start the Server<a class="headerlink" href="#start-the-server" title="Permalink to this headline">¶</a></h2>
 <p>Use the <code class="docutils literal"><span class="pre">orca-server</span></code> command line utility to start the Orca server:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&gt; orca-server --help
-usage: orca-server [-h] [-d] [-H HOST] [-p PORT] filename
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">orca</span><span class="o">-</span><span class="n">server</span> <span class="o">--</span><span class="n">help</span>
+<span class="n">usage</span><span class="p">:</span> <span class="n">orca</span><span class="o">-</span><span class="n">server</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">H</span> <span class="n">HOST</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="n">PORT</span><span class="p">]</span> <span class="n">filename</span>
 
-Start a Flask server that has HTTP endpoints that provide data about an Orca
-configuration and data registered with Orca.
+<span class="n">Start</span> <span class="n">a</span> <span class="n">Flask</span> <span class="n">server</span> <span class="n">that</span> <span class="n">has</span> <span class="n">HTTP</span> <span class="n">endpoints</span> <span class="n">that</span> <span class="n">provide</span> <span class="n">data</span> <span class="n">about</span> <span class="n">an</span> <span class="n">Orca</span>
+<span class="n">configuration</span> <span class="ow">and</span> <span class="n">data</span> <span class="n">registered</span> <span class="k">with</span> <span class="n">Orca</span><span class="o">.</span>
 
-positional arguments:
-  filename              File with Orca config
+<span class="n">positional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="n">filename</span>              <span class="n">File</span> <span class="k">with</span> <span class="n">Orca</span> <span class="n">config</span>
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -d, --debug           Enable Flask&#39;s debug mode
-  -H HOST, --host HOST  Hostname on which to run the server
-  -p PORT, --port PORT  Port on which to run server
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+  <span class="o">-</span><span class="n">d</span><span class="p">,</span> <span class="o">--</span><span class="n">debug</span>           <span class="n">Enable</span> <span class="n">Flask</span><span class="s1">&#39;s debug mode</span>
+  <span class="o">-</span><span class="n">H</span> <span class="n">HOST</span><span class="p">,</span> <span class="o">--</span><span class="n">host</span> <span class="n">HOST</span>  <span class="n">Hostname</span> <span class="n">on</span> <span class="n">which</span> <span class="n">to</span> <span class="n">run</span> <span class="n">the</span> <span class="n">server</span>
+  <span class="o">-</span><span class="n">p</span> <span class="n">PORT</span><span class="p">,</span> <span class="o">--</span><span class="n">port</span> <span class="n">PORT</span>  <span class="n">Port</span> <span class="n">on</span> <span class="n">which</span> <span class="n">to</span> <span class="n">run</span> <span class="n">server</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">filename</span></code> argument is the name of a Python file that will be imported
@@ -302,7 +302,7 @@ are arrays of strings (column names).</p>
 <li>Returns: Text</li>
 </ul>
 <p>Returns the text result of <code class="docutils literal"><span class="pre">table.info(verbose=True)</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+<div class="highlight-default"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
 Int64Index: 2478 entries, 0 to 2477
 Data columns (total 10 columns):
 region          2478 non-null object
@@ -433,10 +433,10 @@ filename, line number, and text of the function:</p>
 <li>Returns: Text</li>
 </ul>
 <p>Returns the entire table as CSV using Pandas&#8217; default CSV output.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>,col1,col2
-12,datum1,19
-26,datum2,42
-40,datum3,99
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">,</span><span class="n">col1</span><span class="p">,</span><span class="n">col2</span>
+<span class="mi">12</span><span class="p">,</span><span class="n">datum1</span><span class="p">,</span><span class="mi">19</span>
+<span class="mi">26</span><span class="p">,</span><span class="n">datum2</span><span class="p">,</span><span class="mi">42</span>
+<span class="mi">40</span><span class="p">,</span><span class="n">datum3</span><span class="p">,</span><span class="mi">99</span>
 </pre></div>
 </div>
 </div>
@@ -459,7 +459,7 @@ in Pandas&#8217; &#8220;split&#8221; format.</p>
 </ul>
 <p>One of <cite>by</cite> or <cite>level</cite> must be provided, but not both.
 For example, the URL might read:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>/groupbyagg?by=region&amp;column=precip&amp;agg=median
+<div class="highlight-default"><div class="highlight"><pre><span></span>/groupbyagg?by=region&amp;column=precip&amp;agg=median
 </pre></div>
 </div>
 <p>The data is returned as JSON in Pandas&#8217; &#8220;split&#8221; format:</p>
@@ -570,7 +570,7 @@ filename, line number, and text of the function:</p>
 <li>Returns: Text</li>
 </ul>
 <p>Return an entire column as CSV using Pandas&#8217; default output:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="mi">0</span><span class="p">,</span><span class="mf">0.04</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">0</span><span class="p">,</span><span class="mf">0.04</span>
 <span class="mi">1</span><span class="p">,</span><span class="mf">5.02</span>
 <span class="mi">2</span><span class="p">,</span><span class="mf">2.35</span>
 <span class="mi">3</span><span class="p">,</span><span class="mf">3.72</span>

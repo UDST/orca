@@ -83,7 +83,7 @@
             
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Orca Core</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Orca Core</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#tables">Tables</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#table-wrappers">Table Wrappers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#automated-merges">Automated Merges</a></li>
@@ -142,7 +142,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -169,8 +169,8 @@
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>In the documentation below the following imports are implied:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">orca</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">orca</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 </div>
 </div>
@@ -179,13 +179,13 @@
 <p>Tables are Pandas <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe">DataFrames</a>.
 Use the <a class="reference internal" href="#orca.orca.add_table" title="orca.orca.add_table"><code class="xref py py-func docutils literal"><span class="pre">add_table()</span></code></a> function to register
 a DataFrame under a given name:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
 <span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Or you can use the decorator <a class="reference internal" href="#orca.orca.table" title="orca.orca.table"><code class="xref py py-func docutils literal"><span class="pre">table()</span></code></a>
 to register a function that returns a DataFrame:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.table</span><span class="p">(</span><span class="s1">&#39;halve_my_table&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nd">@orca</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s1">&#39;halve_my_table&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">halve_my_table</span><span class="p">(</span><span class="n">my_table</span><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">my_table</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">df</span> <span class="o">/</span> <span class="mi">2</span>
@@ -195,7 +195,7 @@ to register a function that returns a DataFrame:</p>
 is optional. If left out, the table is registered under the name of the
 function that is being decorated. The decorator example above could be
 written more concisely:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.table</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nd">@orca</span><span class="o">.</span><span class="n">table</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">halve_my_table</span><span class="p">(</span><span class="n">my_table</span><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">my_table</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">df</span> <span class="o">/</span> <span class="mi">2</span>
@@ -241,7 +241,7 @@ one table onto another) and you register them using the
 <a class="reference internal" href="#orca.orca.broadcast" title="orca.orca.broadcast"><code class="xref py py-func docutils literal"><span class="pre">broadcast()</span></code></a> function.</p>
 <p>For an example we&#8217;ll first define some DataFrames that contain links
 to one another and register them with Orca:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">df_a</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">df_a</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]},</span>
     <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;a0&#39;</span><span class="p">,</span> <span class="s1">&#39;a1&#39;</span><span class="p">])</span>
 <span class="n">df_b</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
@@ -267,9 +267,9 @@ to one another and register them with Orca:</p>
 and &#8216;b&#8217; and &#8216;c&#8217; can be broadcast onto &#8216;d&#8217;.
 We use the <a class="reference internal" href="#orca.orca.broadcast" title="orca.orca.broadcast"><code class="xref py py-func docutils literal"><span class="pre">broadcast()</span></code></a> function
 to register those relationships:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">orca</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">onto</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">cast_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">onto_on</span><span class="o">=</span><span class="s1">&#39;a_id&#39;</span><span class="p">)</span>
-<span class="n">orca</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">onto</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">cast_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">onto_on</span><span class="o">=</span><span class="s1">&#39;b_id&#39;</span><span class="p">)</span>
-<span class="n">orca</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">onto</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">cast_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">onto_on</span><span class="o">=</span><span class="s1">&#39;c_id&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">orca</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">onto</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">cast_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">onto_on</span><span class="o">=</span><span class="s1">&#39;a_id&#39;</span><span class="p">)</span>
+<span class="n">orca</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">onto</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">cast_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">onto_on</span><span class="o">=</span><span class="s1">&#39;b_id&#39;</span><span class="p">)</span>
+<span class="n">orca</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">onto</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">cast_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">onto_on</span><span class="o">=</span><span class="s1">&#39;c_id&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The syntax is similar to that of the
@@ -326,10 +326,10 @@ or perform a calculation to generate a column. Orca allows you to
 register a <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#series">Series</a> or function as a column on a registered table.
 Use the <a class="reference internal" href="#orca.orca.add_column" title="orca.orca.add_column"><code class="xref py py-func docutils literal"><span class="pre">add_column()</span></code></a> function or
 the <a class="reference internal" href="#orca.orca.column" title="orca.orca.column"><code class="xref py py-func docutils literal"><span class="pre">column()</span></code></a> decorator:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">])</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">])</span>
 <span class="n">orca</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">,</span> <span class="s1">&#39;my_col&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
 
-<span class="nd">@orca.column</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
+<span class="nd">@orca</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">my_col_x2</span><span class="p">(</span><span class="n">my_table</span><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">my_table</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;my_col&#39;</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;my_col&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
@@ -345,13 +345,13 @@ are additional ways to do so without first calling <code class="docutils literal
 to create an actual <code class="docutils literal"><span class="pre">DataFrame</span></code>.</p>
 <p><a class="reference internal" href="#orca.orca.DataFrameWrapper" title="orca.orca.DataFrameWrapper"><code class="xref py py-class docutils literal"><span class="pre">DataFrameWrapper</span></code></a> supports accessing
 individual columns in the same ways as <code class="docutils literal"><span class="pre">DataFrames</span></code>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.column</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nd">@orca</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">my_col_x2</span><span class="p">(</span><span class="n">my_table</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">my_table</span><span class="p">[</span><span class="s1">&#39;my_col&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># or my_table.my_col * 2</span>
 </pre></div>
 </div>
 <p>Or you can use an expression to have a single column injected into a function:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.column</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nd">@orca</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">my_col_x2</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;my_table.my_col&#39;</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">data</span> <span class="o">*</span> <span class="mi">2</span>
 </pre></div>
@@ -392,17 +392,17 @@ for which Orca has &#8220;injectables&#8221;. You can register <em>anything</em>
 it injected into functions.
 Use the <a class="reference internal" href="#orca.orca.add_injectable" title="orca.orca.add_injectable"><code class="xref py py-func docutils literal"><span class="pre">add_injectable()</span></code></a> function or the
 <a class="reference internal" href="#orca.orca.injectable" title="orca.orca.injectable"><code class="xref py py-func docutils literal"><span class="pre">injectable()</span></code></a> decorator:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">orca</span><span class="o">.</span><span class="n">add_injectable</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">orca</span><span class="o">.</span><span class="n">add_injectable</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 
-<span class="nd">@orca.injectable</span><span class="p">(</span><span class="n">autocall</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="nd">@orca</span><span class="o">.</span><span class="n">injectable</span><span class="p">(</span><span class="n">autocall</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span> <span class="o">**</span> <span class="n">y</span>
 
-<span class="nd">@orca.injectable</span><span class="p">()</span>
+<span class="nd">@orca</span><span class="o">.</span><span class="n">injectable</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">zsquared</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="nb">pow</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">pow</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
-<span class="nd">@orca.table</span><span class="p">()</span>
+<span class="nd">@orca</span><span class="o">.</span><span class="n">table</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">ztable</span><span class="p">(</span><span class="n">my_table</span><span class="p">,</span> <span class="n">zsquared</span><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">my_table</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">df</span> <span class="o">*</span> <span class="n">zsquared</span>
@@ -473,7 +473,7 @@ when more manual management is required.</p>
 <p>To run a block of commands with the cache disabled, but have it automatically
 re-enabled, use the <code class="xref py py-func docutils literal"><span class="pre">cache_disabled()</span></code>
 context manager:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">orca</span><span class="o">.</span><span class="n">cache_disabled</span><span class="p">():</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">orca</span><span class="o">.</span><span class="n">cache_disabled</span><span class="p">():</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">eval_variable</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -489,23 +489,23 @@ Steps are generally important for their side-effects, their
 return values are discarded during pipeline runs.
 For example, a step might replace a column
 in a table (a new table, though similar to <code class="docutils literal"><span class="pre">my_table</span></code> above):</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
 <span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s1">&#39;new_table&#39;</span><span class="p">)</span>
 
-<span class="nd">@orca.step</span><span class="p">()</span>
+<span class="nd">@orca</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">replace_col</span><span class="p">(</span><span class="n">new_table</span><span class="p">):</span>
     <span class="n">new_table</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Or update some values in a column:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.step</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nd">@orca</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">update_col</span><span class="p">(</span><span class="n">new_table</span><span class="p">):</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">99</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">new_table</span><span class="o">.</span><span class="n">update_col_from_series</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Or add rows to a table:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.step</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nd">@orca</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">add_rows</span><span class="p">(</span><span class="n">new_table</span><span class="p">):</span>
     <span class="n">new_rows</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">]},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">new_table</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
@@ -686,7 +686,7 @@ that are also
 Expressions allow you to specify a variable to inject with Python keyword
 arguments. Here&#8217;s an example redone from above using
 variable expressions:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.table</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nd">@orca</span><span class="o">.</span><span class="n">table</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">halve_my_table</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;my_table&#39;</span><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">df</span> <span class="o">/</span> <span class="mi">2</span>
@@ -695,7 +695,7 @@ variable expressions:</p>
 <p>The variable registered as <code class="docutils literal"><span class="pre">'my_table'</span></code> is injected into this function
 as the argument <code class="docutils literal"><span class="pre">data</span></code>.</p>
 <p>Expressions can also be used to refer to columns within a registered table:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="nd">@orca.column</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nd">@orca</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">halved</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;my_table.a&#39;</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">data</span> <span class="o">/</span> <span class="mi">2</span>
 </pre></div>
@@ -832,7 +832,7 @@ like to specifically document that in the function&#8217;s arguments.</p>
 <tr class="row-even"><td><a class="reference internal" href="#orca.orca.list_steps" title="orca.orca.list_steps"><code class="xref py py-obj docutils literal"><span class="pre">list_steps</span></code></a>()</td>
 <td>List of registered step names.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><code class="xref py py-obj docutils literal"><span class="pre">run</span></code></a>(steps[,&nbsp;iter_vars,&nbsp;data_out,&nbsp;out_interval])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><code class="xref py py-obj docutils literal"><span class="pre">run</span></code></a>(steps[,&nbsp;iter_vars,&nbsp;data_out,&nbsp;...])</td>
 <td>Run steps in series, optionally repeatedly over some sequence.</td>
 </tr>
 </tbody>
@@ -1081,15 +1081,17 @@ If None all columns are returned, Inc.ding registered columns.</p>
 
 <dl class="method">
 <dt id="orca.orca.DataFrameWrapper.update_col_from_series">
-<code class="descname">update_col_from_series</code><span class="sig-paren">(</span><em>column_name</em>, <em>series</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.update_col_from_series" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_col_from_series</code><span class="sig-paren">(</span><em>column_name</em>, <em>series</em>, <em>cast=False</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.update_col_from_series" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update existing values in a column from another series.
-Index values must match in both column and series.</p>
+Index values must match in both column and series. Optionally
+casts data type to match the existing column.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>column_name</strong> : str</p>
-<p class="last"><strong>series</strong> : panas.Series</p>
+<p><strong>series</strong> : panas.Series</p>
+<p class="last"><strong>cast: bool, optional, default False</strong></p>
 </td>
 </tr>
 </tbody>
@@ -1752,6 +1754,27 @@ DataFrames, it&#8217;s only for columns registered directly through Orca.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="orca.orca.get_step_table_names">
+<code class="descclassname">orca.orca.</code><code class="descname">get_step_table_names</code><span class="sig-paren">(</span><em>steps</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_step_table_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of table names injected into the provided steps.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>steps: list of str</strong></p>
+<blockquote>
+<div><p>Steps to gather table inputs from.</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="orca.orca.get_table">
 <code class="descclassname">orca.orca.</code><code class="descname">get_table</code><span class="sig-paren">(</span><em>table_name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a registered table.</p>
@@ -1936,7 +1959,7 @@ table.</p>
 
 <dl class="function">
 <dt id="orca.orca.run">
-<code class="descclassname">orca.orca.</code><code class="descname">run</code><span class="sig-paren">(</span><em>steps</em>, <em>iter_vars=None</em>, <em>data_out=None</em>, <em>out_interval=1</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.run" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">run</code><span class="sig-paren">(</span><em>steps</em>, <em>iter_vars=None</em>, <em>data_out=None</em>, <em>out_interval=1</em>, <em>out_base_tables=None</em>, <em>out_run_tables=None</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run steps in series, optionally repeatedly over some sequence.
 The current iteration variable is set as a global injectable
 called <code class="docutils literal"><span class="pre">iter_var</span></code>.</p>
@@ -1960,11 +1983,27 @@ in <cite>steps</cite> will be saved every <cite>out_interval</cite> iterations.
 File will be a pandas HDF data store.</p>
 </div></blockquote>
 <p><strong>out_interval</strong> : int, optional</p>
-<blockquote class="last">
+<blockquote>
 <div><p>Iteration interval on which to save data to <cite>data_out</cite>. For example,
 2 will save out every 2 iterations, 5 every 5 iterations.
 Default is every iteration.
-The first and last iterations are always Inc.ded.</p>
+The results of the first and last iterations are always included.
+The input (base) tables are also included and prefixed with <cite>base/</cite>,
+these represent the state of the system before any steps have been
+executed.
+The interval is defined relative to the first iteration. For example,
+a run begining in 2015 with an out_interval of 2, will write out
+results for 2015, 2017, etc.</p>
+</div></blockquote>
+<p><strong>base_tables: list of str, optional, default None</strong></p>
+<blockquote>
+<div><p>List of base tables to write. If not provided, tables injected
+into &#8216;steps&#8217; will be written.</p>
+</div></blockquote>
+<p><strong>run_tables: list of str, optional, default None</strong></p>
+<blockquote class="last">
+<div><p>List of run tables to write. If not provided, tables injected
+into &#8216;steps&#8217; will be written.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -2026,10 +2065,8 @@ this function.</p>
 
 <dl class="function">
 <dt id="orca.orca.write_tables">
-<code class="descclassname">orca.orca.</code><code class="descname">write_tables</code><span class="sig-paren">(</span><em>fname</em>, <em>steps</em>, <em>iter_var</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.write_tables" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write all tables injected into <cite>steps</cite> to a pandas.HDFStore file.
-If var is not None it will be used to prefix the table names so that
-multiple iterations can go in the same file.</p>
+<code class="descclassname">orca.orca.</code><code class="descname">write_tables</code><span class="sig-paren">(</span><em>fname</em>, <em>table_names=None</em>, <em>prefix=None</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.write_tables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes tables to a pandas.HDFStore file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2039,14 +2076,15 @@ multiple iterations can go in the same file.</p>
 <div><p>File name for HDFStore. Will be opened in append mode and closed
 at the end of this function.</p>
 </div></blockquote>
-<p><strong>steps</strong> : list of str</p>
+<p><strong>table_names: list of str, optional, default None</strong></p>
 <blockquote>
-<div><p>steps from which to gather injected tables for saving.</p>
+<div><p>List of tables to write. If None, all registered tables will
+be written.</p>
 </div></blockquote>
-<p><strong>iter_var</strong> : object or None</p>
+<p><strong>prefix: str</strong></p>
 <blockquote class="last">
-<div><p>If not None, used as a prefix along with table names for
-labeling DataFrames in the HDFStore.</p>
+<div><p>If not None, used to prefix the output table names so that
+multiple iterations can go in the same file.</p>
 </div></blockquote>
 </td>
 </tr>
