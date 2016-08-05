@@ -1920,7 +1920,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
 
         t1 = time.time()
         for j, step_name in enumerate(steps):
-            add_injectable('iter_step', {j: step_name})
+            add_injectable('iter_step', (j, step_name))
             print('Running step {!r}'.format(step_name))
             with log_start_finish(
                     'run step {!r}'.format(step_name), logger,
