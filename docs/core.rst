@@ -415,38 +415,38 @@ The variables ``iter_var`` and ``iter_step`` are provided as injectables to Orca
     In [77]: @orca.step()
        ....: def print_year(iter_var,iter_step):
        ....:         print '*** the iteration value is {} ***'.format(iter_var)
-       ....:         print '*** the iteration step is {} ***'.format(iter_step.values[0])
+       ....:         print '*** step {0} is {1} ***'.format(iter_step.keys()[0],iter_step.values()[0])
        ....:
 
     In [78]: orca.run(['print_year'], iter_vars=range(2010, 2015))
     Running iteration 1 with iteration value 2010
     Running step 'print_year'
     *** the iteration value is 2010 ***
-    *** the iteration step is print_year ***
+    *** step 0 is print_year ***
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 1 with iteration value 2010: 0.00 s
     Running iteration 2 with iteration value 2011
     Running step 'print_year'
     *** the iteration value is 2011 ***
-    *** the iteration step is print_year ***
+    *** step 0 is print_year ***
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 2 with iteration value 2011: 0.00 s
     Running iteration 3 with iteration value 2012
     Running step 'print_year'
     *** the iteration value is 2012 ***
-    *** the iteration step is print_year ***
+    *** step 0 is print_year ***
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 3 with iteration value 2012: 0.00 s
     Running iteration 4 with iteration value 2013
     Running step 'print_year'
     *** the iteration value is 2013 ***
-    *** the iteration step is print_year ***
+    *** step 0 is print_year ***
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 4 with iteration value 2013: 0.00 s
     Running iteration 5 with iteration value 2014
     Running step 'print_year'
     *** the iteration value is 2014 ***
-    *** the iteration step is print_year ***
+    *** step 0 is print_year ***
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 5 with iteration value 2014: 0.00 s
 
