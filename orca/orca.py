@@ -1855,6 +1855,9 @@ def write_tables(fname, table_names=None, prefix=None):
             store[key_template.format(t.name)] = t.to_frame()
 
 
+iter_step = namedtuple('iter_step', 'step_num,step_name')
+
+
 def run(steps, iter_vars=None, data_out=None, out_interval=1,
         out_base_tables=None, out_run_tables=None):
     """
@@ -1921,7 +1924,6 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
 
         t1 = time.time()
         for j, step_name in enumerate(steps):
-            iter_step = namedtuple('iter_step', 'step_num,step_name')
             add_injectable('iter_step', iter_step(j, step_name))
             print('Running step {!r}'.format(step_name))
             with log_start_finish(
