@@ -408,7 +408,10 @@ Calling :py:func:`~orca.orca.run` with just a list of steps,
 as in the above example, will run through the steps once.
 To run the pipeline over some a sequence, provide those values as a sequence
 to :py:func:`~orca.orca.run` using the ``iter_vars`` argument.
-The variables ``iter_var`` and ``iter_step`` are provided as injectables to Orca functions:
+The variables ``iter_var`` and ``iter_step`` are provided as injectables to Orca functions.
+The ``iter_var`` injectable stores the year of the current simulation iteration, and the 
+``iter_step`` injectable is a tuple that stores the sequence position and name of the current
+simulation step in the iteration:
 
 .. code-block:: python
 
