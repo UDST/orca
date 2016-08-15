@@ -546,37 +546,46 @@ listing which steps you want to run.
 Calling <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><code class="xref py py-func docutils literal"><span class="pre">run()</span></code></a> with just a list of steps,
 as in the above example, will run through the steps once.
 To run the pipeline over some a sequence, provide those values as a sequence
-to <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><code class="xref py py-func docutils literal"><span class="pre">run()</span></code></a> using the <code class="docutils literal"><span class="pre">iter_vars</span></code> argument.
-The variable <code class="docutils literal"><span class="pre">iter_var</span></code> is provided as an injectable to Orca functions:</p>
+to <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><code class="xref py py-func docutils literal"><span class="pre">run()</span></code></a> using the <code class="docutils literal"><span class="pre">iter_vars</span></code> argument.</p>
+<p>The <code class="docutils literal"><span class="pre">iter_var</span></code> injectable stores the current value from the <code class="docutils literal"><span class="pre">iter_vars</span></code> argument to <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><code class="xref py py-func docutils literal"><span class="pre">run()</span></code></a> function.
+The <code class="docutils literal"><span class="pre">iter_step</span></code> injectable is a <code class="docutils literal"><span class="pre">namedtuple</span></code> with fields named <code class="docutils literal"><span class="pre">step_num</span></code> and <code class="docutils literal"><span class="pre">step_name</span></code>,
+stored in that order.
+<code class="docutils literal"><span class="pre">step_num</span></code> is a zero-based index based on the list of step names passed to the <a class="reference internal" href="#orca.orca.run" title="orca.orca.run"><code class="xref py py-func docutils literal"><span class="pre">run()</span></code></a> function.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">77</span><span class="p">]:</span> <span class="nd">@orca.step</span><span class="p">()</span>
-   <span class="o">....</span><span class="p">:</span> <span class="k">def</span> <span class="nf">print_year</span><span class="p">(</span><span class="n">iter_var</span><span class="p">):</span>
+   <span class="o">....</span><span class="p">:</span> <span class="k">def</span> <span class="nf">print_year</span><span class="p">(</span><span class="n">iter_var</span><span class="p">,</span><span class="n">iter_step</span><span class="p">):</span>
    <span class="o">....</span><span class="p">:</span>         <span class="k">print</span> <span class="s1">&#39;*** the iteration value is {} ***&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iter_var</span><span class="p">)</span>
+   <span class="o">....</span><span class="p">:</span>         <span class="k">print</span> <span class="s1">&#39;*** step number {0} is named {1} ***&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iter_step</span><span class="o">.</span><span class="n">step_num</span><span class="p">,</span> <span class="n">iter_step</span><span class="o">.</span><span class="n">step_name</span><span class="p">)</span>
    <span class="o">....</span><span class="p">:</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">78</span><span class="p">]:</span> <span class="n">orca</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s1">&#39;print_year&#39;</span><span class="p">],</span> <span class="n">iter_vars</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">2015</span><span class="p">))</span>
 <span class="n">Running</span> <span class="n">iteration</span> <span class="mi">1</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2010</span>
 <span class="n">Running</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span>
 <span class="o">***</span> <span class="n">the</span> <span class="n">iteration</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">2010</span> <span class="o">***</span>
+<span class="o">***</span> <span class="n">step</span> <span class="n">number</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">named</span> <span class="n">print_year</span> <span class="o">***</span>
 <span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">1</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2010</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Running</span> <span class="n">iteration</span> <span class="mi">2</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2011</span>
 <span class="n">Running</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span>
 <span class="o">***</span> <span class="n">the</span> <span class="n">iteration</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">2011</span> <span class="o">***</span>
+<span class="o">***</span> <span class="n">step</span> <span class="n">number</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">named</span> <span class="n">print_year</span> <span class="o">***</span>
 <span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">2</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2011</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Running</span> <span class="n">iteration</span> <span class="mi">3</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2012</span>
 <span class="n">Running</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span>
 <span class="o">***</span> <span class="n">the</span> <span class="n">iteration</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">2012</span> <span class="o">***</span>
+<span class="o">***</span> <span class="n">step</span> <span class="n">number</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">named</span> <span class="n">print_year</span> <span class="o">***</span>
 <span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">3</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2012</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Running</span> <span class="n">iteration</span> <span class="mi">4</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2013</span>
 <span class="n">Running</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span>
 <span class="o">***</span> <span class="n">the</span> <span class="n">iteration</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">2013</span> <span class="o">***</span>
+<span class="o">***</span> <span class="n">step</span> <span class="n">number</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">named</span> <span class="n">print_year</span> <span class="o">***</span>
 <span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">4</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2013</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Running</span> <span class="n">iteration</span> <span class="mi">5</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2014</span>
 <span class="n">Running</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span>
 <span class="o">***</span> <span class="n">the</span> <span class="n">iteration</span> <span class="n">value</span> <span class="ow">is</span> <span class="mi">2014</span> <span class="o">***</span>
+<span class="o">***</span> <span class="n">step</span> <span class="n">number</span> <span class="mi">0</span> <span class="ow">is</span> <span class="n">named</span> <span class="n">print_year</span> <span class="o">***</span>
 <span class="n">Time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">step</span> <span class="s1">&#39;print_year&#39;</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 <span class="n">Total</span> <span class="n">time</span> <span class="n">to</span> <span class="n">execute</span> <span class="n">iteration</span> <span class="mi">5</span> <span class="k">with</span> <span class="n">iteration</span> <span class="n">value</span> <span class="mi">2014</span><span class="p">:</span> <span class="mf">0.00</span> <span class="n">s</span>
 </pre></div>
@@ -1876,6 +1885,23 @@ variable expression.</p>
 <dt id="orca.orca.is_table">
 <code class="descclassname">orca.orca.</code><code class="descname">is_table</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns whether a given name refers to a registered table.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="orca.orca.iter_step">
+<em class="property">class </em><code class="descclassname">orca.orca.</code><code class="descname">iter_step</code><a class="headerlink" href="#orca.orca.iter_step" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="orca.orca.iter_step.step_name">
+<code class="descname">step_name</code><a class="headerlink" href="#orca.orca.iter_step.step_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="orca.orca.iter_step.step_num">
+<code class="descname">step_num</code><a class="headerlink" href="#orca.orca.iter_step.step_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="function">
