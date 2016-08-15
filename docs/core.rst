@@ -426,31 +426,31 @@ stored in that order.
     Running iteration 1 with iteration value 2010
     Running step 'print_year'
     *** the iteration value is 2010 ***
-    *** step 0 is print_year ***
+    *** step number 0 is named print_year ***
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 1 with iteration value 2010: 0.00 s
     Running iteration 2 with iteration value 2011
     Running step 'print_year'
     *** the iteration value is 2011 ***
-    *** step 0 is print_year ***
+    *** step number 0 is named print_year ***
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 2 with iteration value 2011: 0.00 s
     Running iteration 3 with iteration value 2012
     Running step 'print_year'
     *** the iteration value is 2012 ***
-    *** step 0 is print_year ***
+    *** step number 0 is named print_year ***
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 3 with iteration value 2012: 0.00 s
     Running iteration 4 with iteration value 2013
     Running step 'print_year'
     *** the iteration value is 2013 ***
-    *** step 0 is print_year ***
+    *** step number 0 is named print_year ***
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 4 with iteration value 2013: 0.00 s
     Running iteration 5 with iteration value 2014
     Running step 'print_year'
     *** the iteration value is 2014 ***
-    *** step 0 is print_year ***
+    *** step number 0 is named print_year ***
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 5 with iteration value 2014: 0.00 s
 
