@@ -18,6 +18,7 @@ from zbox import toolz as tz
 
 from . import utils
 from .utils.logutil import log_start_finish
+from collections import namedtuple
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 logger = logging.getLogger(__name__)
@@ -1854,6 +1855,9 @@ def write_tables(fname, table_names=None, prefix=None):
             store[key_template.format(t.name)] = t.to_frame()
 
 
+iter_step = namedtuple('iter_step', 'step_num,step_name')
+
+
 def run(steps, iter_vars=None, data_out=None, out_interval=1,
         out_base_tables=None, out_run_tables=None):
     """
@@ -1919,7 +1923,8 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
                     i, var))
 
         t1 = time.time()
-        for step_name in steps:
+        for j, step_name in enumerate(steps):
+            add_injectable('iter_step', iter_step(j, step_name))
             print('Running step {!r}'.format(step_name))
             with log_start_finish(
                     'run step {!r}'.format(step_name), logger,
