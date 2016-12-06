@@ -255,7 +255,7 @@ Use the :py:func:`~orca.orca.add_injectable` function or the
         df = my_table.to_frame(columns=['a'])
         return df * zsquared
 
-Be default injectable functions are evaluated before injection and the return
+By default injectable functions are evaluated before injection and the return
 value is passed into other functions. Use ``autocall=False`` to disable this
 behavior and instead inject the function itself.
 Like tables and columns, injectable functions that are automatically evaluated
@@ -348,7 +348,7 @@ For example, a step might replace a column
 in a table (a new table, though similar to ``my_table`` above)::
 
     df = pd.DataFrame({'a': [1, 2, 3]})
-    orca.add_table('new_table')
+    orca.add_table('new_table', df)
 
     @orca.step()
     def replace_col(new_table):
