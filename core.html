@@ -30,6 +30,9 @@
   
 
   
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Orca 1.0 documentation" href="index.html"/>
         <link rel="next" title="Orca Server" href="server.html"/>
         <link rel="prev" title="Example" href="example.html"/> 
@@ -154,7 +157,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/core.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/core.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -408,7 +411,7 @@ Use the <a class="reference internal" href="#orca.orca.add_injectable" title="or
     <span class="k">return</span> <span class="n">df</span> <span class="o">*</span> <span class="n">zsquared</span>
 </pre></div>
 </div>
-<p>Be default injectable functions are evaluated before injection and the return
+<p>By default injectable functions are evaluated before injection and the return
 value is passed into other functions. Use <code class="docutils literal"><span class="pre">autocall=False</span></code> to disable this
 behavior and instead inject the function itself.
 Like tables and columns, injectable functions that are automatically evaluated
@@ -490,7 +493,7 @@ return values are discarded during pipeline runs.
 For example, a step might replace a column
 in a table (a new table, though similar to <code class="docutils literal"><span class="pre">my_table</span></code> above):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]})</span>
-<span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s1">&#39;new_table&#39;</span><span class="p">)</span>
+<span class="n">orca</span><span class="o">.</span><span class="n">add_table</span><span class="p">(</span><span class="s1">&#39;new_table&#39;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
 
 <span class="nd">@orca</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 <span class="k">def</span> <span class="nf">replace_col</span><span class="p">(</span><span class="n">new_table</span><span class="p">):</span>
@@ -867,7 +870,7 @@ like to specifically document that in the function&#8217;s arguments.</p>
 <tr class="row-even"><td><a class="reference internal" href="#orca.orca.cache_on" title="orca.orca.cache_on"><code class="xref py py-obj docutils literal"><span class="pre">cache_on</span></code></a>()</td>
 <td>Whether caching is currently enabled or disabled.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">cache_disabled</span></code>(*args,&nbsp;**kwds)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">cache_disabled</span></code>(\*args,&nbsp;\*\*kwds)</td>
 <td></td>
 </tr>
 </tbody>
