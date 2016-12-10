@@ -71,7 +71,7 @@ setup(
             'server/templates/*']
     },
     install_requires=[
-        'pandas >= 0.13.1',
+        'pandas >= 0.15.0',
         'tables >= 3.1.0',
         'toolz >= 0.7.0',
         'zbox >= 1.2'
