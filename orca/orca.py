@@ -1909,6 +1909,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
 
     # write out the base (inputs)
     if data_out:
+        add_injectable('iter_var', iter_vars[0])
         write_tables(data_out, out_base_tables, 'base')
 
     # run the steps
