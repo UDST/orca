@@ -1779,6 +1779,7 @@ def merge_tables(target, tables, columns=None):
 
                 onto_table = pd.merge(
                     onto_table, cast_table,
+                    suffixes=('', '_y'),
                     left_on=bc.onto_on, right_on=bc.cast_on,
                     left_index=bc.onto_index, right_index=bc.cast_index)
 
