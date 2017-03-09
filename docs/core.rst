@@ -149,7 +149,7 @@ table, though the order may have changed.
 :py:func:`~orca.orca.merge_tables` has an optional
 ``columns=`` keyword that can contain column names from any the tables
 going into the merge so you can limit which columns end up in the final table.
-(Columns necessary for performing merges will be included whether or not
+(Columns necessary for performing merges will be Inc.ded whether or not
 they are in the ``columns=`` list.)
 
 .. note:: :py:func:`~orca.orca.merge_tables` calls
@@ -255,7 +255,7 @@ Use the :py:func:`~orca.orca.add_injectable` function or the
         df = my_table.to_frame(columns=['a'])
         return df * zsquared
 
-Be default injectable functions are evaluated before injection and the return
+By default injectable functions are evaluated before injection and the return
 value is passed into other functions. Use ``autocall=False`` to disable this
 behavior and instead inject the function itself.
 Like tables and columns, injectable functions that are automatically evaluated
@@ -348,7 +348,7 @@ For example, a step might replace a column
 in a table (a new table, though similar to ``my_table`` above)::
 
     df = pd.DataFrame({'a': [1, 2, 3]})
-    orca.add_table('new_table')
+    orca.add_table('new_table', df)
 
     @orca.step()
     def replace_col(new_table):
@@ -408,39 +408,49 @@ Calling :py:func:`~orca.orca.run` with just a list of steps,
 as in the above example, will run through the steps once.
 To run the pipeline over some a sequence, provide those values as a sequence
 to :py:func:`~orca.orca.run` using the ``iter_vars`` argument.
-The variable ``iter_var`` is provided as an injectable to Orca functions:
+
+The ``iter_var`` injectable stores the current value from the ``iter_vars`` argument to :py:func:`~orca.orca.run` function. 
+The ``iter_step`` injectable is a ``namedtuple`` with fields named ``step_num`` and ``step_name``, 
+stored in that order. 
+``step_num`` is a zero-based index based on the list of step names passed to the :py:func:`~orca.orca.run` function.
 
 .. code-block:: python
 
     In [77]: @orca.step()
-       ....: def print_year(iter_var):
+       ....: def print_year(iter_var,iter_step):
        ....:         print '*** the iteration value is {} ***'.format(iter_var)
+       ....:         print '*** step number {0} is named {1} ***'.format(iter_step.step_num, iter_step.step_name)
        ....:
 
     In [78]: orca.run(['print_year'], iter_vars=range(2010, 2015))
     Running iteration 1 with iteration value 2010
     Running step 'print_year'
     *** the iteration value is 2010 ***
+    *** step number 0 is named print_year ***
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 1 with iteration value 2010: 0.00 s
     Running iteration 2 with iteration value 2011
     Running step 'print_year'
     *** the iteration value is 2011 ***
+    *** step number 0 is named print_year ***
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 2 with iteration value 2011: 0.00 s
     Running iteration 3 with iteration value 2012
     Running step 'print_year'
     *** the iteration value is 2012 ***
+    *** step number 0 is named print_year ***
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 3 with iteration value 2012: 0.00 s
     Running iteration 4 with iteration value 2013
     Running step 'print_year'
     *** the iteration value is 2013 ***
+    *** step number 0 is named print_year ***
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 4 with iteration value 2013: 0.00 s
     Running iteration 5 with iteration value 2014
     Running step 'print_year'
     *** the iteration value is 2014 ***
+    *** step number 0 is named print_year ***
     Time to execute step 'print_year': 0.00 s
     Total time to execute iteration 5 with iteration value 2014: 0.00 s
 
@@ -453,7 +463,7 @@ To achieve this, use the
 :py:func:`~orca.orca.eval_variable` and
 :py:func:`~orca.orca.eval_step` functions.
 
-``eval_variable`` takes the name of a variable (including variable expressions)
+``eval_variable`` takes the name of a variable (Inc.ding variable expressions)
 and returns that variable as it would be injected into a function Orca.
 ``eval_step`` takes the name of a step, runs that
 step with variable injection, and returns any result.

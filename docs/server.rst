@@ -18,7 +18,7 @@ The Orca server requires three additional libraries:
 You can get these libraries individually (they are available via
 `pip <https://pip.pypa.io/en/stable/>`__ and
 `conda <http://conda.pydata.org/>`__), or get them when you install
-Orca by including the ``[server]`` option::
+Orca by Inc.ding the ``[server]`` option::
 
     pip install orca[server]
 
@@ -82,7 +82,7 @@ Schema
 
 The "schema" route returns a complete list of available tables, columns, steps,
 injectables, and broadcasts.
-Columns include both those registered on a table via Orca and those that
+Columns Inc.de both those registered on a table via Orca and those that
 are local to a table.
 The returned JSON object has keys ``tables``, ``steps``, ``injectables``,
 ``columns``, and ``broadcasts``.
@@ -242,7 +242,7 @@ If the table is a registered DataFrame all that is returned is:
 
     {"type": "dataframe"}
 
-If the table is registered as a function the returned data will include the
+If the table is registered as a function the returned data will Inc.de the
 filename, line number, and text of the function:
 
 .. code-block:: json
@@ -312,7 +312,7 @@ List Columns For Table
 * Route: ``/tables/<table_name>/columns``
 * Returns: JSON
 
-List all columns for a table including both local and registered columns.
+List all columns for a table Inc.ding both local and registered columns.
 
 .. code-block:: json
 
@@ -358,7 +358,7 @@ or if the column is local to a DataFrame the return value is:
 
     {"type": "local"}
 
-If the column is registered as a function the returned data will include the
+If the column is registered as a function the returned data will Inc.de the
 filename, line number, and text of the function:
 
 .. code-block:: json
@@ -470,7 +470,7 @@ than a function the result will be:
       "type": "variable"
     }
 
-If the injectable is a function the returned data will include the
+If the injectable is a function the returned data will Inc.de the
 filename, line number, and text of the function:
 
 .. code-block:: json
@@ -545,7 +545,7 @@ Step Definition
 * Returns: JSON
 
 Get the source of a step function.
-The returned data will include the
+The returned data will Inc.de the
 filename, line number, and text of the function:
 
 .. code-block:: json

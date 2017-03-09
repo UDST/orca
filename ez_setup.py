@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Bootstrap setuptools installation
 
-To use setuptools in your package's setup.py, include this
+To use setuptools in your package's setup.py, Inc.de this
 file in the same directory and add this to the top of your setup.py::
 
     from ez_setup import use_setuptools

@@ -1,6 +1,5 @@
 # Orca
-# Copyright (C) 2014-2015 Synthicity, LLC
-# Copyright (C) 2015 Autodesk
+# Copyright (C) 2016 UrbanSim Inc.
 # See full license in LICENSE.
 
 import os
@@ -357,8 +356,19 @@ def test_update_col(df):
     pdt.assert_series_equal(
         wrapped['b'], pd.Series([7, 8, 9], index=df.index, name='b'))
 
-    wrapped.update_col_from_series('a', pd.Series([]))
+    a_dtype = wrapped['a'].dtype
+
+    # test 1 - cast the data type before the update
+    wrapped.update_col_from_series('a', pd.Series(dtype=a_dtype))
     pdt.assert_series_equal(wrapped['a'], df['a'])
+
+    # test 2 - let the update method do the cast
+    wrapped.update_col_from_series('a', pd.Series(), True)
+    pdt.assert_series_equal(wrapped['a'], df['a'])
+
+    # test 3 - don't cast, should raise an error
+    with pytest.raises(ValueError):
+        wrapped.update_col_from_series('a', pd.Series())
 
     wrapped.update_col_from_series('a', pd.Series([99], index=['y']))
     pdt.assert_series_equal(
@@ -901,17 +911,27 @@ def test_write_tables(df, store_name):
     def step(table):
         pass
 
-    orca.write_tables(store_name, ['step'], None)
+    step_tables = orca.get_step_table_names(['step'])
 
+    orca.write_tables(store_name, step_tables, None)
     with pd.get_store(store_name, mode='r') as store:
         assert 'table' in store
         pdt.assert_frame_equal(store['table'], df)
 
-    orca.write_tables(store_name, ['step'], 1969)
+    orca.write_tables(store_name, step_tables, 1969)
 
     with pd.get_store(store_name, mode='r') as store:
         assert '1969/table' in store
         pdt.assert_frame_equal(store['1969/table'], df)
+
+
+def test_write_all_tables(df, store_name):
+    orca.add_table('table', df)
+    orca.write_tables(store_name)
+
+    with pd.get_store(store_name, mode='r') as store:
+        for t in orca.list_tables():
+            assert t in store
 
 
 def test_run_and_write_tables(df, store_name):
@@ -931,7 +951,7 @@ def test_run_and_write_tables(df, store_name):
         ['step'], iter_vars=range(11), data_out=store_name, out_interval=3)
 
     with pd.get_store(store_name, mode='r') as store:
-        for year in range(3, 11, 3):
+        for year in range(0, 11, 3):
             key = '{}/table'.format(year)
             assert key in store
 
@@ -943,7 +963,33 @@ def test_run_and_write_tables(df, store_name):
 
         for x in range(11):
             pdt.assert_series_equal(
-                store['final/table'][year_key(x)], series_year(x))
+                store['10/table'][year_key(x)], series_year(x))
+
+
+def test_run_and_write_tables_out_tables_provided(df, store_name):
+    table_names = ['table', 'table2', 'table3']
+    for t in table_names:
+        orca.add_table(t, df)
+
+    @orca.step()
+    def step(iter_var, table, table2):
+        return
+
+    orca.run(
+        ['step'],
+        iter_vars=range(1),
+        data_out=store_name,
+        out_base_tables=table_names,
+        out_run_tables=['table'])
+
+    with pd.get_store(store_name, mode='r') as store:
+
+        for t in table_names:
+            assert 'base/{}'.format(t) in store
+
+        assert '0/table' in store
+        assert '0/table2' not in store
+        assert '0/table3' not in store
 
 
 def test_get_raw_table(df):
@@ -1024,6 +1070,18 @@ def test_injectables_cm():
     assert orca._INJECTABLES == {
         'a': 'a', 'b': 'b', 'c': 'c'
     }
+
+
+def test_temporary_tables_cm():
+    orca.add_table('a', pd.DataFrame())
+
+    with orca.temporary_tables():
+        assert sorted(orca._TABLES.keys()) == ['a']
+
+    with orca.temporary_tables(a=pd.DataFrame(), b=pd.DataFrame()):
+        assert sorted(orca._TABLES.keys()) == ['a', 'b']
+
+    assert sorted(orca._TABLES.keys()) == ['a']
 
 
 def test_is_expression():

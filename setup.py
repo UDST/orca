@@ -46,11 +46,11 @@ with open('README.rst', 'r') as f:
 
 setup(
     name='orca',
-    version='1.2dev',
+    version='1.4dev',
     description='A pipeline orchestration tool with Pandas support',
     long_description=long_description,
-    author='Autodesk',
-    author_email='matthew.davis@autodesk.com',
+    author='UrbanSim Inc.',
+    author_email='info@urbansim.com',
     license='BSD',
     url='https://github.com/udst/orca',
     classifiers=[
@@ -60,6 +60,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5'
         'License :: OSI Approved :: BSD License'
     ],
     packages=find_packages(exclude=['*.tests']),
@@ -70,7 +71,7 @@ setup(
             'server/templates/*']
     },
     install_requires=[
-        'pandas >= 0.13.1',
+        'pandas >= 0.15.0',
         'tables >= 3.1.0',
         'toolz >= 0.7.0',
         'zbox >= 1.2'
