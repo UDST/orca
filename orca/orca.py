@@ -1705,7 +1705,7 @@ def _next_merge(merge_node):
             raise OrcaError('No node found for next merge.')
 
 
-def merge_tables(target, tables, columns=None):
+def merge_tables(target, tables, columns=None, drop_intersection=True):
     """
     Merge a number of tables onto a target table. Tables must have
     registered merge rules via the `broadcast` function.
@@ -1721,6 +1721,12 @@ def merge_tables(target, tables, columns=None):
         will be requested from each table. The final merged table will have
         only these columns. By default all columns are used from every
         table.
+    drop_intersection : bool
+        If True, keep the left most occurence of any column name if it occurs
+        on more than one table.  This prevents getting back the same column
+        with suffixes applied by pd.merge.  If false, columns names will be
+        suffixed with the table names - e.g. zone_id_buildings and
+        zone_id_parcels.
 
     Returns
     -------
@@ -1788,9 +1794,18 @@ def merge_tables(target, tables, columns=None):
             with log_start_finish(
                     'merge tables {} and {}'.format(onto, cast), logger):
 
+                intersection = set(onto_table.columns).\
+                    intersection(cast_table.columns)
+                # intersection is ok if it's the join key
+                intersection.discard(bc.onto_on)
+                intersection.discard(bc.cast_on)
+                # otherwise drop so as not to create conflicts
+                if drop_intersection:
+                    cast_table = cast_table.drop(intersection, axis=1)
+
                 onto_table = pd.merge(
                     onto_table, cast_table,
-                    suffixes=('', '_y'),
+                    suffixes=['_'+onto, '_'+cast],
                     left_on=bc.onto_on, right_on=bc.cast_on,
                     left_index=bc.onto_index, right_index=bc.cast_index)
 
