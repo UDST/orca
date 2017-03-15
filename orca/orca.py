@@ -1827,7 +1827,7 @@ def get_step_table_names(steps):
     return list(table_names)
 
 
-def write_tables(fname, table_names=None, prefix=None):
+def write_tables(fname, table_names=None, prefix=None, compress=False):
     """
     Writes tables to a pandas.HDFStore file.
 
@@ -1842,6 +1842,9 @@ def write_tables(fname, table_names=None, prefix=None):
     prefix: str
         If not None, used to prefix the output table names so that
         multiple iterations can go in the same file.
+    compress: boolean
+        Whether to compress output file using standard HDF5-readable
+        zlib compression, default False.
 
     """
     if table_names is None:
@@ -1850,7 +1853,11 @@ def write_tables(fname, table_names=None, prefix=None):
     tables = (get_table(t) for t in table_names)
     key_template = '{}/{{}}'.format(prefix) if prefix is not None else '{}'
 
-    with pd.get_store(fname, mode='a') as store:
+    # set compression options to zlib level-1 if compress arg is True
+    complib = compress and 'zlib' or None
+    complevel = compress and 1 or 0
+
+    with pd.get_store(fname, mode='a', complib=complib, complevel=complevel) as store:
         for t in tables:
             store[key_template.format(t.name)] = t.to_frame()
 
@@ -1859,7 +1866,7 @@ iter_step = namedtuple('iter_step', 'step_num,step_name')
 
 
 def run(steps, iter_vars=None, data_out=None, out_interval=1,
-        out_base_tables=None, out_run_tables=None):
+        out_base_tables=None, out_run_tables=None, compress=False):
     """
     Run steps in series, optionally repeatedly over some sequence.
     The current iteration variable is set as a global injectable
@@ -1893,6 +1900,9 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
     run_tables: list of str, optional, default None
         List of run tables to write. If not provided, tables injected
         into 'steps' will be written.
+    compress: boolean, option, default False
+        Whether to compress output file using standard HDF5 zlib compression.
+        Compression yields much smaller files using slightly more CPU.
     """
     iter_vars = iter_vars or [None]
     max_i = len(iter_vars)
@@ -1910,7 +1920,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
     # write out the base (inputs)
     if data_out:
         add_injectable('iter_var', iter_vars[0])
-        write_tables(data_out, out_base_tables, 'base')
+        write_tables(data_out, out_base_tables, 'base', compress=compress)
 
     # run the steps
     for i, var in enumerate(iter_vars, start=1):
@@ -1945,7 +1955,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
         # write out the results for the current iteration
         if data_out:
             if (i - 1) % out_interval == 0 or i == max_i:
-                write_tables(data_out, out_run_tables, var)
+                write_tables(data_out, out_run_tables, var, compress=compress)
 
         clear_cache(scope=_CS_ITER)
 
