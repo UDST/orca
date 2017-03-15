@@ -13,6 +13,8 @@
 
   
   
+  
+  
 
   
 
@@ -44,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -84,7 +87,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Orca Core</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#tables">Tables</a><ul>
@@ -135,8 +141,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Orca</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Orca</a>
+        
       </nav>
 
 
@@ -145,23 +153,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Orca Core</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Orca Core</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="_sources/core.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -1988,7 +2013,7 @@ table.</p>
 
 <dl class="function">
 <dt id="orca.orca.run">
-<code class="descclassname">orca.orca.</code><code class="descname">run</code><span class="sig-paren">(</span><em>steps</em>, <em>iter_vars=None</em>, <em>data_out=None</em>, <em>out_interval=1</em>, <em>out_base_tables=None</em>, <em>out_run_tables=None</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.run" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">run</code><span class="sig-paren">(</span><em>steps</em>, <em>iter_vars=None</em>, <em>data_out=None</em>, <em>out_interval=1</em>, <em>out_base_tables=None</em>, <em>out_run_tables=None</em>, <em>compress=False</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run steps in series, optionally repeatedly over some sequence.
 The current iteration variable is set as a global injectable
 called <code class="docutils literal"><span class="pre">iter_var</span></code>.</p>
@@ -2030,9 +2055,14 @@ results for 2015, 2017, etc.</p>
 into &#8216;steps&#8217; will be written.</p>
 </div></blockquote>
 <p><strong>run_tables: list of str, optional, default None</strong></p>
-<blockquote class="last">
+<blockquote>
 <div><p>List of run tables to write. If not provided, tables injected
 into &#8216;steps&#8217; will be written.</p>
+</div></blockquote>
+<p><strong>compress: boolean, option, default False</strong></p>
+<blockquote class="last">
+<div><p>Whether to compress output file using standard HDF5 zlib compression.
+Compression yields much smaller files using slightly more CPU.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -2094,7 +2124,7 @@ this function.</p>
 
 <dl class="function">
 <dt id="orca.orca.write_tables">
-<code class="descclassname">orca.orca.</code><code class="descname">write_tables</code><span class="sig-paren">(</span><em>fname</em>, <em>table_names=None</em>, <em>prefix=None</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.write_tables" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">write_tables</code><span class="sig-paren">(</span><em>fname</em>, <em>table_names=None</em>, <em>prefix=None</em>, <em>compress=False</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.write_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes tables to a pandas.HDFStore file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2111,9 +2141,14 @@ at the end of this function.</p>
 be written.</p>
 </div></blockquote>
 <p><strong>prefix: str</strong></p>
-<blockquote class="last">
+<blockquote>
 <div><p>If not None, used to prefix the output table names so that
 multiple iterations can go in the same file.</p>
+</div></blockquote>
+<p><strong>compress: boolean</strong></p>
+<blockquote class="last">
+<div><p>Whether to compress output file using standard HDF5-readable
+zlib compression, default False.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -2127,15 +2162,18 @@ multiple iterations can go in the same file.</p>
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="server.html" class="btn btn-neutral float-right" title="Orca Server" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="server.html" class="btn btn-neutral float-right" title="Orca Server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="example.html" class="btn btn-neutral" title="Example" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="example.html" class="btn btn-neutral" title="Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -2169,7 +2207,8 @@ multiple iterations can go in the same file.</p>
             VERSION:'1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>
