@@ -375,6 +375,48 @@ def test_update_col(df):
         wrapped['a'], pd.Series([1, 99, 3], index=df.index, name='a'))
 
 
+def test_table_view():
+    # register a table
+    orca.add_table(
+        'test_tab',
+        pd.DataFrame({
+            'a': [1, 2],
+            'b': [3, 4]
+        })
+    )
+
+    # attach columns
+    @orca.column('test_tab')
+    def c():
+        return pd.Series([5, 6])
+
+    @orca.column('test_tab')
+    def d():
+        return pd.Series([7, 8])
+
+    # test 1 - all columns
+    tv1 = orca.get_table_view('test_tab')
+    assert (tv1.values.flatten() == [1, 3, 5, 7, 2, 4, 6, 8]).all()
+
+    # test 2 - just local
+    tv2 = orca.get_table_view('test_tab', 'local')
+    assert (tv2.values.flatten() == [1, 3, 2, 4]).all()
+
+    # test 3 - specific columns
+    tv3 = orca.get_table_view('test_tab', ['a', 'c'])
+    assert (tv3.values.flatten() == [1, 5, 2, 6]).all()
+
+    # test 4 - local + specific extra cols
+    tv4 = orca.get_table_view('test_tab', ['local', 'd'])
+    assert (tv4.values.flatten() == [1, 3, 7, 2, 4, 8]).all()
+
+    # test updating the wrapper's data
+    tv4.update_col('a', 0)
+    tv4.update_col_from_series('b', pd.Series([-1], index=pd.Index([1])))
+    tv5 = orca.get_table_view('test_tab', 'local')
+    assert (tv5.values.flatten() == [0, 3, 0, -1]).all()
+
+
 class _FakeTable(object):
     def __init__(self, name, columns):
         self.name = name

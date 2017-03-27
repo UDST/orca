@@ -1069,6 +1069,45 @@ def get_table(table_name):
     return table
 
 
+def get_table_view(table_name, columns=None):
+    """
+    Get a view of the registered table.
+
+    Parameters
+    ----------
+    table_name: str
+        Name of the registered orca table.
+    columns: str or list, optional, default None
+        Subset of columns to collect.
+        Use the 'local' keyword to fetch all local columns.
+
+    Returns
+    -------
+    pandas.DataFrame with extensions:
+        - wrapper: returns the orca table for the view.
+        - update_col: updates or adds a column to the wrapper.
+        - update_col_from_series: updates a column in the wrapper from a series.
+
+    """
+    wrapper = get_table(table_name)
+
+    # handle local keyword
+    if columns == 'local':
+        columns = wrapper.local_columns
+    elif isinstance(columns, list) and 'local' in columns:
+        columns = wrapper.local_columns + columns
+        columns.remove('local')
+
+    # evaluate the table
+    df = wrapper.to_frame(columns)
+
+    # add extension methods and return
+    df.wrapper = wrapper
+    df.update_col = wrapper.update_col
+    df.update_col_from_series = wrapper.update_col_from_series
+    return df
+
+
 def table_type(table_name):
     """
     Returns the type of a registered table.
