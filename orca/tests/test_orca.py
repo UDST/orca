@@ -5,6 +5,7 @@
 import os
 import tempfile
 
+import numpy as np
 import pandas as pd
 import pytest
 from pandas.util import testing as pdt
@@ -1298,3 +1299,49 @@ def test_get_injectable_func_source_data():
     assert filename.endswith('test_orca.py')
     assert isinstance(lineno, int)
     assert 'def inj2()' in source
+
+
+def test_table_view_expressions():
+
+    # define a data frame and add some columns to it
+    orca.add_table(
+        'my_df',
+        pd.DataFrame(
+            {
+                'a': [1, 1, 1],
+                'b': [2, 2, 2]
+            }
+        )
+    )
+
+    @orca.column('my_df')
+    def c():
+        return pd.Series([3, 3, 3])
+
+    @orca.column('my_df')
+    def d():
+        return pd.Series([4, 4, 4])
+
+    # case 1 -- evaluate all columns
+    @orca.table()
+    def test1(df='my_df.*'):
+        return df * -1
+
+    assert (orca.get_table_view('test1').values.flatten() ==
+            np.tile([-1, -2, -3, -4], 3)).all()
+
+    # case 2 -- just local
+    @orca.table()
+    def test2(df='my_df.local'):
+        return df * -1
+
+    assert (orca.get_table_view('test2').values.flatten() ==
+            np.tile([-1, -2], 3)).all()
+
+    # case 3 -- specific columns
+    @orca.table()
+    def test3(df='my_df[a, d]'):
+        return df * -1
+
+    assert (orca.get_table_view('test3').values.flatten() ==
+            np.tile([-1, -4], 3)).all()

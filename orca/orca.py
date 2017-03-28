@@ -943,8 +943,25 @@ def _collect_variables(names, expressions=None):
         if '.' in expression:
             # Registered variable expression refers to column.
             table_name, column_name = expression.split('.')
-            table = get_table(table_name)
-            variables[label] = table.get_column(column_name)
+
+            if column_name == '*':
+                # return a table view with all columns
+                variables[label] = get_table_view(table_name)
+            elif column_name == 'local':
+                # return a table view with just the local columns
+                variables[label] = get_table_view(table_name, 'local')
+            else:
+                # return a single column
+                table = get_table(table_name)
+                variables[label] = table.get_column(column_name)
+
+        elif '[' in expression and expression.endswith(']'):
+            # evaluate a subset of columns
+            table_name, cols = expression[:-1].split('[')
+            cols = cols.split(',')
+            cols = map(str.strip, cols)
+            variables[label] = get_table_view(table_name, cols)
+
         else:
             thing = all_variables[expression]
             if isinstance(thing, (_InjectableFuncWrapper, TableFuncWrapper)):
