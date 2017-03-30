@@ -50,7 +50,7 @@ Orca calls these functions by matching their arguments to other registered
 data.
 (This format is heavily inspired by
 `pytest's fixtures <http://pytest.org/latest/fixture.html#fixture>`__.)
-The main components of a pipeline Inc.de:
+The main components of a pipeline include:
 
 * Steps
 
@@ -120,7 +120,7 @@ Installation
 ------------
 
 Orca depends on Pandas, PyTables, toolz (or cytoolz), and zbox.
-Pandas and PyTables are Inc.ded in `Anaconda <http://docs.continuum.io/anaconda/>`__.
+Pandas and PyTables are included in `Anaconda <http://docs.continuum.io/anaconda/>`__.
 Toolz and zbox may be installed with `pip <https://pip.pypa.io/en/latest/index.html>`__,
 and both toolz and cytoolz are can be installed by
 `conda <http://conda.pydata.org/>`__ (if you are using Anaconda or miniconda).
@@ -133,9 +133,9 @@ Orca may also be installed with conda::
 
     conda install --channel jiffyclub orca
 
-(The jiffyclub channel is Inc.ded for install zbox.)
+(The jiffyclub channel is included for install zbox.)
 
-Add the server option to Inc.de the optional server dependencies::
+Add the server option to include the optional server dependencies::
 
     pip install orca[server]
 

@@ -203,7 +203,7 @@ bundled UI to browse an Orca configuration.</p>
 <p>You can get these libraries individually (they are available via
 <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> and
 <a class="reference external" href="http://conda.pydata.org/">conda</a>), or get them when you install
-Orca by Inc.ding the <code class="docutils literal"><span class="pre">[server]</span></code> option:</p>
+Orca by including the <code class="docutils literal"><span class="pre">[server]</span></code> option:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">orca</span><span class="p">[</span><span class="n">server</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -287,7 +287,7 @@ can load some third-party CSS and JavaScript.</p>
 </ul>
 <p>The &#8220;schema&#8221; route returns a complete list of available tables, columns, steps,
 injectables, and broadcasts.
-Columns Inc.de both those registered on a table via Orca and those that
+Columns include both those registered on a table via Orca and those that
 are local to a table.
 The returned JSON object has keys <code class="docutils literal"><span class="pre">tables</span></code>, <code class="docutils literal"><span class="pre">steps</span></code>, <code class="docutils literal"><span class="pre">injectables</span></code>,
 <code class="docutils literal"><span class="pre">columns</span></code>, and <code class="docutils literal"><span class="pre">broadcasts</span></code>.
@@ -440,7 +440,7 @@ If the table is a registered function this returns the text of the function.</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;dataframe&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>If the table is registered as a function the returned data will Inc.de the
+<p>If the table is registered as a function the returned data will include the
 filename, line number, and text of the function:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
@@ -505,7 +505,7 @@ For example, the URL might read:</p>
 <li>Route: <code class="docutils literal"><span class="pre">/tables/&lt;table_name&gt;/columns</span></code></li>
 <li>Returns: JSON</li>
 </ul>
-<p>List all columns for a table Inc.ding both local and registered columns.</p>
+<p>List all columns for a table including both local and registered columns.</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;columns&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">,</span> <span class="s2">&quot;col2&quot;</span><span class="p">]</span>
 <span class="p">}</span>
@@ -544,7 +544,7 @@ If the column is a registered function this returns the text of the function.</p
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;local&quot;</span><span class="p">}</span>
 </pre></div>
 </div>
-<p>If the column is registered as a function the returned data will Inc.de the
+<p>If the column is registered as a function the returned data will include the
 filename, line number, and text of the function:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
@@ -649,7 +649,7 @@ than a function the result will be:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>If the injectable is a function the returned data will Inc.de the
+<p>If the injectable is a function the returned data will include the
 filename, line number, and text of the function:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
@@ -719,7 +719,7 @@ the broadcast:</p>
 <li>Returns: JSON</li>
 </ul>
 <p>Get the source of a step function.
-The returned data will Inc.de the
+The returned data will include the
 filename, line number, and text of the function:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>

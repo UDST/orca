@@ -335,7 +335,7 @@ table, though the order may have changed.
 <a class="reference internal" href="#orca.orca.merge_tables" title="orca.orca.merge_tables"><code class="xref py py-func docutils literal"><span class="pre">merge_tables()</span></code></a> has an optional
 <code class="docutils literal"><span class="pre">columns=</span></code> keyword that can contain column names from any the tables
 going into the merge so you can limit which columns end up in the final table.
-(Columns necessary for performing merges will be Inc.ded whether or not
+(Columns necessary for performing merges will be included whether or not
 they are in the <code class="docutils literal"><span class="pre">columns=</span></code> list.)</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -625,7 +625,7 @@ especially during development and testing.
 To achieve this, use the
 <a class="reference internal" href="#orca.orca.eval_variable" title="orca.orca.eval_variable"><code class="xref py py-func docutils literal"><span class="pre">eval_variable()</span></code></a> and
 <a class="reference internal" href="#orca.orca.eval_step" title="orca.orca.eval_step"><code class="xref py py-func docutils literal"><span class="pre">eval_step()</span></code></a> functions.</p>
-<p><code class="docutils literal"><span class="pre">eval_variable</span></code> takes the name of a variable (Inc.ding variable expressions)
+<p><code class="docutils literal"><span class="pre">eval_variable</span></code> takes the name of a variable (including variable expressions)
 and returns that variable as it would be injected into a function Orca.
 <code class="docutils literal"><span class="pre">eval_step</span></code> takes the name of a step, runs that
 step with variable injection, and returns any result.</p>
@@ -1083,7 +1083,7 @@ a Pandas Series.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>columns</strong> : sequence, optional</p>
 <blockquote>
 <div><p>Sequence of the column names desired in the DataFrame.
-If None all columns are returned, Inc.ding registered columns.</p>
+If None all columns are returned, including registered columns.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -1230,7 +1230,7 @@ if the wrapped function has not been called yet.)</p>
 <dl class="method">
 <dt id="orca.orca.TableFuncWrapper.func_source_data">
 <code class="descname">func_source_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.func_source_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return data about the wrapped function source, Inc.ding file name,
+<dd><p>Return data about the wrapped function source, including file name,
 line number, and source code.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1275,7 +1275,7 @@ unknown.</p>
 <dt id="orca.orca.TableFuncWrapper.local_columns">
 <code class="descname">local_columns</code><a class="headerlink" href="#orca.orca.TableFuncWrapper.local_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Only the columns contained in the DataFrame returned by the
-wrapped function. (No registered columns Inc.ded.)</p>
+wrapped function. (No registered columns included.)</p>
 </dd></dl>
 
 <dl class="method">
@@ -1710,7 +1710,7 @@ None if the table index will be used instead.</li>
 <dl class="function">
 <dt id="orca.orca.get_injectable_func_source_data">
 <code class="descclassname">orca.orca.</code><code class="descname">get_injectable_func_source_data</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_injectable_func_source_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return data about an injectable function&#8217;s source, Inc.ding file name,
+<dd><p>Return data about an injectable function&#8217;s source, including file name,
 line number, and source code.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1993,7 +1993,7 @@ registered merge rules via the <cite>broadcast</cite> function.</p>
 </div></blockquote>
 <p><strong>tables</strong> : list of <cite>DataFrameWrapper</cite>, <cite>TableFuncWrapper</cite>, or str</p>
 <blockquote>
-<div><p>All of the tables to merge. Should Inc.de the target table.</p>
+<div><p>All of the tables to merge. Should include the target table.</p>
 </div></blockquote>
 <p><strong>columns</strong> : list of str, optional</p>
 <blockquote>
