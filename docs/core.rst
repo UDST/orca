@@ -149,7 +149,7 @@ table, though the order may have changed.
 :py:func:`~orca.orca.merge_tables` has an optional
 ``columns=`` keyword that can contain column names from any the tables
 going into the merge so you can limit which columns end up in the final table.
-(Columns necessary for performing merges will be Inc.ded whether or not
+(Columns necessary for performing merges will be included whether or not
 they are in the ``columns=`` list.)
 
 .. note:: :py:func:`~orca.orca.merge_tables` calls
@@ -463,7 +463,7 @@ To achieve this, use the
 :py:func:`~orca.orca.eval_variable` and
 :py:func:`~orca.orca.eval_step` functions.
 
-``eval_variable`` takes the name of a variable (Inc.ding variable expressions)
+``eval_variable`` takes the name of a variable (including variable expressions)
 and returns that variable as it would be injected into a function Orca.
 ``eval_step`` takes the name of a step, runs that
 step with variable injection, and returns any result.

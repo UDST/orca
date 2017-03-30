@@ -97,7 +97,7 @@ def check_is_injectable(func):
 def schema():
     """
     All tables, columns, steps, injectables and broadcasts registered with
-    Orca. Inc.des local columns on tables.
+    Orca. Includes local columns on tables.
 
     """
     tables = orca.list_tables()
@@ -154,7 +154,7 @@ def table_preview(table_name):
 @check_is_table
 def table_describe(table_name):
     """
-    Return summary statistics of a table as JSON. Inc.des all columns.
+    Return summary statistics of a table as JSON. Includes all columns.
     Uses Pandas' "split" JSON format.
 
     """

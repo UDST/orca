@@ -200,7 +200,7 @@ class DataFrameWrapper(object):
         ----------
         columns : sequence, optional
             Sequence of the column names desired in the DataFrame.
-            If None all columns are returned, Inc.ding registered columns.
+            If None all columns are returned, including registered columns.
 
         Returns
         -------
@@ -414,7 +414,7 @@ class TableFuncWrapper(object):
     def local_columns(self):
         """
         Only the columns contained in the DataFrame returned by the
-        wrapped function. (No registered columns Inc.ded.)
+        wrapped function. (No registered columns included.)
 
         """
         if self._columns:
@@ -557,7 +557,7 @@ class TableFuncWrapper(object):
 
     def func_source_data(self):
         """
-        Return data about the wrapped function source, Inc.ding file name,
+        Return data about the wrapped function source, including file name,
         line number, and source code.
 
         Returns
@@ -651,7 +651,7 @@ class _ColumnFuncWrapper(object):
 
     def func_source_data(self):
         """
-        Return data about the wrapped function source, Inc.ding file name,
+        Return data about the wrapped function source, including file name,
         line number, and source code.
 
         Returns
@@ -815,7 +815,7 @@ class _StepFuncWrapper(object):
 
     def func_source_data(self):
         """
-        Return data about a step function's source, Inc.ding file name,
+        Return data about a step function's source, including file name,
         line number, and source code.
 
         Returns
@@ -1445,7 +1445,7 @@ def get_injectable(name):
 
 def get_injectable_func_source_data(name):
     """
-    Return data about an injectable function's source, Inc.ding file name,
+    Return data about an injectable function's source, including file name,
     line number, and source code.
 
     Parameters
@@ -1715,7 +1715,7 @@ def merge_tables(target, tables, columns=None):
     target : str, DataFrameWrapper, or TableFuncWrapper
         Name of the table (or wrapped table) onto which tables will be merged.
     tables : list of `DataFrameWrapper`, `TableFuncWrapper`, or str
-        All of the tables to merge. Should Inc.de the target table.
+        All of the tables to merge. Should include the target table.
     columns : list of str, optional
         If given, columns will be mapped to `tables` and only those columns
         will be requested from each table. The final merged table will have
