@@ -3,7 +3,7 @@ import inspect
 
 def func_source_data(func):
     """
-    Return data about a function source, Inc.ding file name,
+    Return data about a function source, including file name,
     line number, and source code.
 
     Parameters
