@@ -1828,7 +1828,7 @@ def get_step_table_names(steps):
     return list(table_names)
 
 
-def write_tables(fname, table_names=None, prefix=None, compress=False):
+def write_tables(fname, table_names=None, prefix=None, compress=False, local=False):
     """
     Writes tables to a pandas.HDFStore file.
 
@@ -1860,14 +1860,19 @@ def write_tables(fname, table_names=None, prefix=None, compress=False):
 
     with pd.get_store(fname, mode='a', complib=complib, complevel=complevel) as store:
         for t in tables:
-            store[key_template.format(t.name)] = t.to_frame()
+            # if local arg is True, store only local columns
+            columns = None
+            if local is True:
+                columns = t.local_columns
+            store[key_template.format(t.name)] = t.to_frame(columns=columns)
 
 
 iter_step = namedtuple('iter_step', 'step_num,step_name')
 
 
 def run(steps, iter_vars=None, data_out=None, out_interval=1,
-        out_base_tables=None, out_run_tables=None, compress=False):
+        out_base_tables=None, out_run_tables=None, compress=False,
+        out_base_local=True, out_run_local=False):
     """
     Run steps in series, optionally repeatedly over some sequence.
     The current iteration variable is set as a global injectable
@@ -1895,15 +1900,21 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
         The interval is defined relative to the first iteration. For example,
         a run begining in 2015 with an out_interval of 2, will write out
         results for 2015, 2017, etc.
-    base_tables: list of str, optional, default None
+    out_base_tables: list of str, optional, default None
         List of base tables to write. If not provided, tables injected
         into 'steps' will be written.
-    run_tables: list of str, optional, default None
+    out_run_tables: list of str, optional, default None
         List of run tables to write. If not provided, tables injected
         into 'steps' will be written.
-    compress: boolean, option, default False
+    compress: boolean, optional, default False
         Whether to compress output file using standard HDF5 zlib compression.
         Compression yields much smaller files using slightly more CPU.
+    out_base_local: boolean, optional, default True
+        For tables in out_base_tables, whether to store only local columns (True)
+        or both, local and computed columns (False).
+    out_run_local: boolean, optional, default False
+        For tables in out_run_tables, whether to store only local columns (True)
+        or both, local and computed columns (False).        
     """
     iter_vars = iter_vars or [None]
     max_i = len(iter_vars)
@@ -1921,7 +1932,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
     # write out the base (inputs)
     if data_out:
         add_injectable('iter_var', iter_vars[0])
-        write_tables(data_out, out_base_tables, 'base', compress=compress)
+        write_tables(data_out, out_base_tables, 'base', compress=compress, local=out_base_local)
 
     # run the steps
     for i, var in enumerate(iter_vars, start=1):
@@ -1956,7 +1967,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
         # write out the results for the current iteration
         if data_out:
             if (i - 1) % out_interval == 0 or i == max_i:
-                write_tables(data_out, out_run_tables, var, compress=compress)
+                write_tables(data_out, out_run_tables, var, compress=compress, local=out_run_local)
 
         clear_cache(scope=_CS_ITER)
 
