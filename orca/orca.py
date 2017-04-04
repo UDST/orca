@@ -1914,7 +1914,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
         or both, local and computed columns (False).
     out_run_local: boolean, optional, default False
         For tables in out_run_tables, whether to store only local columns (True)
-        or both, local and computed columns (False).        
+        or both, local and computed columns (False).
     """
     iter_vars = iter_vars or [None]
     max_i = len(iter_vars)
