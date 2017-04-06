@@ -1872,7 +1872,7 @@ iter_step = namedtuple('iter_step', 'step_num,step_name')
 
 def run(steps, iter_vars=None, data_out=None, out_interval=1,
         out_base_tables=None, out_run_tables=None, compress=False,
-        out_base_local=True, out_run_local=False):
+        out_base_local=True, out_run_local=True):
     """
     Run steps in series, optionally repeatedly over some sequence.
     The current iteration variable is set as a global injectable
@@ -1912,7 +1912,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
     out_base_local: boolean, optional, default True
         For tables in out_base_tables, whether to store only local columns (True)
         or both, local and computed columns (False).
-    out_run_local: boolean, optional, default False
+    out_run_local: boolean, optional, default True
         For tables in out_run_tables, whether to store only local columns (True)
         or both, local and computed columns (False).
     """
