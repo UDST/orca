@@ -895,7 +895,7 @@ like to specifically document that in the function&#8217;s arguments.</p>
 <tr class="row-even"><td><a class="reference internal" href="#orca.orca.cache_on" title="orca.orca.cache_on"><code class="xref py py-obj docutils literal"><span class="pre">cache_on</span></code></a>()</td>
 <td>Whether caching is currently enabled or disabled.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">cache_disabled</span></code>(\*args,&nbsp;\*\*kwds)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">cache_disabled</span></code>(*args,&nbsp;**kwds)</td>
 <td></td>
 </tr>
 </tbody>
@@ -2013,7 +2013,7 @@ table.</p>
 
 <dl class="function">
 <dt id="orca.orca.run">
-<code class="descclassname">orca.orca.</code><code class="descname">run</code><span class="sig-paren">(</span><em>steps</em>, <em>iter_vars=None</em>, <em>data_out=None</em>, <em>out_interval=1</em>, <em>out_base_tables=None</em>, <em>out_run_tables=None</em>, <em>compress=False</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.run" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">run</code><span class="sig-paren">(</span><em>steps</em>, <em>iter_vars=None</em>, <em>data_out=None</em>, <em>out_interval=1</em>, <em>out_base_tables=None</em>, <em>out_run_tables=None</em>, <em>compress=False</em>, <em>out_base_local=True</em>, <em>out_run_local=True</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run steps in series, optionally repeatedly over some sequence.
 The current iteration variable is set as a global injectable
 called <code class="docutils literal"><span class="pre">iter_var</span></code>.</p>
@@ -2049,20 +2049,30 @@ The interval is defined relative to the first iteration. For example,
 a run begining in 2015 with an out_interval of 2, will write out
 results for 2015, 2017, etc.</p>
 </div></blockquote>
-<p><strong>base_tables: list of str, optional, default None</strong></p>
+<p><strong>out_base_tables: list of str, optional, default None</strong></p>
 <blockquote>
 <div><p>List of base tables to write. If not provided, tables injected
 into &#8216;steps&#8217; will be written.</p>
 </div></blockquote>
-<p><strong>run_tables: list of str, optional, default None</strong></p>
+<p><strong>out_run_tables: list of str, optional, default None</strong></p>
 <blockquote>
 <div><p>List of run tables to write. If not provided, tables injected
 into &#8216;steps&#8217; will be written.</p>
 </div></blockquote>
-<p><strong>compress: boolean, option, default False</strong></p>
-<blockquote class="last">
+<p><strong>compress: boolean, optional, default False</strong></p>
+<blockquote>
 <div><p>Whether to compress output file using standard HDF5 zlib compression.
 Compression yields much smaller files using slightly more CPU.</p>
+</div></blockquote>
+<p><strong>out_base_local: boolean, optional, default True</strong></p>
+<blockquote>
+<div><p>For tables in out_base_tables, whether to store only local columns (True)
+or both, local and computed columns (False).</p>
+</div></blockquote>
+<p><strong>out_run_local: boolean, optional, default True</strong></p>
+<blockquote class="last">
+<div><p>For tables in out_run_tables, whether to store only local columns (True)
+or both, local and computed columns (False).</p>
 </div></blockquote>
 </td>
 </tr>
@@ -2124,7 +2134,7 @@ this function.</p>
 
 <dl class="function">
 <dt id="orca.orca.write_tables">
-<code class="descclassname">orca.orca.</code><code class="descname">write_tables</code><span class="sig-paren">(</span><em>fname</em>, <em>table_names=None</em>, <em>prefix=None</em>, <em>compress=False</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.write_tables" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">write_tables</code><span class="sig-paren">(</span><em>fname</em>, <em>table_names=None</em>, <em>prefix=None</em>, <em>compress=False</em>, <em>local=False</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.write_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes tables to a pandas.HDFStore file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
