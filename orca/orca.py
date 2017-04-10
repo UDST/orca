@@ -1779,6 +1779,8 @@ def merge_tables(target, tables, columns=None, drop_intersection=True):
     frames = {name: t.to_frame(columns=colmap[name])
               for name, t in tables.items()}
 
+    past_intersections = set()
+
     # perform merges until there's only one table left
     while merges[target]:
         nm = _next_merge(merges)
@@ -1802,6 +1804,18 @@ def merge_tables(target, tables, columns=None, drop_intersection=True):
                 # otherwise drop so as not to create conflicts
                 if drop_intersection:
                     cast_table = cast_table.drop(intersection, axis=1)
+                else:
+                    # add suffix to past intersections which wouldn't get
+                    # picked up by the merge - these we have to rename by hand
+                    renames = dict(zip(
+                        past_intersections,
+                        [c+'_'+onto for c in past_intersections]
+                    ))
+                    onto_table = onto_table.rename(columns=renames)
+
+                # keep track of past intersections in case there's an odd
+                # number of intersections
+                past_intersections = past_intersections.union(intersection)
 
                 onto_table = pd.merge(
                     onto_table, cast_table,

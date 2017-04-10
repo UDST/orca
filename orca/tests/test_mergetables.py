@@ -189,3 +189,69 @@ def test_merge_tables3():
     expected = pd.merge(df_c, expected, left_index=True, right_on='c_id')
 
     assert_frames_equal(df, expected)
+
+
+def test_merge_tables_dup_columns():
+    # I'm intentionally setting the zone-ids to something different when joined
+    # in a real case they'd likely be the same but the whole point of this
+    # test is to see if we can get them back with different names tied to each
+    # table and they need to be different to test if that's working
+    hh_df = pd.DataFrame({'zone_id': [1, 1, 2], 'building_id': [5, 5, 6]})
+    orca.add_table('households', hh_df)
+
+    bldg_df = pd.DataFrame(
+        {'zone_id': [2, 3], 'parcel_id': [0, 1]}, index=[5, 6])
+    orca.add_table('buildings', bldg_df)
+
+    parcels_df = pd.DataFrame({'zone_id': [4, 5]}, index=[0, 1])
+    orca.add_table('parcels', parcels_df)
+
+    orca.broadcast(
+        'buildings', 'households', cast_index=True, onto_on='building_id')
+    orca.broadcast('parcels', 'buildings', cast_index=True, onto_on='parcel_id')
+
+    df = orca.merge_tables(
+        target='households', tables=['households', 'buildings', 'parcels'])
+
+    expected = pd.DataFrame(
+        {'building_id': [5, 5, 6], 'parcel_id': [0, 0, 1], 'zone_id': [1, 1, 2]})
+    assert_frames_equal(df, expected)
+
+    df = orca.merge_tables(
+        target='households',
+        tables=['households', 'buildings', 'parcels'],
+        drop_intersection=False)
+
+    expected = pd.DataFrame({
+        'building_id': [5, 5, 6],
+        'parcel_id': [0, 0, 1],
+        'zone_id_households': [1, 1, 2],
+        'zone_id_buildings': [2, 2, 3],
+        'zone_id_parcels': [4, 4, 5]
+    })
+    assert_frames_equal(df, expected)
+
+    df = orca.merge_tables(
+        target='households',
+        tables=['households', 'buildings'],
+        drop_intersection=False)
+
+    expected = pd.DataFrame({
+        'building_id': [5, 5, 6],
+        'parcel_id': [0, 0, 1],
+        'zone_id_households': [1, 1, 2],
+        'zone_id_buildings': [2, 2, 3]
+    })
+    assert_frames_equal(df, expected)
+
+    df = orca.merge_tables(
+        target='households',
+        tables=['households', 'buildings']
+    )
+
+    expected = pd.DataFrame({
+        'building_id': [5, 5, 6],
+        'parcel_id': [0, 0, 1],
+        'zone_id': [1, 1, 2]
+    })
+    assert_frames_equal(df, expected)
