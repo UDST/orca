@@ -200,7 +200,7 @@ class DataFrameWrapper(object):
         ----------
         columns : sequence, optional
             Sequence of the column names desired in the DataFrame.
-            If None all columns are returned, Inc.ding registered columns.
+            If None all columns are returned, including registered columns.
 
         Returns
         -------
@@ -210,10 +210,11 @@ class DataFrameWrapper(object):
         extra_cols = _columns_for_table(self.name)
 
         if columns:
-            local_cols = [c for c in self.local.columns
-                          if c in columns and c not in extra_cols]
-            extra_cols = tz.keyfilter(lambda c: c in columns, extra_cols)
-            df = self.local[local_cols].copy()
+            columns = set(columns)
+            set_extra_cols = set(extra_cols)
+            local_cols = set(self.local.columns) & columns - set_extra_cols
+            df = self.local[list(local_cols)].copy()
+            extra_cols = {k: extra_cols[k] for k in (columns & set_extra_cols)}
         else:
             df = self.local.copy()
 
@@ -414,7 +415,7 @@ class TableFuncWrapper(object):
     def local_columns(self):
         """
         Only the columns contained in the DataFrame returned by the
-        wrapped function. (No registered columns Inc.ded.)
+        wrapped function. (No registered columns included.)
 
         """
         if self._columns:
@@ -557,7 +558,7 @@ class TableFuncWrapper(object):
 
     def func_source_data(self):
         """
-        Return data about the wrapped function source, Inc.ding file name,
+        Return data about the wrapped function source, including file name,
         line number, and source code.
 
         Returns
@@ -651,7 +652,7 @@ class _ColumnFuncWrapper(object):
 
     def func_source_data(self):
         """
-        Return data about the wrapped function source, Inc.ding file name,
+        Return data about the wrapped function source, including file name,
         line number, and source code.
 
         Returns
@@ -815,7 +816,7 @@ class _StepFuncWrapper(object):
 
     def func_source_data(self):
         """
-        Return data about a step function's source, Inc.ding file name,
+        Return data about a step function's source, including file name,
         line number, and source code.
 
         Returns
@@ -1445,7 +1446,7 @@ def get_injectable(name):
 
 def get_injectable_func_source_data(name):
     """
-    Return data about an injectable function's source, Inc.ding file name,
+    Return data about an injectable function's source, including file name,
     line number, and source code.
 
     Parameters
@@ -1715,7 +1716,7 @@ def merge_tables(target, tables, columns=None, drop_intersection=True):
     target : str, DataFrameWrapper, or TableFuncWrapper
         Name of the table (or wrapped table) onto which tables will be merged.
     tables : list of `DataFrameWrapper`, `TableFuncWrapper`, or str
-        All of the tables to merge. Should Inc.de the target table.
+        All of the tables to merge. Should include the target table.
     columns : list of str, optional
         If given, columns will be mapped to `tables` and only those columns
         will be requested from each table. The final merged table will have
@@ -1857,7 +1858,7 @@ def get_step_table_names(steps):
     return list(table_names)
 
 
-def write_tables(fname, table_names=None, prefix=None):
+def write_tables(fname, table_names=None, prefix=None, compress=False, local=False):
     """
     Writes tables to a pandas.HDFStore file.
 
@@ -1872,6 +1873,9 @@ def write_tables(fname, table_names=None, prefix=None):
     prefix: str
         If not None, used to prefix the output table names so that
         multiple iterations can go in the same file.
+    compress: boolean
+        Whether to compress output file using standard HDF5-readable
+        zlib compression, default False.
 
     """
     if table_names is None:
@@ -1880,16 +1884,25 @@ def write_tables(fname, table_names=None, prefix=None):
     tables = (get_table(t) for t in table_names)
     key_template = '{}/{{}}'.format(prefix) if prefix is not None else '{}'
 
-    with pd.get_store(fname, mode='a') as store:
+    # set compression options to zlib level-1 if compress arg is True
+    complib = compress and 'zlib' or None
+    complevel = compress and 1 or 0
+
+    with pd.get_store(fname, mode='a', complib=complib, complevel=complevel) as store:
         for t in tables:
-            store[key_template.format(t.name)] = t.to_frame()
+            # if local arg is True, store only local columns
+            columns = None
+            if local is True:
+                columns = t.local_columns
+            store[key_template.format(t.name)] = t.to_frame(columns=columns)
 
 
 iter_step = namedtuple('iter_step', 'step_num,step_name')
 
 
 def run(steps, iter_vars=None, data_out=None, out_interval=1,
-        out_base_tables=None, out_run_tables=None):
+        out_base_tables=None, out_run_tables=None, compress=False,
+        out_base_local=True, out_run_local=True):
     """
     Run steps in series, optionally repeatedly over some sequence.
     The current iteration variable is set as a global injectable
@@ -1917,12 +1930,21 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
         The interval is defined relative to the first iteration. For example,
         a run begining in 2015 with an out_interval of 2, will write out
         results for 2015, 2017, etc.
-    base_tables: list of str, optional, default None
+    out_base_tables: list of str, optional, default None
         List of base tables to write. If not provided, tables injected
         into 'steps' will be written.
-    run_tables: list of str, optional, default None
+    out_run_tables: list of str, optional, default None
         List of run tables to write. If not provided, tables injected
         into 'steps' will be written.
+    compress: boolean, optional, default False
+        Whether to compress output file using standard HDF5 zlib compression.
+        Compression yields much smaller files using slightly more CPU.
+    out_base_local: boolean, optional, default True
+        For tables in out_base_tables, whether to store only local columns (True)
+        or both, local and computed columns (False).
+    out_run_local: boolean, optional, default True
+        For tables in out_run_tables, whether to store only local columns (True)
+        or both, local and computed columns (False).
     """
     iter_vars = iter_vars or [None]
     max_i = len(iter_vars)
@@ -1940,7 +1962,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
     # write out the base (inputs)
     if data_out:
         add_injectable('iter_var', iter_vars[0])
-        write_tables(data_out, out_base_tables, 'base')
+        write_tables(data_out, out_base_tables, 'base', compress=compress, local=out_base_local)
 
     # run the steps
     for i, var in enumerate(iter_vars, start=1):
@@ -1975,7 +1997,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
         # write out the results for the current iteration
         if data_out:
             if (i - 1) % out_interval == 0 or i == max_i:
-                write_tables(data_out, out_run_tables, var)
+                write_tables(data_out, out_run_tables, var, compress=compress, local=out_run_local)
 
         clear_cache(scope=_CS_ITER)
 
