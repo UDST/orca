@@ -2,8 +2,7 @@ language: python
 sudo: false
 python:
 - '2.7'
-- '3.3'
-- '3.4'
+- '3.5'
 before_install:
 - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
   -O miniconda.sh; else wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -18,12 +17,12 @@ before_install:
   conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION cytoolz flask pandas pip pygments pytables pytest six
 - source activate test-environment
 - pip install zbox
-- pip install pytest-cov coveralls pep8
+- pip install pytest-cov coveralls pycodestyle
 - bin/build_js_bundle.sh complete
 install:
 - pip install .
 script:
-- pep8 orca
+- pycodestyle orca
 - py.test --cov orca --cov-report term-missing
 after_success:
 - coveralls
