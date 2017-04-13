@@ -843,7 +843,7 @@ like to specifically document that in the function&#8217;s arguments.</p>
 <tr class="row-even"><td><a class="reference internal" href="#orca.orca.list_broadcasts" title="orca.orca.list_broadcasts"><code class="xref py py-obj docutils literal"><span class="pre">list_broadcasts</span></code></a>()</td>
 <td>List of registered broadcasts as (cast table name, onto table name).</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.merge_tables" title="orca.orca.merge_tables"><code class="xref py py-obj docutils literal"><span class="pre">merge_tables</span></code></a>(target,&nbsp;tables[,&nbsp;columns])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#orca.orca.merge_tables" title="orca.orca.merge_tables"><code class="xref py py-obj docutils literal"><span class="pre">merge_tables</span></code></a>(target,&nbsp;tables[,&nbsp;columns,&nbsp;...])</td>
 <td>Merge a number of tables onto a target table.</td>
 </tr>
 </tbody>
@@ -1980,7 +1980,7 @@ variable expression.</p>
 
 <dl class="function">
 <dt id="orca.orca.merge_tables">
-<code class="descclassname">orca.orca.</code><code class="descname">merge_tables</code><span class="sig-paren">(</span><em>target</em>, <em>tables</em>, <em>columns=None</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.merge_tables" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">orca.orca.</code><code class="descname">merge_tables</code><span class="sig-paren">(</span><em>target</em>, <em>tables</em>, <em>columns=None</em>, <em>drop_intersection=True</em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.merge_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Merge a number of tables onto a target table. Tables must have
 registered merge rules via the <cite>broadcast</cite> function.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2001,6 +2001,14 @@ registered merge rules via the <cite>broadcast</cite> function.</p>
 will be requested from each table. The final merged table will have
 only these columns. By default all columns are used from every
 table.</p>
+</div></blockquote>
+<p><strong>drop_intersection</strong> : bool</p>
+<blockquote>
+<div><p>If True, keep the left most occurence of any column name if it occurs
+on more than one table.  This prevents getting back the same column
+with suffixes applied by pd.merge.  If false, columns names will be
+suffixed with the table names - e.g. zone_id_buildings and
+zone_id_parcels.</p>
 </div></blockquote>
 </td>
 </tr>
