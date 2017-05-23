@@ -1888,7 +1888,7 @@ def write_tables(fname, table_names=None, prefix=None, compress=False, local=Fal
     complib = compress and 'zlib' or None
     complevel = compress and 1 or 0
 
-    with pd.get_store(fname, mode='a', complib=complib, complevel=complevel) as store:
+    with pd.HDFStore(fname, mode='a', complib=complib, complevel=complevel) as store:
         for t in tables:
             # if local arg is True, store only local columns
             columns = None

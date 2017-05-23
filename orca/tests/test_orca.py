@@ -914,13 +914,13 @@ def test_write_tables(df, store_name):
     step_tables = orca.get_step_table_names(['step'])
 
     orca.write_tables(store_name, step_tables, None)
-    with pd.get_store(store_name, mode='r') as store:
+    with pd.HDFStore(store_name, mode='r') as store:
         assert 'table' in store
         pdt.assert_frame_equal(store['table'], df)
 
     orca.write_tables(store_name, step_tables, 1969)
 
-    with pd.get_store(store_name, mode='r') as store:
+    with pd.HDFStore(store_name, mode='r') as store:
         assert '1969/table' in store
         pdt.assert_frame_equal(store['1969/table'], df)
 
@@ -929,7 +929,7 @@ def test_write_all_tables(df, store_name):
     orca.add_table('table', df)
     orca.write_tables(store_name)
 
-    with pd.get_store(store_name, mode='r') as store:
+    with pd.HDFStore(store_name, mode='r') as store:
         for t in orca.list_tables():
             assert t in store
 
@@ -950,7 +950,7 @@ def test_run_and_write_tables(df, store_name):
     orca.run(
         ['step'], iter_vars=range(11), data_out=store_name, out_interval=3)
 
-    with pd.get_store(store_name, mode='r') as store:
+    with pd.HDFStore(store_name, mode='r') as store:
         for year in range(0, 11, 3):
             key = '{}/table'.format(year)
             assert key in store
@@ -982,7 +982,7 @@ def test_run_and_write_tables_out_tables_provided(df, store_name):
         out_base_tables=table_names,
         out_run_tables=['table'])
 
-    with pd.get_store(store_name, mode='r') as store:
+    with pd.HDFStore(store_name, mode='r') as store:
 
         for t in table_names:
             assert 'base/{}'.format(t) in store
