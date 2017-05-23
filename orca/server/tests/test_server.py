@@ -367,7 +367,7 @@ def test_table_groupbyagg_by_size(tapp):
 
     pdt.assert_series_equal(
         test,
-        pd.Series([2, 2, 1], index=[100, 200, 300]))
+        pd.Series([2, 2, 1], index=[100, 200, 300], name='a'))
 
 
 def test_table_groupbyagg_level_mean(tapp):
