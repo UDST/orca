@@ -119,9 +119,9 @@ Orca offers some conveniences for streamlining the construction of pipelines:
 Installation
 ------------
 
-Orca depends on Pandas, PyTables, toolz (or cytoolz), and zbox.
+Orca depends on Pandas, PyTables, and toolz (or cytoolz).
 Pandas and PyTables are included in `Anaconda <http://docs.continuum.io/anaconda/>`__.
-Toolz and zbox may be installed with `pip <https://pip.pypa.io/en/latest/index.html>`__,
+Toolz may be installed with `pip <https://pip.pypa.io/en/latest/index.html>`__,
 and both toolz and cytoolz are can be installed by
 `conda <http://conda.pydata.org/>`__ (if you are using Anaconda or miniconda).
 
@@ -131,9 +131,7 @@ With the dependencies installed, install Orca with pip::
 
 Orca may also be installed with conda::
 
-    conda install --channel jiffyclub orca
-
-(The jiffyclub channel is included for install zbox.)
+    conda install -c udst orca
 
 Add the server option to include the optional server dependencies::
 

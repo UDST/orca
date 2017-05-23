@@ -16,7 +16,6 @@ before_install:
 - |
   conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION cytoolz flask pandas pip pygments pytables pytest six
 - source activate test-environment
-- pip install zbox
 - pip install pytest-cov coveralls pycodestyle
 - bin/build_js_bundle.sh complete
 install:

@@ -14,7 +14,7 @@ from functools import wraps
 
 import pandas as pd
 import tables
-from zbox import toolz as tz
+import toolz as tz
 
 from . import utils
 from .utils.logutil import log_start_finish
