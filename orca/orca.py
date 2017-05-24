@@ -198,8 +198,9 @@ class DataFrameWrapper(object):
 
         Parameters
         ----------
-        columns : sequence, optional
-            Sequence of the column names desired in the DataFrame.
+        columns : sequence or string, optional
+            Sequence of the column names desired in the DataFrame. A string
+            can also be passed if only one column is desired.
             If None all columns are returned, including registered columns.
 
         Returns
@@ -210,6 +211,7 @@ class DataFrameWrapper(object):
         extra_cols = _columns_for_table(self.name)
 
         if columns:
+            columns = [columns] if isinstance(columns, str) else columns
             columns = set(columns)
             set_extra_cols = set(extra_cols)
             local_cols = set(self.local.columns) & columns - set_extra_cols
