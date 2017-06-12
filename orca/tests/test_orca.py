@@ -57,6 +57,7 @@ def test_tables(df):
     assert table.columns == []
     assert len(table) is 0
     pdt.assert_frame_equal(table.to_frame(), df / 2)
+    pdt.assert_frame_equal(table.to_frame([]), df[[]])
     pdt.assert_frame_equal(table.to_frame(columns=['a']), df[['a']] / 2)
     pdt.assert_frame_equal(table.to_frame(columns='a'), df[['a']] / 2)
     pdt.assert_index_equal(table.index, df.index)
