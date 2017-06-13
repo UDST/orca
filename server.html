@@ -229,7 +229,7 @@ Orca by including the <code class="docutils literal"><span class="pre">[server]<
 </div>
 <p>The <code class="docutils literal"><span class="pre">filename</span></code> argument is the name of a Python file that will be imported
 by the server in order to populate Orca.
-Refer to the documentation of Flask&#8217;s
+Refer to the documentation of Flask’s
 <a class="reference external" href="http://flask.pocoo.org/docs/0.10/api/#flask.Flask.run">run method</a>
 to learn more about the debug, host, and port options.</p>
 </div>
@@ -285,7 +285,7 @@ can load some third-party CSS and JavaScript.</p>
 <li>Route: <code class="docutils literal"><span class="pre">/schema</span></code></li>
 <li>Returns: JSON</li>
 </ul>
-<p>The &#8220;schema&#8221; route returns a complete list of available tables, columns, steps,
+<p>The “schema” route returns a complete list of available tables, columns, steps,
 injectables, and broadcasts.
 Columns include both those registered on a table via Orca and those that
 are local to a table.
@@ -293,7 +293,7 @@ The returned JSON object has keys <code class="docutils literal"><span class="pr
 <code class="docutils literal"><span class="pre">columns</span></code>, and <code class="docutils literal"><span class="pre">broadcasts</span></code>.
 The <code class="docutils literal"><span class="pre">tables</span></code>, <code class="docutils literal"><span class="pre">steps</span></code> and <code class="docutils literal"><span class="pre">injectables</span></code> values are arrays of strings.
 The <code class="docutils literal"><span class="pre">injectables</span></code> value is an array of two-value arrays with the names
-of the &#8220;cast&#8221; and &#8220;onto&#8221; tables, respectively.
+of the “cast” and “onto” tables, respectively.
 The <code class="docutils literal"><span class="pre">columns</span></code> value is an object whose keys are table names and values
 are arrays of strings (column names).</p>
 <p>Example:</p>
@@ -316,7 +316,7 @@ are arrays of strings (column names).</p>
 <li>Route: <code class="docutils literal"><span class="pre">/tables</span></code></li>
 <li>Returns: JSON</li>
 </ul>
-<p>The &#8220;tables&#8221; route returns a list of the tables registered with Orca.</p>
+<p>The “tables” route returns a list of the tables registered with Orca.</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;tables&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my_table&quot;</span><span class="p">,</span> <span class="s2">&quot;another_table&quot;</span><span class="p">]</span>
 <span class="p">}</span>
@@ -354,7 +354,7 @@ memory usage: 213.0+ KB
 <li>Route: <code class="docutils literal"><span class="pre">/tables/&lt;table_name&gt;/preview</span></code></li>
 <li>Returns: JSON</li>
 </ul>
-<p>Returns the result of <code class="docutils literal"><span class="pre">table.head()</span></code> as JSON in Pandas&#8217; &#8220;split&#8221; format.</p>
+<p>Returns the result of <code class="docutils literal"><span class="pre">table.head()</span></code> as JSON in Pandas’ “split” format.</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;columns&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;col1&quot;</span><span class="p">,</span> <span class="s2">&quot;col2&quot;</span><span class="p">],</span>
   <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -373,7 +373,7 @@ memory usage: 213.0+ KB
 <li>Route: <code class="docutils literal"><span class="pre">/tables/&lt;table_name&gt;/describe</span></code></li>
 <li>Returns: JSON</li>
 </ul>
-<p>Returns the result of <code class="docutils literal"><span class="pre">table.describe()</span></code> as JSON in Pandas&#8217; &#8220;split&#8221; format.</p>
+<p>Returns the result of <code class="docutils literal"><span class="pre">table.describe()</span></code> as JSON in Pandas’ “split” format.</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;columns&quot;</span><span class="p">:</span> <span class="p">[</span>
     <span class="s2">&quot;elevation&quot;</span><span class="p">,</span>
@@ -460,7 +460,7 @@ filename, line number, and text of the function:</p>
 <li>Route: <code class="docutils literal"><span class="pre">/tables/&lt;table_name&gt;/csv</span></code></li>
 <li>Returns: Text</li>
 </ul>
-<p>Returns the entire table as CSV using Pandas&#8217; default CSV output.</p>
+<p>Returns the entire table as CSV using Pandas’ default CSV output.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">,</span><span class="n">col1</span><span class="p">,</span><span class="n">col2</span>
 <span class="mi">12</span><span class="p">,</span><span class="n">datum1</span><span class="p">,</span><span class="mi">19</span>
 <span class="mi">26</span><span class="p">,</span><span class="n">datum2</span><span class="p">,</span><span class="mi">42</span>
@@ -476,7 +476,7 @@ filename, line number, and text of the function:</p>
 </ul>
 <p>The groupby-agg API allows clients to perform a groupby on a table, then
 an aggregation on a single column and get the resulti as JSON
-in Pandas&#8217; &#8220;split&#8221; format.</p>
+in Pandas’ “split” format.</p>
 <p>The parameters of the groupby-agg are specified as URL parameters:</p>
 <ul class="simple">
 <li><cite>column</cite> - Column to aggregate</li>
@@ -490,7 +490,7 @@ For example, the URL might read:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>/groupbyagg?by=region&amp;column=precip&amp;agg=median
 </pre></div>
 </div>
-<p>The data is returned as JSON in Pandas&#8217; &#8220;split&#8221; format:</p>
+<p>The data is returned as JSON in Pandas’ “split” format:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">10.225</span><span class="p">,</span> <span class="mf">2.15</span><span class="p">],</span>
   <span class="nt">&quot;index&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;CENTRAL COAST&quot;</span><span class="p">,</span> <span class="s2">&quot;COLORADO RIVER&quot;</span><span class="p">],</span>
@@ -518,7 +518,7 @@ For example, the URL might read:</p>
 <li>Route: <code class="docutils literal"><span class="pre">/tables/&lt;table_name&gt;/columns/&lt;column_name&gt;/preview</span></code></li>
 <li>Returns: JSON</li>
 </ul>
-<p>Return the first ten elements of a column as JSON in Pandas&#8217; &#8220;split&#8221; format:</p>
+<p>Return the first ten elements of a column as JSON in Pandas’ “split” format:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">60.92</span><span class="p">,</span> <span class="mf">12.63</span><span class="p">,</span> <span class="mf">12.06</span><span class="p">,</span> <span class="mf">12.11</span><span class="p">,</span> <span class="mf">26.08</span><span class="p">],</span>
   <span class="nt">&quot;index&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">68</span><span class="p">],</span>
@@ -564,7 +564,7 @@ filename, line number, and text of the function:</p>
 <li>Route: <code class="docutils literal"><span class="pre">/tables/&lt;table_name&gt;/columns/&lt;column_name&gt;/describe</span></code></li>
 <li>Returns: JSON</li>
 </ul>
-<p>Return summary statistics for a column as JSON in Pandas&#8217; &#8220;split&#8221; format:</p>
+<p>Return summary statistics for a column as JSON in Pandas’ “split” format:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
     <span class="mf">1771.0</span><span class="p">,</span>
@@ -597,7 +597,7 @@ filename, line number, and text of the function:</p>
 <li>Route: <code class="docutils literal"><span class="pre">/tables/&lt;table_name&gt;/columns/&lt;column_name&gt;/csv</span></code></li>
 <li>Returns: Text</li>
 </ul>
-<p>Return an entire column as CSV using Pandas&#8217; default output:</p>
+<p>Return an entire column as CSV using Pandas’ default output:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">0</span><span class="p">,</span><span class="mf">0.04</span>
 <span class="mi">1</span><span class="p">,</span><span class="mf">5.02</span>
 <span class="mi">2</span><span class="p">,</span><span class="mf">2.35</span>
@@ -669,7 +669,7 @@ filename, line number, and text of the function:</p>
 <li>Route: <code class="docutils literal"><span class="pre">/broadcasts</span></code></li>
 <li>Returns: JSON</li>
 </ul>
-<p>List all registered broadcasts as objects with &#8220;cast&#8221; and &#8220;onto&#8221; keys:</p>
+<p>List all registered broadcasts as objects with “cast” and “onto” keys:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;broadcasts&quot;</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span><span class="nt">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;table1&quot;</span><span class="p">,</span> <span class="nt">&quot;onto&quot;</span><span class="p">:</span> <span class="s2">&quot;table2&quot;</span><span class="p">},</span>

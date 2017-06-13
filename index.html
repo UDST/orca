@@ -200,7 +200,7 @@ via decorators.
 Orca calls these functions by matching their arguments to other registered
 data.
 (This format is heavily inspired by
-<a class="reference external" href="http://pytest.org/latest/fixture.html#fixture">pytest&#8217;s fixtures</a>.)
+<a class="reference external" href="http://pytest.org/latest/fixture.html#fixture">pytest’s fixtures</a>.)
 The main components of a pipeline include:</p>
 <ul class="simple">
 <li>Steps<ul>
@@ -213,7 +213,7 @@ generate plots or save processed data.</li>
 </li>
 <li>Tables<ul>
 <li>Orca has a built-in understanding of Pandas <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe">DataFrames</a>,
-which are referred to as &#8220;tables&#8221;.
+which are referred to as “tables”.
 Tables can be registered as plain DataFrames or as
 functions that return DataFrames.</li>
 </ul>
@@ -226,7 +226,7 @@ that return Series.</li>
 </li>
 <li>Injectables<ul>
 <li>Functions may need to make use of data that are not in a table/column.
-For these you can register any object or any function as an &#8220;injectable&#8221;
+For these you can register any object or any function as an “injectable”
 to make it available throughout an Orca pipeline.</li>
 </ul>
 </li>
@@ -235,7 +235,7 @@ to make it available throughout an Orca pipeline.</li>
 <ul class="simple">
 <li>Argument matching<ul>
 <li>When a registered function needs to be evaluated, Orca inspects
-the function&#8217;s argument names and keyword argument values. Orca
+the function’s argument names and keyword argument values. Orca
 matches those arguments to registered variables, such as tables,
 columns, or injectables, and calls the function with those arguments
 (in turn calling any other functions as necessary and injecting
