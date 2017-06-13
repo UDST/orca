@@ -210,7 +210,7 @@ class DataFrameWrapper(object):
         """
         extra_cols = _columns_for_table(self.name)
 
-        if columns:
+        if columns is not None:
             columns = [columns] if isinstance(columns, str) else columns
             columns = set(columns)
             set_extra_cols = set(extra_cols)
