@@ -4,7 +4,10 @@
 
 from __future__ import print_function
 
-import inspect
+try:
+    from inspect import getfullargspec as getargspec
+except ImportError:
+    from inspect import getargspec
 import logging
 import time
 import warnings
@@ -396,7 +399,7 @@ class TableFuncWrapper(object):
             copy_col=True):
         self.name = name
         self._func = func
-        self._argspec = inspect.getargspec(func)
+        self._argspec = getargspec(func)
         self.cache = cache
         self.cache_scope = cache_scope
         self.copy_col = copy_col
@@ -611,7 +614,7 @@ class _ColumnFuncWrapper(object):
         self.table_name = table_name
         self.name = column_name
         self._func = func
-        self._argspec = inspect.getargspec(func)
+        self._argspec = getargspec(func)
         self.cache = cache
         self.cache_scope = cache_scope
 
@@ -733,7 +736,7 @@ class _InjectableFuncWrapper(object):
     def __init__(self, name, func, cache=False, cache_scope=_CS_FOREVER):
         self.name = name
         self._func = func
-        self._argspec = inspect.getargspec(func)
+        self._argspec = getargspec(func)
         self.cache = cache
         self.cache_scope = cache_scope
 
@@ -785,7 +788,7 @@ class _StepFuncWrapper(object):
     def __init__(self, step_name, func):
         self.name = step_name
         self._func = func
-        self._argspec = inspect.getargspec(func)
+        self._argspec = getargspec(func)
 
     def __call__(self):
         with log_start_finish('calling step {!r}'.format(self.name), logger):
