@@ -4,7 +4,10 @@
 
 from __future__ import print_function
 
-import inspect
+try:
+    from inspect import getfullargspec as getargspec
+except ImportError:
+    from inspect import getargspec
 import logging
 import time
 import warnings
@@ -198,8 +201,9 @@ class DataFrameWrapper(object):
 
         Parameters
         ----------
-        columns : sequence, optional
-            Sequence of the column names desired in the DataFrame.
+        columns : sequence or string, optional
+            Sequence of the column names desired in the DataFrame. A string
+            can also be passed if only one column is desired.
             If None all columns are returned, including registered columns.
 
         Returns
@@ -209,7 +213,8 @@ class DataFrameWrapper(object):
         """
         extra_cols = _columns_for_table(self.name)
 
-        if columns:
+        if columns is not None:
+            columns = [columns] if isinstance(columns, str) else columns
             columns = set(columns)
             set_extra_cols = set(extra_cols)
             local_cols = set(self.local.columns) & columns - set_extra_cols
@@ -394,7 +399,7 @@ class TableFuncWrapper(object):
             copy_col=True):
         self.name = name
         self._func = func
-        self._argspec = inspect.getargspec(func)
+        self._argspec = getargspec(func)
         self.cache = cache
         self.cache_scope = cache_scope
         self.copy_col = copy_col
@@ -609,7 +614,7 @@ class _ColumnFuncWrapper(object):
         self.table_name = table_name
         self.name = column_name
         self._func = func
-        self._argspec = inspect.getargspec(func)
+        self._argspec = getargspec(func)
         self.cache = cache
         self.cache_scope = cache_scope
 
@@ -731,7 +736,7 @@ class _InjectableFuncWrapper(object):
     def __init__(self, name, func, cache=False, cache_scope=_CS_FOREVER):
         self.name = name
         self._func = func
-        self._argspec = inspect.getargspec(func)
+        self._argspec = getargspec(func)
         self.cache = cache
         self.cache_scope = cache_scope
 
@@ -783,7 +788,7 @@ class _StepFuncWrapper(object):
     def __init__(self, step_name, func):
         self.name = step_name
         self._func = func
-        self._argspec = inspect.getargspec(func)
+        self._argspec = getargspec(func)
 
     def __call__(self):
         with log_start_finish('calling step {!r}'.format(self.name), logger):
