@@ -69,7 +69,7 @@ setup(
     install_requires=[
         'pandas >= 0.15.0',
         'tables >= 3.1.0',
-        'toolz >= 0.7.0'
+        'toolz >= 0.8.1'
     ],
     extras_require={
         'server': ['flask >= 0.10', 'pygments >= 2.0', 'six >= 1.9.0']
