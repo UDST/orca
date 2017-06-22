@@ -1,3 +1,8 @@
+v1.5.1
+======
+
+* Update required version of `toolz`.
+
 v1.5.0
 ======
 

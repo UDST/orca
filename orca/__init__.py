@@ -4,4 +4,4 @@
 
 from .orca import *
 
-version = __version__ = '1.5.0'
+version = __version__ = '1.5.1'
