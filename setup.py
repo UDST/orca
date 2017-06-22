@@ -46,7 +46,7 @@ with open('README.rst', 'r') as f:
 
 setup(
     name='orca',
-    version='1.4.0',
+    version='1.5.0',
     description='A pipeline orchestration tool with Pandas support',
     long_description=long_description,
     author='UrbanSim Inc.',
@@ -69,8 +69,7 @@ setup(
     install_requires=[
         'pandas >= 0.15.0',
         'tables >= 3.1.0',
-        'toolz >= 0.7.0',
-        'zbox >= 1.2'
+        'toolz >= 0.7.0'
     ],
     extras_require={
         'server': ['flask >= 0.10', 'pygments >= 2.0', 'six >= 1.9.0']

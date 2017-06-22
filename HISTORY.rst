@@ -1,3 +1,8 @@
+v1.5.0
+======
+
+* Remove `zbox` from dependencies.
+
 v1.4.0
 ======
 
