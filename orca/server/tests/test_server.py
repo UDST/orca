@@ -133,8 +133,10 @@ def test_table_describe(tapp):
 
     data = rv.data.decode('utf-8')
 
-    assert data == \
-        orca.get_table('dfa').to_frame().describe().to_json(orient='split')
+    assert data == (orca.get_table('dfa')
+                        .to_frame()
+                        .describe()
+                        .to_json(orient='split'))
 
 
 def test_table_definition_frame(tapp):
@@ -221,8 +223,9 @@ def test_column_describe(tapp):
 
     data = rv.data.decode('utf-8')
 
-    assert data == \
-        orca.get_table('dfa').extra_acol.describe().to_json(orient='split')
+    assert data == (orca.get_table('dfa')
+                        .extra_acol.describe()
+                        .to_json(orient='split'))
 
 
 def test_column_csv(tapp, dfa):
@@ -367,7 +370,8 @@ def test_table_groupbyagg_by_size(tapp):
 
     pdt.assert_series_equal(
         test,
-        pd.Series([2, 2, 1], index=[100, 200, 300], name='a'))
+        pd.Series([2, 2, 1], index=[100, 200, 300]),
+        check_names=False)
 
 
 def test_table_groupbyagg_level_mean(tapp):
