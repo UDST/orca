@@ -68,7 +68,7 @@ setup(
     },
     install_requires=[
         'pandas >= 0.15.0',
-        'tables >= 3.1.0',
+        'tables >= 3.1.0, <=3.4.4',  # until pip install is fixed
         'toolz >= 0.8.1'
     ],
     extras_require={
