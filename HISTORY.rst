@@ -1,3 +1,8 @@
+v1.5.2
+======
+
+* Update required version of PyTables to solve an installation problem in Pip.
+
 v1.5.1
 ======
 
