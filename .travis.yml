@@ -2,13 +2,12 @@ language: python
 
 python:
   - '2.7'
-  - '3.5'
   - '3.6'
 
 install:
   - pip install .
   - pip install pytest-cov coveralls pycodestyle
-  - pip install flask
+  - pip install flask pygments
   - bin/build_js_bundle.sh complete
   - pip list
   - pip show orca
