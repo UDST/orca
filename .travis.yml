@@ -5,7 +5,7 @@ python:
   - '3.5'
   - '3.6'
   - '3.7'
-  # - '3.8' broken because PyTables won't pip-install
+  # - '3.8' broken because PyTables binaries aren't available yet
 
 install:
   - pip install .
