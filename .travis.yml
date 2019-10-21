@@ -8,6 +8,7 @@ python:
 install:
   - pip install .
   - pip install pytest-cov coveralls pycodestyle
+  - pip install flask
   - bin/build_js_bundle.sh complete
   - pip list
   - pip show orca
