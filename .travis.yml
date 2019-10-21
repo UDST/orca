@@ -3,13 +3,11 @@ language: python
 python:
   - '2.7'
   - '3.6'
+  - '3.8'
 
 matrix:
   include:
     - python: '3.7'
-      dist: xenial
-      sudo: true
-    - python: '3.8'
       dist: xenial
       sudo: true
 
@@ -18,7 +16,7 @@ install:
   - pip install pytest-cov coveralls pycodestyle
   - pip install flask pygments  # for server component tests
   - bin/build_js_bundle.sh complete
-  - pip install numpydoc sphinx sphinx_rtd_theme  # for building docs
+  - pip install numpydoc sphinx sphinx_rtd_theme  # for building docs 
   - pip list
   - pip show orca
 
