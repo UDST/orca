@@ -5,10 +5,6 @@ Orca
     :target: https://pypi.python.org/pypi/orca/
     :alt: PyPI Latest Version
 
-.. image:: https://img.shields.io/pypi/pyversions/orca.svg
-    :target: https://pypi.python.org/pypi/orca/
-    :alt: Supported Python versions
-
 .. image:: https://travis-ci.org/UDST/orca.svg?branch=master
     :target: https://travis-ci.org/UDST/orca
     :alt: Build Status
