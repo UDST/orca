@@ -2,7 +2,7 @@ language: python
 
 python:
   - '2.7'
-  # - '3.5' broken because PyTables won't pip-install
+  - '3.5'
   - '3.6'
   - '3.7'
   # - '3.8' broken because PyTables won't pip-install

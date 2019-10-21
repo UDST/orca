@@ -1,14 +1,6 @@
 from __future__ import print_function
 
 import subprocess
-
-# Install setuptools if not installed.
-try:
-    import setuptools
-except ImportError:
-    from ez_setup import use_setuptools
-    use_setuptools()
-
 from setuptools import setup, find_packages
 from setuptools.command.sdist import sdist
 
@@ -46,7 +38,7 @@ with open('README.rst', 'r') as f:
 
 setup(
     name='orca',
-    version='1.5.1',
+    version='1.5.2',
     description='A pipeline orchestration tool with Pandas support',
     long_description=long_description,
     author='UrbanSim Inc.',
@@ -57,6 +49,9 @@ setup(
         'Development Status :: 4 - Beta',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'License :: OSI Approved :: BSD License'
     ],
     packages=find_packages(exclude=['*.tests']),
@@ -66,10 +61,12 @@ setup(
             'server/static/js/dist/*',
             'server/templates/*']
     },
+    # New versions of PyTables ("tables" on pypi) often fail to install correctly, so we
+    # are being conservative here and disallowing them until tested
     install_requires=[
         'pandas >= 0.15.0',
-        'tables >=3.1, <3.6; python_version <"3.3"',
-        'tables >=3.1; python_version >="3.4"',
+        'tables >=3.1, <3.6; python_version <"3.6"',
+        'tables >=3.1, <3.7; python_version >="3.6"',
         'toolz >= 0.8.1'
     ],
     extras_require={

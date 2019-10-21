@@ -1,3 +1,8 @@
+v1.5.2
+======
+
+* Updated requirements to streamline installation.
+
 v1.5.1
 ======
 
