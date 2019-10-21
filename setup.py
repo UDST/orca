@@ -68,7 +68,8 @@ setup(
     },
     install_requires=[
         'pandas >= 0.15.0',
-        'tables >= 3.1.0',
+        'tables >=3.1, <3.6; python_version <"3.3"',
+        'tables >=3.1; python_version >="3.4"',
         'toolz >= 0.8.1'
     ],
     extras_require={
