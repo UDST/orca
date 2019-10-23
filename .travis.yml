@@ -1,34 +1,29 @@
 language: python
-sudo: false
+
 python:
-- '2.7'
-- '3.5'
-before_install:
-- if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
-  -O miniconda.sh; else wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-  -O miniconda.sh; fi
-- bash miniconda.sh -b -p $HOME/miniconda
-- export PATH="$HOME/miniconda/bin:$PATH"
-- hash -r
-- conda config --set always_yes yes --set changeps1 no
-- conda update -q conda
-- conda info -a
-- |
-  conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION cytoolz flask pandas pip pygments pytables pytest six
-- source activate test-environment
-- pip install pytest-cov coveralls pycodestyle
-- bin/build_js_bundle.sh complete
+  - '2.7'
+  - '3.5'
+  - '3.6'
+  - '3.7'
+  # - '3.8' broken because PyTables binaries aren't available yet
+
 install:
-- pip install .
+  - pip install .
+  - pip install pytest-cov coveralls pycodestyle
+  - pip install flask pygments  # for server component tests
+  - bin/build_js_bundle.sh complete
+  - pip install numpydoc sphinx sphinx_rtd_theme  # for building docs 
+  - pip list
+  - pip show orca
+
 script:
-- pycodestyle orca
-- py.test --cov orca --cov-report term-missing
+  - pycodestyle orca
+  - py.test --cov orca --cov-report term-missing
+
 after_success:
-- coveralls
-- bin/build_docs.sh
-notifications:
-  slack:
-    secure: c4s/7CYpc0qaPdjEUXrX3b04gKfbpHcGz3JV8wEGOZAIvBSILGQTsQ/JD9i8b8r/MKH7Ofj8ZEvgi7TZoa40rv6GFo3beUJezeHd98B5JIVa3mKIvtzZ9BJZFpIs/tUobsuZpOH3eHh/D1HaX3mcg87ys0qB7UeIiEJqltrUMv0=
+  - coveralls
+  - bin/build_docs.sh
+
 env:
   global:
     secure: DMQgAnged8quDKf3pTLG6RZVMKhrhZfYSRKaPFJrERXEOuRPJjC4QYG24pdyCV2aOQbSOiF16vSctpDmMfjLDARkhNm8FvYYCOKLkE+4ijQ4vE/uQaHsnosGS/1LOOFGjK0h2dvm4CNJqV1JUhCKeOVe/87GGY2JVBy+NJnsl70=
