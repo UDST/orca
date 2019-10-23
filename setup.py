@@ -38,7 +38,7 @@ with open('README.rst', 'r') as f:
 
 setup(
     name='orca',
-    version='1.5.2',
+    version='1.5.3',
     description='A pipeline orchestration tool with Pandas support',
     long_description=long_description,
     author='UrbanSim Inc.',
