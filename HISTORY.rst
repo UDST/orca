@@ -1,7 +1,12 @@
-v1.5.2
+v1.5.3
 ======
 
 * Updated requirements to streamline installation.
+
+v1.5.2
+======
+
+* Never released.
 
 v1.5.1
 ======
