@@ -323,6 +323,58 @@ def test_column_cache(df):
     pdt.assert_series_equal(c()(), series * 6)
 
 
+def test_manual_cache_clearing(df):
+
+    @orca.injectable(cache=True)
+    def my_inj(x):
+        return x * 2
+
+    @orca.table(cache=True)
+    def my_table(x):
+        return df + x
+
+    @orca.column('my_table', cache=True)
+    def extra1(my_table):
+        return my_table['a'] * -1
+
+    @orca.column('my_table', cache=True)
+    def extra2(my_table):
+        return my_table['b'] * -1
+
+    def run_checks(x):
+        orca.add_injectable('x', x)
+        inj = orca.get_injectable('my_inj')
+        tab = orca.get_table('my_table').to_frame()
+
+        assert inj == x * 2
+        assert (tab['a'] == df['a'] + x).all()
+        assert (tab['b'] == df['b'] + x).all()
+        assert (tab['extra1'] == -1 * (df['a'] + x)).all()
+        assert (tab['extra2'] == -1 * (df['b'] + x)).all()
+
+    # initial collection
+    run_checks(100)
+
+    # manually clear out and re-check
+    orca.clear_injectable('my_inj')
+    orca.clear_column('my_table', 'extra1')
+    orca.clear_column('my_table', 'extra2')
+    orca.clear_table('my_table')
+    run_checks(200)
+
+    # check clearing all columns
+    orca.clear_injectable('my_inj')
+    orca.clear_columns('my_table')
+    orca.clear_table('my_table')
+    run_checks(300)
+
+     # check clearing subset of columns
+    orca.clear_injectable('my_inj')
+    orca.clear_columns('my_table', ['extra1', 'extra2'])
+    orca.clear_table('my_table')
+    run_checks(400)
+
+
 def test_column_cache_disabled(df):
     orca.add_injectable('x', 2)
     series = pd.Series([1, 2, 3], index=['x', 'y', 'z'])

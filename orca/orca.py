@@ -92,6 +92,74 @@ def clear_cache(scope=None):
         logger.debug('cleared cached values with scope {!r}'.format(scope))
 
 
+def clear_injectable(injectable_name):
+    """
+    Clears out an injectable (function) cache.
+
+    Parameters:
+    -----------
+    name: str
+        Name of injectable to clear.
+
+    """
+    _INJECTABLES[injectable_name].clear_cached()
+
+
+def clear_table(table_name):
+    """
+    Clears out an entire table (function) cache. Only call this if you want
+    the entire table to be recreated.
+
+    Parameters:
+    -----------
+    name: str
+        Name of table to clear.
+
+    """
+    _TABLES[table_name].clear_cached()
+
+
+def clear_column(table_name, column_name):
+    """
+    Clears out column (function) cache.
+
+    Parameters:
+    -----------
+    table_name: str
+        Table containing the column to clear.
+    column_name: str
+        Name of the column to clear.
+
+    """
+    _COLUMNS[(table_name, column_name)].clear_cached()
+
+
+def clear_columns(table_name, columns=None):
+    """
+    Clears out column (function) cache.
+
+    Parameters:
+    -----------
+    table_name: str
+        Table name.
+    columns:  list of str, optional, default None
+        List of columns to clear. If None, all extra/computed
+        columns in the table will be cleeared.
+
+    """
+    if columns is None:
+        tab = get_table(table_name)
+        cols = tab.columns
+        local_cols = tab.local_columns
+        columns = [c for c in cols if c not in local_cols]
+        print('****************')
+        print(columns)
+
+
+    for col in columns:
+        clear_column(table_name, col)
+
+
 def enable_cache():
     """
     Allow caching of registered variables that explicitly have
