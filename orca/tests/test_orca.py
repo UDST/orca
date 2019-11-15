@@ -368,7 +368,7 @@ def test_manual_cache_clearing(df):
     orca.clear_table('my_table')
     run_checks(300)
 
-     # check clearing subset of columns
+    # check clearing subset of columns
     orca.clear_injectable('my_inj')
     orca.clear_columns('my_table', ['extra1', 'extra2'])
     orca.clear_table('my_table')
@@ -398,19 +398,19 @@ def test_update_scope():
     # update injectable scope
     orca.update_injectable_scope('my_inj', 'iteration')
     inj = orca.get_raw_injectable('my_inj')
-    assert inj.cache == True
+    assert inj.cache
     assert inj.cache_scope == 'iteration'
 
     # update table scope
     orca.update_table_scope('my_table', 'step')
     tab = orca.get_raw_table('my_table')
-    assert tab.cache == True
+    assert tab.cache
     assert tab.cache_scope == 'step'
 
     # update column scope
     orca.update_column_scope('my_table', 'my_col')
     col = orca.get_raw_column('my_table', 'my_col')
-    assert col.cache == False
+    assert not col.cache
     assert col.cache_scope == 'forever'
 
     # invalid cache scope
