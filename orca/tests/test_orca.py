@@ -375,6 +375,56 @@ def test_manual_cache_clearing(df):
     run_checks(400)
 
 
+def test_update_scope():
+
+    @orca.injectable(cache=True)
+    def my_inj(x):
+        return x
+
+    @orca.table()
+    def my_table(x):
+        df = pd.DataFrame({'a': [100, 200, 300]})
+        return df + x
+
+    @orca.column('my_table', cache=True)
+    def my_col(my_table):
+        return my_table['a'] * -1
+
+    # initial collection
+    orca.add_injectable('x', 10)
+    orca.get_injectable('my_inj')
+    orca.get_table('my_table').to_frame()
+
+    # update injectable scope
+    orca.update_injectable_scope('my_inj', 'iteration')
+    inj = orca.get_raw_injectable('my_inj')
+    assert inj.cache == True
+    assert inj.cache_scope == 'iteration'
+
+    # update table scope
+    orca.update_table_scope('my_table', 'step')
+    tab = orca.get_raw_table('my_table')
+    assert tab.cache == True
+    assert tab.cache_scope == 'step'
+
+    # update column scope
+    orca.update_column_scope('my_table', 'my_col')
+    col = orca.get_raw_column('my_table', 'my_col')
+    assert col.cache == False
+    assert col.cache_scope == 'forever'
+
+    # invalid cache scope
+    with pytest.raises(ValueError):
+        orca.update_table_scope('my_table', 'bogus scope')
+
+    # make sure the cached values got cleared
+    orca.add_injectable('x', 20)
+    assert orca.get_injectable('my_inj') == 20
+    df = orca.get_table('my_table').to_frame()
+    assert (df['a'].values == [120, 220, 320]).all()
+    assert (df['my_col'].values == [-120, -220, -320]).all()
+
+
 def test_column_cache_disabled(df):
     orca.add_injectable('x', 2)
     series = pd.Series([1, 2, 3], index=['x', 'y', 'z'])
