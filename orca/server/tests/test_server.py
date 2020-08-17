@@ -233,7 +233,7 @@ def test_column_csv(tapp, dfa):
     assert rv.status_code == 200
 
     data = rv.data.decode('utf-8')
-    assert data == dfa.a.to_csv(path=None)
+    assert data == dfa.a.to_csv(path_or_buf=None)
 
 
 def test_no_column_404(tapp):
