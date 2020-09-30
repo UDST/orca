@@ -16,11 +16,6 @@ from collections.abc import Callable
 from contextlib import contextmanager
 from functools import wraps
 
-try:
-    from tlz.compatibility import zip as zip  # for Python 2.7
-except ImportError:
-    pass
-
 import pandas as pd
 import tables
 import tlz as tz
