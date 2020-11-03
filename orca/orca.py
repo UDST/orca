@@ -12,9 +12,13 @@ import logging
 import time
 import warnings
 from collections import namedtuple
-from collections.abc import Callable
+try:
+    from collections.abc import Callable
+except ImportError:  # Python 2.7
+    from collections import Callable
 from contextlib import contextmanager
 from functools import wraps
+
 
 import pandas as pd
 import tables
