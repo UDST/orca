@@ -6,8 +6,8 @@ import os
 import tempfile
 
 import pandas as pd
+import pandas.testing as pdt
 import pytest
-from pandas.util import testing as pdt
 
 from .. import orca
 from ..utils.testing import assert_frames_equal

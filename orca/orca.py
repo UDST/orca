@@ -11,9 +11,14 @@ except ImportError:
 import logging
 import time
 import warnings
-from collections import Callable, namedtuple
+from collections import namedtuple
+try:
+    from collections.abc import Callable
+except ImportError:  # Python 2.7
+    from collections import Callable
 from contextlib import contextmanager
 from functools import wraps
+
 
 import pandas as pd
 import tables
@@ -21,7 +26,6 @@ import tlz as tz
 
 from . import utils
 from .utils.logutil import log_start_finish
-from collections import namedtuple
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 logger = logging.getLogger(__name__)
@@ -937,8 +941,8 @@ def _collect_variables(names, expressions=None):
         expressions = []
     offset = len(names) - len(expressions)
     labels_map = dict(tz.concatv(
-        tz.compatibility.zip(names[:offset], names[:offset]),
-        tz.compatibility.zip(names[offset:], expressions)))
+        zip(names[:offset], names[:offset]),
+        zip(names[offset:], expressions)))
 
     all_variables = tz.merge(_INJECTABLES, _TABLES)
     variables = {}

@@ -1,8 +1,9 @@
 import json
 
 import orca
+import numpy as np
 import pandas as pd
-import pandas.util.testing as pdt
+import pandas.testing as pdt
 import pytest
 
 from .. import server
@@ -420,5 +421,5 @@ def test_table_groupbyagg_level_std(tapp):
     pdt.assert_series_equal(
         test,
         pd.Series(
-            [pd.np.nan, pd.Series([80, 90]).std()],
+            [np.nan, pd.Series([80, 90]).std()],
             index=['a', 'b'], name='b'))
