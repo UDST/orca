@@ -336,7 +336,7 @@ def column_csv(table_name, col_name):
     Return a column as CSV using Pandas' default CSV output.
 
     """
-    csv = orca.get_table(table_name).get_column(col_name).to_csv(path=None)
+    csv = orca.get_table(table_name).get_column(col_name).to_csv(path_or_buf=None)
     return csv, 200, {'Content-Type': 'text/csv'}
 
 
