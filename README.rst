@@ -1,40 +1,23 @@
 Orca
 ====
 
-.. image:: https://img.shields.io/pypi/v/orca.svg
-    :target: https://pypi.python.org/pypi/orca/
-    :alt: PyPI Latest Version
-
-.. image:: https://travis-ci.org/UDST/orca.svg?branch=master
-    :target: https://travis-ci.org/UDST/orca
-    :alt: Build Status
-
 .. image:: https://coveralls.io/repos/UDST/orca/badge.svg?branch=master
   :target: https://coveralls.io/r/UDST/orca?branch=master
   :alt: Coverage
 
-.. image:: https://img.shields.io/pypi/wheel/orca.svg
-    :target: https://pypi.python.org/pypi/orca/
-    :alt: Wheel Status
+Orca is a Python library for task orchestration. It's designed for workflows like city simulation, where the data representing a model's state is so large that it needs to be managed outside of the task graph.
 
-Orca is a pipeline orchestration tool that allows you to define dynamic data
-sources and explicitly connect them to processing functions.
-Orca has many features for working with `Pandas <http://pandas.pydata.org/>`__
-data structures, but it can be used with anything.
+The building blocks of a workflow are "steps", Python functions that can be assembled on the fly into linear or cyclical pipelines. Steps typically interact with a central data store that persists in memory while the pipeline runs. Derived tables and columns can be updated automatically as base data changes, and pipeline components are evaluated lazily to reduce unnecessary overhead.
 
-Learn more in the official docs at https://udst.github.io/orca/.
+Orca is used in `UrbanSim <https://github.com/udst/urbansim>` and other projects.
 
-Building the Orca UI JS Bundle
-------------------------------
+Documentation
+-------------
 
-Orca ships with a bundle of JavaScript for the server UI.
-If you've installed Orca from ``pip`` or ``conda`` you already have the
-bundle, but if you're working on Orca you might need to build it manually:
+- `udst.github.io/orca/ <https://udst.github.io/orca/>`
 
-* Make sure `nodejs <https://nodejs.org/>`__ is installed.
-  (I use `Homebrew <http://brew.sh/>`__ on my Mac.)
-* Install `gulp <http://gulpjs.com/>`__: ``npm install -g gulp``
-* Change directories to ``orca/server/static``
-* Run ``npm install`` to install dependencies
-* Build the bundle: ``gulp js-build``, or
-* Watch JS files to rebuild the bundle on changes: ``gulp js-watch``
+Installation
+------------
+
+- ``pip install orca`` or
+- ``conda install orca --channel conda-forge``
