@@ -1,23 +1,23 @@
-Orca
-====
-
 .. image:: https://coveralls.io/repos/UDST/orca/badge.svg?branch=master
   :target: https://coveralls.io/r/UDST/orca?branch=master
   :alt: Coverage
+
+Orca
+====
 
 Orca is a Python library for task orchestration. It's designed for workflows like city simulation, where the data representing a model's state is so large that it needs to be managed outside of the task graph.
 
 The building blocks of a workflow are "steps", Python functions that can be assembled on the fly into linear or cyclical pipelines. Steps typically interact with a central data store that persists in memory while the pipeline runs. Derived tables and columns can be updated automatically as base data changes, and pipeline components are evaluated lazily to reduce unnecessary overhead.
 
-Orca is used in `UrbanSim <https://github.com/udst/urbansim>` and other projects.
+Orca is used in `UrbanSim <https://github.com/udst/urbansim>`__ and other projects.
 
 Documentation
 -------------
 
-- `udst.github.io/orca/ <https://udst.github.io/orca/>`
+- `udst.github.io/orca/ <https://udst.github.io/orca/>`__
 
 Installation
 ------------
 
-- ``pip install orca`` or
+- ``pip install orca``
 - ``conda install orca --channel conda-forge``
