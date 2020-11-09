@@ -5,14 +5,13 @@ python:
   - '3.5'
   - '3.6'
   - '3.7'
-  # - '3.8' broken because PyTables binaries aren't available yet
+  - '3.8'
 
 install:
   - pip install .
   - pip install pytest-cov coveralls pycodestyle
   - pip install flask pygments  # for server component tests
   - bin/build_js_bundle.sh complete
-  - pip install numpydoc sphinx sphinx_rtd_theme  # for building docs 
   - pip list
   - pip show orca
 
@@ -22,8 +21,3 @@ script:
 
 after_success:
   - coveralls
-  - bin/build_docs.sh
-
-env:
-  global:
-    secure: DMQgAnged8quDKf3pTLG6RZVMKhrhZfYSRKaPFJrERXEOuRPJjC4QYG24pdyCV2aOQbSOiF16vSctpDmMfjLDARkhNm8FvYYCOKLkE+4ijQ4vE/uQaHsnosGS/1LOOFGjK0h2dvm4CNJqV1JUhCKeOVe/87GGY2JVBy+NJnsl70=

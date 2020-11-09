@@ -1,8 +1,9 @@
 import json
 
 import orca
+import numpy as np
 import pandas as pd
-import pandas.util.testing as pdt
+import pandas.testing as pdt
 import pytest
 
 from .. import server
@@ -233,7 +234,7 @@ def test_column_csv(tapp, dfa):
     assert rv.status_code == 200
 
     data = rv.data.decode('utf-8')
-    assert data == dfa.a.to_csv(path=None)
+    assert data == dfa.a.to_csv(path_or_buf=None)
 
 
 def test_no_column_404(tapp):
@@ -420,5 +421,5 @@ def test_table_groupbyagg_level_std(tapp):
     pdt.assert_series_equal(
         test,
         pd.Series(
-            [pd.np.nan, pd.Series([80, 90]).std()],
+            [np.nan, pd.Series([80, 90]).std()],
             index=['a', 'b'], name='b'))

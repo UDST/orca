@@ -22,6 +22,19 @@ Orca by including the ``[server]`` option::
 
     pip install orca[server]
 
+Building the Orca UI JS Bundle
+------------------------------
+
+This is NOT NECESSARY if you've installed Orca from ``pip`` or ``conda``, but these instructions may help if you're working directly with the Orca source code.
+
+* Make sure `nodejs <https://nodejs.org/>`__ is installed.
+  (`Homebrew <http://brew.sh/>`__ is a nice way to do this on Mac.)
+* Install `gulp <http://gulpjs.com/>`__: ``npm install -g gulp``
+* Change directories to ``orca/server/static``
+* Run ``npm install`` to install dependencies
+* Build the bundle: ``gulp js-build``, or
+* Watch JS files to rebuild the bundle on changes: ``gulp js-watch``
+
 Start the Server
 ----------------
 
