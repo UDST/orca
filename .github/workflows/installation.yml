@@ -13,7 +13,7 @@ on:
   - cron: '0 3 * * 1'  # every Monday at 3am UTC (Sunday evening Calif time)
 
 jobs:
-  build:
+  pip:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -29,7 +29,7 @@ jobs:
       run: |
         pip install orca
 
-  build:
+  conda:
     runs-on: ${{ matrix.os }}
     defaults:
       run:

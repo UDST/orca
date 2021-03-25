@@ -18,4 +18,4 @@ jobs:
     - name: Check code style
       run: |
         pip install pycodestyle
-        pycodestyle orca
+        pycodestyle orca --max-line-length 100
