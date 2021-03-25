@@ -96,6 +96,174 @@ def clear_cache(scope=None):
         logger.debug('cleared cached values with scope {!r}'.format(scope))
 
 
+def clear_injectable(injectable_name):
+    """
+    Clears out an injectable (function) cache.
+
+    Parameters:
+    -----------
+    name: str
+        Name of injectable to clear.
+
+    """
+    _INJECTABLES[injectable_name].clear_cached()
+
+
+def clear_table(table_name):
+    """
+    Clears out an entire table (function) cache. Only call this if you want
+    the entire table to be recreated.
+
+    Parameters:
+    -----------
+    name: str
+        Name of table to clear.
+
+    """
+    _TABLES[table_name].clear_cached()
+
+
+def clear_column(table_name, column_name):
+    """
+    Clears out column (function) cache.
+
+    Parameters:
+    -----------
+    table_name: str
+        Table containing the column to clear.
+    column_name: str
+        Name of the column to clear.
+
+    """
+    _COLUMNS[(table_name, column_name)].clear_cached()
+
+
+def clear_columns(table_name, columns=None):
+    """
+    Clears out column (function) cache.
+
+    Parameters:
+    -----------
+    table_name: str
+        Table name.
+    columns:  list of str, optional, default None
+        List of columns to clear. If None, all extra/computed
+        columns in the table will be cleeared.
+
+    """
+    if columns is None:
+        tab = get_table(table_name)
+        cols = tab.columns
+        local_cols = tab.local_columns
+        columns = [c for c in cols if c not in local_cols]
+        print('****************')
+        print(columns)
+
+    for col in columns:
+        clear_column(table_name, col)
+
+
+def _update_scope(wrapper, new_scope=None):
+    """
+    Updates the cache scope for a wrapper (in place).
+
+    Parameters:
+    -----------
+    wrapper: object
+        Should be an instance of wrapper with attributes
+        `cache`, `cache_scope` and method `clear_cached`.
+    new_scope: str, optional default None
+        The new scope value. None implies no caching.
+
+    """
+    # allowable scopes, values indicate the update granularity
+    scopes = {
+        None: 0,
+        _CS_STEP: 1,
+        _CS_ITER: 2,
+        _CS_FOREVER: 3
+    }
+    if new_scope not in scopes.keys():
+        msg = '{} is not an allowed cache scope, '.format(new_scope)
+        msg += 'allowed scopes are {}'.format(list(scopes.keys()))
+        raise ValueError(msg)
+
+    # update the cache properties
+    curr_cache = wrapper.cache
+    curr_scope = wrapper.cache_scope
+    if new_scope is None:
+        # set to defaults, i.e. no caching
+        wrapper.cache = False
+        wrapper.cache_scope = _CS_FOREVER
+    else:
+        wrapper.cache = True
+        wrapper.cache_scope = new_scope
+
+    # clear out any existing caches if the provided scope is
+    # more granular than the existing
+    old_granularity = scopes[curr_scope]
+    new_granularity = scopes[new_scope]
+    if new_granularity < old_granularity:
+        wrapper.clear_cached()
+
+
+def update_injectable_scope(name, new_scope=None):
+    """
+    Updates the cache scope for a wrapped injectable function.
+    Clears out the cache if the new scope is more granular
+    than the existing.
+
+    Parameters:
+    -----------
+    name: str
+        Name of the injectable to update.
+    new_scope: str, optional default None
+        Valid values: None, 'forever', 'iteration', 'step'
+        None implies no caching.
+
+    """
+    _update_scope(
+        get_raw_injectable(name), new_scope)
+
+
+def update_column_scope(table_name, column_name, new_scope=None):
+    """
+    Updates the cache scope for a wrapped column function. Clears out
+    the cache if the new scope is more granular than the existing.
+
+    Parameters:
+    -----------
+    table_name: str
+        Name of the table.
+    column_name: str
+        Name of the column to update.
+    new_scope: str, optional default None
+        Valid values: None, 'forever', 'iteration', 'step'
+        None implies no caching.
+
+    """
+    _update_scope(
+        get_raw_column(table_name, column_name), new_scope)
+
+
+def update_table_scope(name, new_scope=None):
+    """
+    Updates the cache scope for a wrapped table function. Clears out
+    the cache if the new scope is more granular than the existing.
+
+    Parameters:
+    -----------
+    name: str
+        Name of the table to update.
+    new_scope: str, optional default None
+        Valid values: None, 'forever', 'iteration', 'step'
+        None implies no caching.
+
+    """
+    _update_scope(
+        get_raw_table(name), new_scope)
+
+
 def enable_cache():
     """
     Allow caching of registered variables that explicitly have
