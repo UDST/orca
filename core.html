@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Orca Core &mdash; Orca 1.5.4 documentation</title>
+  <title>Orca Core &mdash; Orca 1.6 documentation</title>
   
 
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -29,7 +32,6 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -51,7 +53,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Orca
+            <a href="index.html" class="icon icon-home"> Orca
           
 
           
@@ -61,7 +63,7 @@
             
             
               <div class="version">
-                1.5.4
+                1.6
               </div>
             
           
@@ -98,7 +100,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#injectables">Injectables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#caching">Caching</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#cache-scope">Cache Scope</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#managing-the-cache">Managing the Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#disabling-caching">Disabling Caching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manually-clearing-cache">Manually Clearing Cache</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#steps">Steps</a></li>
@@ -165,6 +168,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -176,7 +181,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/core.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -487,12 +492,16 @@ Results are cached for the remainder of the current pipeline iteration.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">'step'</span></code> -
 Results are cached until the current pipeline step finishes.</p></li>
 </ul>
+<p>An item’s cache scope can be modified using
+<a class="reference internal" href="#orca.orca.update_injectable_scope" title="orca.orca.update_injectable_scope"><code class="xref py py-func docutils literal notranslate"><span class="pre">update_injectable_scope()</span></code></a>,
+<a class="reference internal" href="#orca.orca.update_table_scope" title="orca.orca.update_table_scope"><code class="xref py py-func docutils literal notranslate"><span class="pre">update_table_scope()</span></code></a>, or
+<a class="reference internal" href="#orca.orca.update_column_scope" title="orca.orca.update_column_scope"><code class="xref py py-func docutils literal notranslate"><span class="pre">update_column_scope()</span></code></a>. Omitting the scope or passing <code class="docutils literal notranslate"><span class="pre">None</span></code>
+turns caching off for the item. These functions were added in Orca v1.6.</p>
 </div>
-<div class="section" id="managing-the-cache">
-<h3>Managing the Cache<a class="headerlink" href="#managing-the-cache" title="Permalink to this headline">¶</a></h3>
-<p>We hope that users will be able to do most of their cache management via
-cache scopes, but there may be situations, especially during testing,
-when more manual management is required.</p>
+<div class="section" id="disabling-caching">
+<h3>Disabling Caching<a class="headerlink" href="#disabling-caching" title="Permalink to this headline">¶</a></h3>
+<p>There may be situations, especially during testing,
+that require disabling the caching system.</p>
 <p>Caching can be turned off globally using the
 <a class="reference internal" href="#orca.orca.disable_cache" title="orca.orca.disable_cache"><code class="xref py py-func docutils literal notranslate"><span class="pre">disable_cache()</span></code></a> function
 (and turned back on by <a class="reference internal" href="#orca.orca.enable_cache" title="orca.orca.enable_cache"><code class="xref py py-func docutils literal notranslate"><span class="pre">enable_cache()</span></code></a>).</p>
@@ -503,8 +512,29 @@ context manager:</p>
     <span class="n">result</span> <span class="o">=</span> <span class="n">orca</span><span class="o">.</span><span class="n">eval_variable</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Finally, users can manually clear the cache using
-<a class="reference internal" href="#orca.orca.clear_cache" title="orca.orca.clear_cache"><code class="xref py py-func docutils literal notranslate"><span class="pre">clear_cache()</span></code></a>.</p>
+</div>
+<div class="section" id="manually-clearing-cache">
+<h3>Manually Clearing Cache<a class="headerlink" href="#manually-clearing-cache" title="Permalink to this headline">¶</a></h3>
+<p>Orca’s entire cache can be cleared using <a class="reference internal" href="#orca.orca.clear_cache" title="orca.orca.clear_cache"><code class="xref py py-func docutils literal notranslate"><span class="pre">clear_cache()</span></code></a>.</p>
+<p>Cache can also be cleared manually for individual items, to allow finer control
+over re-computation. These functions were added in Orca v1.6.</p>
+<p>To clear the cached value of an injectable, use
+<a class="reference internal" href="#orca.orca.clear_injectable" title="orca.orca.clear_injectable"><code class="xref py py-func docutils literal notranslate"><span class="pre">clear_injectable()</span></code></a>. To clear the cached copy of an entire
+table, use <a class="reference internal" href="#orca.orca.clear_table" title="orca.orca.clear_table"><code class="xref py py-func docutils literal notranslate"><span class="pre">clear_table()</span></code></a>.</p>
+<p>A dynamically generated column can be cleared using
+<a class="reference internal" href="#orca.orca.clear_column" title="orca.orca.clear_column"><code class="xref py py-func docutils literal notranslate"><span class="pre">clear_column()</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">orca</span><span class="o">.</span><span class="n">clear_column</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">,</span> <span class="s1">&#39;my_col&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To clear all dynamically generated columns from a table, use
+<a class="reference internal" href="#orca.orca.clear_columns" title="orca.orca.clear_columns"><code class="xref py py-func docutils literal notranslate"><span class="pre">clear_columns()</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">orca</span><span class="o">.</span><span class="n">clear_columns</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or clear a subset of the columns like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">orca</span><span class="o">.</span><span class="n">clear_columns</span><span class="p">(</span><span class="s1">&#39;my_table&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;col1&#39;</span><span class="p">,</span> <span class="s1">&#39;col2&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="steps">
@@ -893,8 +923,26 @@ like to specifically document that in the function’s arguments.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#orca.orca.cache_on" title="orca.orca.cache_on"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache_on</span></code></a>()</p></td>
 <td><p>Whether caching is currently enabled or disabled.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache_disabled</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#orca.orca.clear_injectable" title="orca.orca.clear_injectable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_injectable</span></code></a>(injectable_name)</p></td>
+<td><p>Clear the cached value of an injectable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#orca.orca.clear_table" title="orca.orca.clear_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_table</span></code></a>(table_name)</p></td>
+<td><p>Clear the cached copy of an entire table.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#orca.orca.clear_column" title="orca.orca.clear_column"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_column</span></code></a>(table_name, column_name)</p></td>
+<td><p>Clear the cached copy of a dynamically generated column.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#orca.orca.clear_columns" title="orca.orca.clear_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_columns</span></code></a>(table_name[, columns])</p></td>
+<td><p>Clear all (or a specified list) of the dynamically generated columns associated with a table.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#orca.orca.update_injectable_scope" title="orca.orca.update_injectable_scope"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_injectable_scope</span></code></a>(name[, new_scope])</p></td>
+<td><p>Update the cache scope for a wrapped injectable function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#orca.orca.update_table_scope" title="orca.orca.update_table_scope"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_table_scope</span></code></a>(name[, new_scope])</p></td>
+<td><p>Update the cache scope for a wrapped table function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#orca.orca.update_column_scope" title="orca.orca.update_column_scope"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_column_scope</span></code></a>(table_name, column_name)</p></td>
+<td><p>Update the cache scope for a wrapped column function.</p></td>
 </tr>
 </tbody>
 </table>
@@ -903,40 +951,40 @@ like to specifically document that in the function’s arguments.</p>
 <span id="api-docs"></span><h3>API Docs<a class="headerlink" href="#module-orca.orca" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="orca.orca.Broadcast">
-<em class="property">class </em><code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">Broadcast</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cast</span></em>, <em class="sig-param"><span class="n">onto</span></em>, <em class="sig-param"><span class="n">cast_on</span></em>, <em class="sig-param"><span class="n">onto_on</span></em>, <em class="sig-param"><span class="n">cast_index</span></em>, <em class="sig-param"><span class="n">onto_index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.Broadcast" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">Broadcast</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cast</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onto</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cast_on</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onto_on</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cast_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onto_index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.Broadcast" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
 <dt id="orca.orca.Broadcast.cast">
-<code class="sig-name descname">cast</code><a class="headerlink" href="#orca.orca.Broadcast.cast" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">cast</span></code><a class="headerlink" href="#orca.orca.Broadcast.cast" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="orca.orca.Broadcast.cast_index">
-<code class="sig-name descname">cast_index</code><a class="headerlink" href="#orca.orca.Broadcast.cast_index" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">cast_index</span></code><a class="headerlink" href="#orca.orca.Broadcast.cast_index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 4</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="orca.orca.Broadcast.cast_on">
-<code class="sig-name descname">cast_on</code><a class="headerlink" href="#orca.orca.Broadcast.cast_on" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">cast_on</span></code><a class="headerlink" href="#orca.orca.Broadcast.cast_on" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="orca.orca.Broadcast.onto">
-<code class="sig-name descname">onto</code><a class="headerlink" href="#orca.orca.Broadcast.onto" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">onto</span></code><a class="headerlink" href="#orca.orca.Broadcast.onto" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="orca.orca.Broadcast.onto_index">
-<code class="sig-name descname">onto_index</code><a class="headerlink" href="#orca.orca.Broadcast.onto_index" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">onto_index</span></code><a class="headerlink" href="#orca.orca.Broadcast.onto_index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 5</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="orca.orca.Broadcast.onto_on">
-<code class="sig-name descname">onto_on</code><a class="headerlink" href="#orca.orca.Broadcast.onto_on" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">onto_on</span></code><a class="headerlink" href="#orca.orca.Broadcast.onto_on" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 3</p>
 </dd></dl>
 
@@ -944,22 +992,22 @@ like to specifically document that in the function’s arguments.</p>
 
 <dl class="py class">
 <dt id="orca.orca.CacheItem">
-<em class="property">class </em><code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">CacheItem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">scope</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.CacheItem" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">CacheItem</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.CacheItem" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
 <dt id="orca.orca.CacheItem.name">
-<code class="sig-name descname">name</code><a class="headerlink" href="#orca.orca.CacheItem.name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#orca.orca.CacheItem.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="orca.orca.CacheItem.scope">
-<code class="sig-name descname">scope</code><a class="headerlink" href="#orca.orca.CacheItem.scope" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">scope</span></code><a class="headerlink" href="#orca.orca.CacheItem.scope" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="orca.orca.CacheItem.value">
-<code class="sig-name descname">value</code><a class="headerlink" href="#orca.orca.CacheItem.value" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">value</span></code><a class="headerlink" href="#orca.orca.CacheItem.value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
@@ -967,7 +1015,7 @@ like to specifically document that in the function’s arguments.</p>
 
 <dl class="py class">
 <dt id="orca.orca.DataFrameWrapper">
-<em class="property">class </em><code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">DataFrameWrapper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">frame</span></em>, <em class="sig-param"><span class="n">copy_col</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">DataFrameWrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wraps a DataFrame so it can provide certain columns and handle
 computed columns.</p>
 <dl class="field-list simple">
@@ -993,13 +1041,13 @@ computed columns.</p>
 </dl>
 <dl class="py method">
 <dt id="orca.orca.DataFrameWrapper.clear_cached">
-<code class="sig-name descname">clear_cached</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.clear_cached" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">clear_cached</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.clear_cached" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove cached results from this table’s computed columns.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="orca.orca.DataFrameWrapper.column_type">
-<code class="sig-name descname">column_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.column_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">column_type</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.column_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Report column type as one of ‘local’, ‘series’, or ‘function’.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1021,13 +1069,13 @@ a Pandas Series.</p>
 
 <dl class="py method">
 <dt id="orca.orca.DataFrameWrapper.columns">
-<em class="property">property </em><code class="sig-name descname">columns</code><a class="headerlink" href="#orca.orca.DataFrameWrapper.columns" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">columns</span></code><a class="headerlink" href="#orca.orca.DataFrameWrapper.columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Columns in this table.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="orca.orca.DataFrameWrapper.get_column">
-<code class="sig-name descname">get_column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.get_column" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_column</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.get_column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a column as a Series.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1045,19 +1093,19 @@ a Pandas Series.</p>
 
 <dl class="py method">
 <dt id="orca.orca.DataFrameWrapper.index">
-<em class="property">property </em><code class="sig-name descname">index</code><a class="headerlink" href="#orca.orca.DataFrameWrapper.index" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">index</span></code><a class="headerlink" href="#orca.orca.DataFrameWrapper.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Table index.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="orca.orca.DataFrameWrapper.local_columns">
-<em class="property">property </em><code class="sig-name descname">local_columns</code><a class="headerlink" href="#orca.orca.DataFrameWrapper.local_columns" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">local_columns</span></code><a class="headerlink" href="#orca.orca.DataFrameWrapper.local_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Columns that are part of the wrapped DataFrame.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="orca.orca.DataFrameWrapper.to_frame">
-<code class="sig-name descname">to_frame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">columns</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.to_frame" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">to_frame</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.to_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a DataFrame with the given columns.</p>
 <p>Will always return a copy of the underlying table.</p>
 <dl class="field-list simple">
@@ -1079,7 +1127,7 @@ If None all columns are returned, including registered columns.</p>
 
 <dl class="py method">
 <dt id="orca.orca.DataFrameWrapper.update_col">
-<code class="sig-name descname">update_col</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column_name</span></em>, <em class="sig-param"><span class="n">series</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.update_col" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">update_col</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">series</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.update_col" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add or replace a column in the underlying DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1095,7 +1143,7 @@ If None all columns are returned, including registered columns.</p>
 
 <dl class="py method">
 <dt id="orca.orca.DataFrameWrapper.update_col_from_series">
-<code class="sig-name descname">update_col_from_series</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column_name</span></em>, <em class="sig-param"><span class="n">series</span></em>, <em class="sig-param"><span class="n">cast</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.update_col_from_series" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">update_col_from_series</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cast</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.DataFrameWrapper.update_col_from_series" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update existing values in a column from another series.
 Index values must match in both column and series. Optionally
 casts data type to match the existing column.</p>
@@ -1114,12 +1162,12 @@ casts data type to match the existing column.</p>
 
 <dl class="py exception">
 <dt id="orca.orca.OrcaError">
-<em class="property">exception </em><code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">OrcaError</code><a class="headerlink" href="#orca.orca.OrcaError" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">exception</span> </em><code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">OrcaError</span></code><a class="headerlink" href="#orca.orca.OrcaError" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
 <dt id="orca.orca.TableFuncWrapper">
-<em class="property">class </em><code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">TableFuncWrapper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">func</span></em>, <em class="sig-param"><span class="n">cache</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">cache_scope</span><span class="o">=</span><span class="default_value">'forever'</span></em>, <em class="sig-param"><span class="n">copy_col</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">TableFuncWrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forever'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Wrap a function that provides a DataFrame.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1152,13 +1200,13 @@ a single step of the pipeline.</p>
 </dl>
 <dl class="py method">
 <dt id="orca.orca.TableFuncWrapper.clear_cached">
-<code class="sig-name descname">clear_cached</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.clear_cached" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">clear_cached</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.clear_cached" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove this table’s cached result and that of associated columns.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="orca.orca.TableFuncWrapper.column_type">
-<code class="sig-name descname">column_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.column_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">column_type</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.column_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Report column type as one of ‘local’, ‘series’, or ‘function’.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1180,14 +1228,14 @@ a Pandas Series.</p>
 
 <dl class="py method">
 <dt id="orca.orca.TableFuncWrapper.columns">
-<em class="property">property </em><code class="sig-name descname">columns</code><a class="headerlink" href="#orca.orca.TableFuncWrapper.columns" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">columns</span></code><a class="headerlink" href="#orca.orca.TableFuncWrapper.columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Columns in this table. (May contain only computed columns
 if the wrapped function has not been called yet.)</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="orca.orca.TableFuncWrapper.func_source_data">
-<code class="sig-name descname">func_source_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.func_source_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">func_source_data</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.func_source_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return data about the wrapped function source, including file name,
 line number, and source code.</p>
 <dl class="field-list simple">
@@ -1204,7 +1252,7 @@ line number, and source code.</p>
 
 <dl class="py method">
 <dt id="orca.orca.TableFuncWrapper.get_column">
-<code class="sig-name descname">get_column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">column_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.get_column" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">get_column</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.get_column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a column as a Series.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1222,21 +1270,21 @@ line number, and source code.</p>
 
 <dl class="py method">
 <dt id="orca.orca.TableFuncWrapper.index">
-<em class="property">property </em><code class="sig-name descname">index</code><a class="headerlink" href="#orca.orca.TableFuncWrapper.index" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">index</span></code><a class="headerlink" href="#orca.orca.TableFuncWrapper.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Index of the underlying table. Will be None if that index is
 unknown.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="orca.orca.TableFuncWrapper.local_columns">
-<em class="property">property </em><code class="sig-name descname">local_columns</code><a class="headerlink" href="#orca.orca.TableFuncWrapper.local_columns" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">local_columns</span></code><a class="headerlink" href="#orca.orca.TableFuncWrapper.local_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Only the columns contained in the DataFrame returned by the
 wrapped function. (No registered columns included.)</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="orca.orca.TableFuncWrapper.to_frame">
-<code class="sig-name descname">to_frame</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">columns</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.to_frame" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">to_frame</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.TableFuncWrapper.to_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a DataFrame with the given columns.</p>
 <p>Will always return a copy of the underlying table.</p>
 <dl class="field-list simple">
@@ -1259,7 +1307,7 @@ If None all columns are returned.</p>
 
 <dl class="py function">
 <dt id="orca.orca.add_column">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">add_column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table_name</span></em>, <em class="sig-param"><span class="n">column_name</span></em>, <em class="sig-param"><span class="n">column</span></em>, <em class="sig-param"><span class="n">cache</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">cache_scope</span><span class="o">=</span><span class="default_value">'forever'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.add_column" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">add_column</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forever'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.add_column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new column to a table from a Series or callable.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1289,7 +1337,7 @@ a single step of the pipeline.</p>
 
 <dl class="py function">
 <dt id="orca.orca.add_injectable">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">add_injectable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">autocall</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cache</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">cache_scope</span><span class="o">=</span><span class="default_value">'forever'</span></em>, <em class="sig-param"><span class="n">memoize</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.add_injectable" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">add_injectable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autocall</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forever'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">memoize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.add_injectable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a value that will be injected into other functions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1327,7 +1375,7 @@ rules as universal caching.</p>
 
 <dl class="py function">
 <dt id="orca.orca.add_step">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">add_step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">step_name</span></em>, <em class="sig-param"><span class="n">func</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.add_step" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">add_step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.add_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a step function to Orca.</p>
 <p>The function’s argument names and keyword argument values
 will be matched to registered variables when the function
@@ -1346,7 +1394,7 @@ iteration variable injected.</p>
 
 <dl class="py function">
 <dt id="orca.orca.add_table">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">add_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table_name</span></em>, <em class="sig-param"><span class="n">table</span></em>, <em class="sig-param"><span class="n">cache</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">cache_scope</span><span class="o">=</span><span class="default_value">'forever'</span></em>, <em class="sig-param"><span class="n">copy_col</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.add_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">add_table</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forever'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.add_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Register a table with Orca.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -1380,7 +1428,7 @@ a single step of the pipeline.</p>
 
 <dl class="py function">
 <dt id="orca.orca.broadcast">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">broadcast</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cast</span></em>, <em class="sig-param"><span class="n">onto</span></em>, <em class="sig-param"><span class="n">cast_on</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">onto_on</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cast_index</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">onto_index</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.broadcast" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">broadcast</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cast</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onto</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cast_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onto_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cast_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onto_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.broadcast" title="Permalink to this definition">¶</a></dt>
 <dd><p>Register a rule for merging two tables by broadcasting one onto
 the other.</p>
 <dl class="field-list simple">
@@ -1401,7 +1449,7 @@ parameters of pandas.merge.</p>
 
 <dl class="py function">
 <dt id="orca.orca.cache_on">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">cache_on</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.cache_on" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">cache_on</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.cache_on" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether caching is currently enabled or disabled.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -1415,13 +1463,13 @@ parameters of pandas.merge.</p>
 
 <dl class="py function">
 <dt id="orca.orca.clear_all">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">clear_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.clear_all" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">clear_all</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.clear_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear any and all stored state from Orca.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="orca.orca.clear_cache">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">clear_cache</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scope</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.clear_cache" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">clear_cache</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.clear_cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear all cached data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1435,8 +1483,71 @@ By default all cached values are removed.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="orca.orca.clear_column">
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">clear_column</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.clear_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear the cached copy of a dynamically generated column.
+<em>Added in Orca v1.6.</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>table_name: str</strong></dt><dd><p>Table containing the column to clear.</p>
+</dd>
+<dt><strong>column_name: str</strong></dt><dd><p>Name of the column to clear.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="orca.orca.clear_columns">
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">clear_columns</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.clear_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear all (or a specified list) of the dynamically generated columns
+associated with a table. <em>Added in Orca v1.6.</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>table_name: str</strong></dt><dd><p>Table name.</p>
+</dd>
+<dt><strong>columns:  list of str, optional, default None</strong></dt><dd><p>List of columns to clear. If None, all extra/computed
+columns in the table will be cleeared.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="orca.orca.clear_injectable">
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">clear_injectable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">injectable_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.clear_injectable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear the cached value of an injectable. <em>Added in Orca v1.6.</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name: str</strong></dt><dd><p>Name of injectable to clear.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="orca.orca.clear_table">
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">clear_table</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.clear_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear the cached copy of an entire table. <em>Added in Orca v1.6.</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name: str</strong></dt><dd><p>Name of table to clear.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="orca.orca.column">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table_name</span></em>, <em class="sig-param"><span class="n">column_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cache</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">cache_scope</span><span class="o">=</span><span class="default_value">'forever'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.column" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">column</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forever'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorates functions that return a Series.</p>
 <p>Decorator version of <cite>add_column</cite>. Series index must match
 the named table. Column name defaults to name of function.</p>
@@ -1450,7 +1561,7 @@ The index of the returned Series must match the named table.</p>
 
 <dl class="py function">
 <dt id="orca.orca.column_map">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">column_map</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tables</span></em>, <em class="sig-param"><span class="n">columns</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.column_map" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">column_map</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.column_map" title="Permalink to this definition">¶</a></dt>
 <dd><p>Take a list of tables and a list of column names and resolve which
 columns come from which table.</p>
 <dl class="field-list simple">
@@ -1474,21 +1585,21 @@ thing is that they have <code class="docutils literal notranslate"><span class="
 
 <dl class="py function">
 <dt id="orca.orca.disable_cache">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">disable_cache</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.disable_cache" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">disable_cache</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.disable_cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turn off caching across Orca, even for registered variables
 that have caching enabled.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="orca.orca.enable_cache">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">enable_cache</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.enable_cache" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">enable_cache</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.enable_cache" title="Permalink to this definition">¶</a></dt>
 <dd><p>Allow caching of registered variables that explicitly have
 caching enabled.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="orca.orca.eval_step">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">eval_step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.eval_step" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">eval_step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.eval_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate a step as would be done within the pipeline environment
 and return the result. Any keyword arguments are temporarily set
 as injectables.</p>
@@ -1511,7 +1622,7 @@ return values from steps are ignored.)</p>
 
 <dl class="py function">
 <dt id="orca.orca.eval_variable">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">eval_variable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.eval_variable" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">eval_variable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.eval_variable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a single variable function registered with Orca
 and return the result. Any keyword arguments are temporarily set
 as injectables. This gives the value as would be injected into a function.</p>
@@ -1537,7 +1648,7 @@ had been injected into a function.</p>
 
 <dl class="py function">
 <dt id="orca.orca.get_broadcast">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">get_broadcast</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cast_name</span></em>, <em class="sig-param"><span class="n">onto_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_broadcast" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">get_broadcast</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cast_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onto_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_broadcast" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a single broadcast.</p>
 <p>Broadcasts are stored data about how to do a Pandas join.
 A Broadcast object is a namedtuple with these attributes:</p>
@@ -1572,7 +1683,7 @@ None if the table index will be used instead.</p></li>
 
 <dl class="py function">
 <dt id="orca.orca.get_injectable">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">get_injectable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_injectable" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">get_injectable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_injectable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get an injectable by name. <em>Does not</em> evaluate wrapped functions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1591,7 +1702,7 @@ None if the table index will be used instead.</p></li>
 
 <dl class="py function">
 <dt id="orca.orca.get_injectable_func_source_data">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">get_injectable_func_source_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_injectable_func_source_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">get_injectable_func_source_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_injectable_func_source_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return data about an injectable function’s source, including file name,
 line number, and source code.</p>
 <dl class="field-list simple">
@@ -1613,7 +1724,7 @@ line number, and source code.</p>
 
 <dl class="py function">
 <dt id="orca.orca.get_raw_column">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">get_raw_column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table_name</span></em>, <em class="sig-param"><span class="n">column_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_raw_column" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">get_raw_column</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_raw_column" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a wrapped, registered column.</p>
 <p>This function cannot return columns that are part of wrapped
 DataFrames, it’s only for columns registered directly through Orca.</p>
@@ -1634,7 +1745,7 @@ DataFrames, it’s only for columns registered directly through Orca.</p>
 
 <dl class="py function">
 <dt id="orca.orca.get_raw_injectable">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">get_raw_injectable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_raw_injectable" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">get_raw_injectable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_raw_injectable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a raw, possibly wrapped injectable.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1652,7 +1763,7 @@ DataFrames, it’s only for columns registered directly through Orca.</p>
 
 <dl class="py function">
 <dt id="orca.orca.get_raw_table">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">get_raw_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_raw_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">get_raw_table</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_raw_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a wrapped table by name and don’t do anything to it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1670,13 +1781,13 @@ DataFrames, it’s only for columns registered directly through Orca.</p>
 
 <dl class="py function">
 <dt id="orca.orca.get_step">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">get_step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">step_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_step" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">get_step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a wrapped step by name.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="orca.orca.get_step_table_names">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">get_step_table_names</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">steps</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_step_table_names" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">get_step_table_names</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_step_table_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of table names injected into the provided steps.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1695,7 +1806,7 @@ DataFrames, it’s only for columns registered directly through Orca.</p>
 
 <dl class="py function">
 <dt id="orca.orca.get_table">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">get_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">get_table</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.get_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a registered table.</p>
 <p>Decorated functions will be converted to <cite>DataFrameWrapper</cite>.</p>
 <dl class="field-list">
@@ -1714,7 +1825,7 @@ DataFrames, it’s only for columns registered directly through Orca.</p>
 
 <dl class="py function">
 <dt id="orca.orca.injectable">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">injectable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">autocall</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cache</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">cache_scope</span><span class="o">=</span><span class="default_value">'forever'</span></em>, <em class="sig-param"><span class="n">memoize</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.injectable" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">injectable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">autocall</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forever'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">memoize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.injectable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorates functions that will be injected into other functions.</p>
 <p>Decorator version of <cite>add_injectable</cite>. Name defaults to
 name of function.</p>
@@ -1727,7 +1838,7 @@ iteration variable injected.</p>
 
 <dl class="py function">
 <dt id="orca.orca.injectable_type">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">injectable_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.injectable_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">injectable_type</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.injectable_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Classify an injectable as either ‘variable’ or ‘function’.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1748,7 +1859,7 @@ will be have type ‘variable’.</p>
 
 <dl class="py function">
 <dt id="orca.orca.injectables">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">injectables</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.injectables" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">injectables</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.injectables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Temporarily add injectables to the pipeline environment.
 Takes only keyword arguments.</p>
 <p>Injectables will be returned to their original state when the context
@@ -1757,14 +1868,14 @@ manager exits.</p>
 
 <dl class="py function">
 <dt id="orca.orca.is_broadcast">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">is_broadcast</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cast_name</span></em>, <em class="sig-param"><span class="n">onto_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_broadcast" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">is_broadcast</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cast_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">onto_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_broadcast" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether a relationship exists for broadcast <cite>cast_name</cite>
 onto <cite>onto_name</cite>.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="orca.orca.is_expression">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">is_expression</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_expression" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">is_expression</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_expression" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether a given name is a simple variable name or a compound
 variable expression.</p>
 <dl class="field-list simple">
@@ -1783,34 +1894,34 @@ variable expression.</p>
 
 <dl class="py function">
 <dt id="orca.orca.is_injectable">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">is_injectable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_injectable" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">is_injectable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_injectable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks whether a given name can be mapped to an injectable.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="orca.orca.is_step">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">is_step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">step_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_step" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">is_step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether a given name refers to a registered step.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="orca.orca.is_table">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">is_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">is_table</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.is_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns whether a given name refers to a registered table.</p>
 </dd></dl>
 
 <dl class="py class">
 <dt id="orca.orca.iter_step">
-<em class="property">class </em><code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">iter_step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">step_num</span></em>, <em class="sig-param"><span class="n">step_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.iter_step" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">iter_step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.iter_step" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
 <dt id="orca.orca.iter_step.step_name">
-<code class="sig-name descname">step_name</code><a class="headerlink" href="#orca.orca.iter_step.step_name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">step_name</span></code><a class="headerlink" href="#orca.orca.iter_step.step_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="orca.orca.iter_step.step_num">
-<code class="sig-name descname">step_num</code><a class="headerlink" href="#orca.orca.iter_step.step_num" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">step_num</span></code><a class="headerlink" href="#orca.orca.iter_step.step_num" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
@@ -1818,19 +1929,19 @@ variable expression.</p>
 
 <dl class="py function">
 <dt id="orca.orca.list_broadcasts">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">list_broadcasts</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_broadcasts" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">list_broadcasts</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_broadcasts" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of registered broadcasts as (cast table name, onto table name).</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="orca.orca.list_columns">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">list_columns</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_columns" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">list_columns</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of (table name, registered column name) pairs.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="orca.orca.list_columns_for_table">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">list_columns_for_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_columns_for_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">list_columns_for_table</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_columns_for_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of all the extra columns registered for a given table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1848,25 +1959,25 @@ variable expression.</p>
 
 <dl class="py function">
 <dt id="orca.orca.list_injectables">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">list_injectables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_injectables" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">list_injectables</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_injectables" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of registered injectables.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="orca.orca.list_steps">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">list_steps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_steps" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">list_steps</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_steps" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of registered step names.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="orca.orca.list_tables">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">list_tables</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_tables" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">list_tables</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.list_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of table names.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="orca.orca.merge_tables">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">merge_tables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">tables</span></em>, <em class="sig-param"><span class="n">columns</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">drop_intersection</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.merge_tables" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">merge_tables</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_intersection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.merge_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Merge a number of tables onto a target table. Tables must have
 registered merge rules via the <cite>broadcast</cite> function.</p>
 <dl class="field-list">
@@ -1899,7 +2010,7 @@ zone_id_parcels.</p>
 
 <dl class="py function">
 <dt id="orca.orca.run">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">steps</span></em>, <em class="sig-param"><span class="n">iter_vars</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">data_out</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">out_interval</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">out_base_tables</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">out_run_tables</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">compress</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">out_base_local</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">out_run_local</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.run" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter_vars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_base_tables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_run_tables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_base_local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_run_local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run steps in series, optionally repeatedly over some sequence.
 The current iteration variable is set as a global injectable
 called <code class="docutils literal notranslate"><span class="pre">iter_var</span></code>.</p>
@@ -1948,7 +2059,7 @@ or both, local and computed columns (False).</p>
 
 <dl class="py function">
 <dt id="orca.orca.step">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">step_name</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.step" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">step</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.step" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorates functions that will be called by the <cite>run</cite> function.</p>
 <p>Decorator version of <cite>add_step</cite>. step name defaults to
 name of function.</p>
@@ -1961,7 +2072,7 @@ iteration variable injected.</p>
 
 <dl class="py function">
 <dt id="orca.orca.table">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cache</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">cache_scope</span><span class="o">=</span><span class="default_value">'forever'</span></em>, <em class="sig-param"><span class="n">copy_col</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">table</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'forever'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorates functions that return DataFrames.</p>
 <p>Decorator version of <cite>add_table</cite>. Table name defaults to
 name of function.</p>
@@ -1974,7 +2085,7 @@ iteration variable injected.</p>
 
 <dl class="py function">
 <dt id="orca.orca.table_type">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">table_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">table_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.table_type" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">table_type</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.table_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the type of a registered table.</p>
 <p>The type can be either “dataframe” or “function”.</p>
 <dl class="field-list simple">
@@ -1993,7 +2104,7 @@ iteration variable injected.</p>
 
 <dl class="py function">
 <dt id="orca.orca.temporary_tables">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">temporary_tables</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.temporary_tables" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">temporary_tables</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.temporary_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Temporarily set DataFrames as registered tables.</p>
 <p>Tables will be returned to their original state when the context
 manager exits. Caching is not enabled for tables registered via
@@ -2001,8 +2112,67 @@ this function.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="orca.orca.update_column_scope">
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">update_column_scope</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.update_column_scope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the cache scope for a wrapped column function. Clears
+the cache if the new scope is more granular than the existing.
+<em>Added in Orca v1.6.</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>table_name: str</strong></dt><dd><p>Name of the table.</p>
+</dd>
+<dt><strong>column_name: str</strong></dt><dd><p>Name of the column to update.</p>
+</dd>
+<dt><strong>new_scope: str, optional default None</strong></dt><dd><p>Valid values: None, ‘forever’, ‘iteration’, ‘step’
+None implies no caching.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="orca.orca.update_injectable_scope">
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">update_injectable_scope</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.update_injectable_scope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the cache scope for a wrapped injectable function.
+Clears the cache if the new scope is more granular
+than the existing. <em>Added in Orca v1.6.</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name: str</strong></dt><dd><p>Name of the injectable to update.</p>
+</dd>
+<dt><strong>new_scope: str, optional default None</strong></dt><dd><p>Valid values: None, ‘forever’, ‘iteration’, ‘step’
+None implies no caching.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="orca.orca.update_table_scope">
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">update_table_scope</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.update_table_scope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the cache scope for a wrapped table function. Clears
+the cache if the new scope is more granular than the existing.
+<em>Added in Orca v1.6.</em></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name: str</strong></dt><dd><p>Name of the table to update.</p>
+</dd>
+<dt><strong>new_scope: str, optional default None</strong></dt><dd><p>Valid values: None, ‘forever’, ‘iteration’, ‘step’
+None implies no caching.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="orca.orca.write_tables">
-<code class="sig-prename descclassname">orca.orca.</code><code class="sig-name descname">write_tables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em>, <em class="sig-param"><span class="n">table_names</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">prefix</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">compress</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">local</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.write_tables" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">orca.orca.</span></code><code class="sig-name descname"><span class="pre">write_tables</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#orca.orca.write_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes tables to a pandas.HDFStore file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -2033,37 +2203,29 @@ zlib compression, default False.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="server.html" class="btn btn-neutral float-right" title="Orca Server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="example.html" class="btn btn-neutral float-left" title="Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="server.html" class="btn btn-neutral float-right" title="Orca Server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="example.html" class="btn btn-neutral float-left" title="Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, UrbanSim Inc
+        &#169; Copyright 2021, UrbanSim Inc.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
