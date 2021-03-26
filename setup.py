@@ -38,7 +38,7 @@ with open('README.rst', 'r') as f:
 
 setup(
     name='orca',
-    version='1.6.1.dev0',
+    version='1.7.dev0',
     description='Python library for task orchestration',
     long_description=long_description,
     author='UrbanSim Inc.',
