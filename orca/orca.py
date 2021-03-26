@@ -26,6 +26,7 @@ import tlz as tz
 
 from . import utils
 from .utils.logutil import log_start_finish
+from .utils.mem import log_memory_info
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 logger = logging.getLogger(__name__)
@@ -2168,6 +2169,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
                 step()
                 print("Time to execute step '{}': {:.2f} s".format(
                       step_name, time.time() - t2))
+                log_memory_info()
             clear_cache(scope=_CS_STEP)
 
         print(

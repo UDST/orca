@@ -38,7 +38,7 @@ with open('README.rst', 'r') as f:
 
 setup(
     name='orca',
-    version='1.6',
+    version='1.6.1.dev0',
     description='Python library for task orchestration',
     long_description=long_description,
     author='UrbanSim Inc.',
@@ -65,6 +65,7 @@ setup(
     # are being conservative here and disallowing them until tested
     install_requires=[
         'pandas >= 0.15.0',
+        'psutil',
         'tables >=3.1, <3.6; python_version <"3.6"',
         'tables >=3.1, <3.7; python_version >="3.6"',
         'toolz >= 0.8.1'
