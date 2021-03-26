@@ -98,10 +98,10 @@ def clear_cache(scope=None):
 
 def clear_injectable(injectable_name):
     """
-    Clears out an injectable (function) cache.
+    Clear the cached value of an injectable. *Added in Orca v1.6.*
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     name: str
         Name of injectable to clear.
 
@@ -111,11 +111,10 @@ def clear_injectable(injectable_name):
 
 def clear_table(table_name):
     """
-    Clears out an entire table (function) cache. Only call this if you want
-    the entire table to be recreated.
+    Clear the cached copy of an entire table. *Added in Orca v1.6.*
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     name: str
         Name of table to clear.
 
@@ -125,10 +124,11 @@ def clear_table(table_name):
 
 def clear_column(table_name, column_name):
     """
-    Clears out column (function) cache.
+    Clear the cached copy of a dynamically generated column.
+    *Added in Orca v1.6.*
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     table_name: str
         Table containing the column to clear.
     column_name: str
@@ -140,10 +140,11 @@ def clear_column(table_name, column_name):
 
 def clear_columns(table_name, columns=None):
     """
-    Clears out column (function) cache.
+    Clear all (or a specified list) of the dynamically generated columns
+    associated with a table. *Added in Orca v1.6.*
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     table_name: str
         Table name.
     columns:  list of str, optional, default None
@@ -165,10 +166,11 @@ def clear_columns(table_name, columns=None):
 
 def _update_scope(wrapper, new_scope=None):
     """
-    Updates the cache scope for a wrapper (in place).
+    Update the cache scope for a wrapper (in place).
+    *Added in Orca v1.6.*
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     wrapper: object
         Should be an instance of wrapper with attributes
         `cache`, `cache_scope` and method `clear_cached`.
@@ -209,12 +211,12 @@ def _update_scope(wrapper, new_scope=None):
 
 def update_injectable_scope(name, new_scope=None):
     """
-    Updates the cache scope for a wrapped injectable function.
-    Clears out the cache if the new scope is more granular
-    than the existing.
+    Update the cache scope for a wrapped injectable function.
+    Clears the cache if the new scope is more granular
+    than the existing. *Added in Orca v1.6.*
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     name: str
         Name of the injectable to update.
     new_scope: str, optional default None
@@ -228,11 +230,12 @@ def update_injectable_scope(name, new_scope=None):
 
 def update_column_scope(table_name, column_name, new_scope=None):
     """
-    Updates the cache scope for a wrapped column function. Clears out
+    Update the cache scope for a wrapped column function. Clears
     the cache if the new scope is more granular than the existing.
+    *Added in Orca v1.6.*
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     table_name: str
         Name of the table.
     column_name: str
@@ -248,11 +251,12 @@ def update_column_scope(table_name, column_name, new_scope=None):
 
 def update_table_scope(name, new_scope=None):
     """
-    Updates the cache scope for a wrapped table function. Clears out
+    Update the cache scope for a wrapped table function. Clears
     the cache if the new scope is more granular than the existing.
+    *Added in Orca v1.6.*
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     name: str
         Name of the table to update.
     new_scope: str, optional default None

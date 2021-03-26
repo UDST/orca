@@ -1,3 +1,9 @@
+v1.6
+====
+
+* New functionality to clear cache and update cache scope: https://udst.github.io/orca/core.html#caching
+* Server module deprecated
+
 v1.5.4
 ======
 
