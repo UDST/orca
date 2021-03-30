@@ -1,5 +1,4 @@
-.. image:: https://coveralls.io/repos/UDST/orca/badge.svg?branch=master
-  :target: https://coveralls.io/r/UDST/orca?branch=master
+.. image:: https://img.shields.io/badge/coverage-97%25-green
   :alt: Coverage
 
 Orca

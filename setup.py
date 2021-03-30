@@ -38,15 +38,14 @@ with open('README.rst', 'r') as f:
 
 setup(
     name='orca',
-    version='1.5.4',
-    description='A pipeline orchestration tool with Pandas support',
+    version='1.6',
+    description='Python library for task orchestration',
     long_description=long_description,
     author='UrbanSim Inc.',
     author_email='info@urbansim.com',
     license='BSD',
     url='https://github.com/udst/orca',
     classifiers=[
-        'Development Status :: 4 - Beta',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',

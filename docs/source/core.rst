@@ -316,12 +316,17 @@ The three scope settings are:
 * ``'step'`` -
   Results are cached until the current pipeline step finishes.
 
-Managing the Cache
-~~~~~~~~~~~~~~~~~~
+An item's cache scope can be modified using 
+:py:func:`~orca.orca.update_injectable_scope`,
+:py:func:`~orca.orca.update_table_scope`, or
+:py:func:`~orca.orca.update_column_scope`. Omitting the scope or passing ``None``
+turns caching off for the item. These functions were added in Orca v1.6.
 
-We hope that users will be able to do most of their cache management via
-cache scopes, but there may be situations, especially during testing,
-when more manual management is required.
+Disabling Caching
+~~~~~~~~~~~~~~~~~
+
+There may be situations, especially during testing,
+that require disabling the caching system.
 
 Caching can be turned off globally using the
 :py:func:`~orca.orca.disable_cache` function
@@ -334,8 +339,32 @@ context manager::
     with orca.cache_disabled():
         result = orca.eval_variable('my_table')
 
-Finally, users can manually clear the cache using
-:py:func:`~orca.orca.clear_cache`.
+Manually Clearing Cache
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Orca's entire cache can be cleared using :py:func:`~orca.orca.clear_cache`.
+
+Cache can also be cleared manually for individual items, to allow finer control
+over re-computation. These functions were added in Orca v1.6.
+
+To clear the cached value of an injectable, use
+:py:func:`~orca.orca.clear_injectable`. To clear the cached copy of an entire
+table, use :py:func:`~orca.orca.clear_table`.
+
+A dynamically generated column can be cleared using
+:py:func:`~orca.orca.clear_column`::
+
+    orca.clear_column('my_table', 'my_col')
+
+To clear all dynamically generated columns from a table, use
+:py:func:`~orca.orca.clear_columns`::
+
+    orca.clear_columns('my_table')
+
+Or clear a subset of the columns like this::
+
+    orca.clear_columns('my_table', ['col1', 'col2'])
+
 
 Steps
 -----
@@ -669,7 +698,13 @@ Cache API
    disable_cache
    enable_cache
    cache_on
-   cache_disabled
+   clear_injectable
+   clear_table
+   clear_column
+   clear_columns
+   update_injectable_scope
+   update_table_scope
+   update_column_scope
 
 API Docs
 ~~~~~~~~
