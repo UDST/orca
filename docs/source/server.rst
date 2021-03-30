@@ -1,6 +1,8 @@
 Orca Server
 ===========
 
+*THE ORCA SERVER MODULE IS DEPRECATED AND WILL BE REMOVED IN A FUTURE RELEASE.*
+
 Orca ships with a `Flask <http://flask.pocoo.org/>`__ server that can
 provide data about and from an Orca configuration.
 You can use it as a zero-configuration server for your data use the
