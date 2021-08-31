@@ -18,7 +18,8 @@ except ImportError:  # Python 2.7
     from collections import Callable
 from contextlib import contextmanager
 from functools import wraps
-
+import threading
+import psutil
 
 import pandas as pd
 import tables
@@ -2083,7 +2084,7 @@ iter_step = namedtuple('iter_step', 'step_num,step_name')
 
 def run(steps, iter_vars=None, data_out=None, out_interval=1,
         out_base_tables=None, out_run_tables=None, compress=False,
-        out_base_local=True, out_run_local=True):
+        out_base_local=True, out_run_local=True, memory_poll_interval=None):
     """
     Run steps in series, optionally repeatedly over some sequence.
     The current iteration variable is set as a global injectable
@@ -2126,6 +2127,9 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
     out_run_local: boolean, optional, default True
         For tables in out_run_tables, whether to store only local columns (True)
         or both, local and computed columns (False).
+    memory_poll_interval: float, optional, default None
+        Interval of seconds which determines how often the virtual system memory usage
+        is polled while executing the steps. If not provided, no poll will be done.
     """
     iter_vars = iter_vars or [None]
     max_i = len(iter_vars)
@@ -2165,9 +2169,35 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
                     logging.INFO):
                 step = get_step(step_name)
                 t2 = time.time()
-                step()
+
+                if memory_poll_interval:
+                    thread_step = threading.Thread(target=step, args=())
+                    before_step_memory_log = psutil.virtual_memory()._asdict()["used"] / 2**30
+                    memory_sum = 0
+                    memory_count = 0
+                    memory_peak = 0
+                    thread_step.start()
+                    while thread_step.is_alive():
+                        memory_count += 1
+                        current_memory_usage = psutil.virtual_memory()._asdict()["used"] / 2**30
+                        memory_sum += current_memory_usage
+                        memory_peak = max(memory_peak, current_memory_usage)
+                        time.sleep(memory_poll_interval)
+                    if memory_count == 0:
+                        print("Step '{}' finished too quickly so the system virtual memory usage could not be polled".format(
+                            step_name))
+                    else:
+                        print("System virtual memory usage right before execution of step '{}': {} GB".format(
+                            step_name, round(before_step_memory_log,2)))
+                        print(
+                            "System virtual memory usage during execution of step '{}': Average {} GB, peak {} GB ".format(
+                            step_name, round(memory_sum/memory_count, 2), round(memory_peak, 2)))
+                else:
+                    step()
                 print("Time to execute step '{}': {:.2f} s".format(
                       step_name, time.time() - t2))
+                    
+
             clear_cache(scope=_CS_STEP)
 
         print(
