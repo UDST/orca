@@ -2131,7 +2131,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
         Interval of seconds which determines how often the virtual system memory usage
         is polled while executing the steps. If 0 or None is provided no poll will be done.
     """
-    assert memory_poll_interval >= 0, 'Memory poll interval cannot be negative.'
+    assert memory_poll_interval == None or memory_poll_interval >= 0, 'Memory poll interval cannot be negative.'
 
     iter_vars = iter_vars or [None]
     max_i = len(iter_vars)
@@ -2172,7 +2172,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
                 step = get_step(step_name)
                 t2 = time.time()
 
-                if memory_poll_interval != None or memory_poll_interval != 0:
+                if memory_poll_interval != None and memory_poll_interval != 0:
                     thread_step = threading.Thread(target=step, args=())
                     before_step_memory_log = psutil.virtual_memory()._asdict()["used"] / 2**30
                     memory_sum = 0
