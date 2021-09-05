@@ -7,14 +7,21 @@ VERBOSE = False
 
 def memory_polling_thread(a_memlog):
     while True:
-        current_memory_usage = a_memlog.current_process.memory_info()[0] / float(2 ** 30)
+        rss = a_memlog.current_process.memory_full_info().rss / float(2 ** 30)
+        swap = a_memlog.current_process.memory_full_info().swap / float(2 ** 30)
+        used_memory = rss + swap
         a_memlog.memory_poll_count += 1
-        a_memlog.memory_sum += current_memory_usage
-        a_memlog.memory_peak = max(a_memlog.memory_peak, current_memory_usage)
+        a_memlog.used_memory_sum += used_memory
+        a_memlog.used_memory_peak = max(a_memlog.used_memory_peak, used_memory)
+
+        virtual_memory = a_memlog.current_process.memory_full_info().vms / float(2 ** 30)
+        a_memlog.virtual_memory_sum += virtual_memory
+        a_memlog.virtual_memory_peak = max(a_memlog.virtual_memory_peak, used_memory)
+
         if VERBOSE:
             print('############################### MEMORY USAGE ##################################')
-            print('Polled {} GB of memory usage, sleeping for {} secs'.format(
-                current_memory_usage, a_memlog.memory_poll_interval))
+            print('Polled {} GB used memory (RSS + swap), and {} GB virtual memory, sleeping for {} secs'.format(
+                used_memory, virtual_memory, a_memlog.memory_poll_interval))
             print('###############################################################################')
         time.sleep(a_memlog.memory_poll_interval)
         if a_memlog.ended:
@@ -26,9 +33,11 @@ class memlog:
         self.current_process = psutil.Process(os.getpid())
         print('Starting memory poll of process {} with an interval of {} secs'.format(
             self.current_process, memory_poll_interval))
-        self.memory_sum = 0
+        self.used_memory_sum = 0
+        self.used_memory_peak = 0
+        self.virtual_memory_sum = 0
+        self.virtual_memory_peak = 0
         self.memory_poll_count = 0
-        self.memory_peak = 0
         self.ended = False
         self.memory_poll_interval = memory_poll_interval
 
@@ -37,5 +46,8 @@ class memlog:
     
     def end(self):
         self.ended = True
-        print('Ending memory poll of current process. Average usage: {} GB. Peak usage: {} GB.'.format(
-            self.memory_sum/self.memory_poll_count, self.memory_peak))
+        print('Ending memory poll of current process.\nUSED: Average: {} GB. Peak: {} GB.\nVIRTUAL: Average: {} GB. Peak: {} GB.'.format(
+            self.used_memory_sum/self.memory_poll_count,
+            self.used_memory_peak,
+            self.virtual_memory_sum/self.memory_poll_count,
+            self.virtual_memory_peak))
