@@ -27,6 +27,7 @@ import tlz as tz
 
 from . import utils
 from .utils.logutil import log_start_finish
+from . import memlog
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 logger = logging.getLogger(__name__)
@@ -2173,27 +2174,12 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
                 t2 = time.time()
 
                 if memory_poll_interval != None and memory_poll_interval != 0:
-                    thread_step = threading.Thread(target=step, args=())
-                    before_step_memory_log = psutil.virtual_memory()._asdict()["used"] / 2**30
-                    memory_sum = 0
-                    memory_count = 0
-                    memory_peak = 0
-                    thread_step.start()
-                    while thread_step.is_alive():
-                        memory_count += 1
-                        current_memory_usage = psutil.virtual_memory()._asdict()["used"] / 2**30
-                        memory_sum += current_memory_usage
-                        memory_peak = max(memory_peak, current_memory_usage)
-                        time.sleep(memory_poll_interval)
-                    if memory_count == 0:
-                        print("Step '{}' finished too quickly so the system virtual memory usage could not be polled".format(
-                            step_name))
-                    else:
-                        print("System virtual memory usage right before execution of step '{}': {} GB".format(
-                            step_name, round(before_step_memory_log,2)))
-                        print(
-                            "System virtual memory usage during execution of step '{}': Average {} GB, peak {} GB ".format(
-                            step_name, round(memory_sum/memory_count, 2), round(memory_peak, 2)))
+                    log_results = memlog.memlog(
+                        memory_poll_interval = memory_poll_interval,
+                        verbose = True,
+                        name = step_name)
+                    step()
+                    log_results.end()
                 else:
                     step()
                 print("Time to execute step '{}': {:.2f} s".format(
