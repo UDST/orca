@@ -4,6 +4,7 @@
 
 from __future__ import print_function
 
+import os
 try:
     from inspect import getfullargspec as getargspec
 except ImportError:
@@ -27,7 +28,7 @@ import tlz as tz
 
 from . import utils
 from .utils.logutil import log_start_finish
-from . import memlog
+from . import resource_logger
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 logger = logging.getLogger(__name__)
@@ -2085,7 +2086,8 @@ iter_step = namedtuple('iter_step', 'step_num,step_name')
 
 def run(steps, iter_vars=None, data_out=None, out_interval=1,
         out_base_tables=None, out_run_tables=None, compress=False,
-        out_base_local=True, out_run_local=True, memory_poll_interval=0.5):
+        out_base_local=True, out_run_local=True, memory_poll_interval=0.5,
+        memory_poll_filepath=None):
     """
     Run steps in series, optionally repeatedly over some sequence.
     The current iteration variable is set as a global injectable
@@ -2131,6 +2133,8 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
     memory_poll_interval: float, optional, default 0.5
         Interval of seconds which determines how often the virtual system memory usage
         is polled while executing the steps. If 0 or None is provided no poll will be done.
+    memory_poll_filepath: String. Filepath in which the memory logs will be saved. If None,
+        no logs will be saved. Saving logs will decrease performance. Default: None
     """
     assert memory_poll_interval == None or memory_poll_interval >= 0, 'Memory poll interval cannot be negative.'
 
@@ -2152,6 +2156,8 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
         add_injectable('iter_var', iter_vars[0])
         write_tables(data_out, out_base_tables, 'base', compress=compress, local=out_base_local)
 
+    if memory_poll_filepath and os.path.exists(memory_poll_filepath):
+        os.remove(memory_poll_filepath)
     # run the steps
     for i, var in enumerate(iter_vars, start=1):
         add_injectable('iter_var', var)
@@ -2174,10 +2180,10 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
                 t2 = time.time()
 
                 if memory_poll_interval != None and memory_poll_interval != 0:
-                    log_results = memlog.memlog(
+                    log_results = resource_logger.ResourceLogger(
                         memory_poll_interval = memory_poll_interval,
-                        verbose = True,
-                        name = step_name)
+                        name = step_name,
+                        log_filepath=memory_poll_filepath)
                     step()
                     log_results.end()
                 else:
