@@ -28,7 +28,7 @@ import tlz as tz
 
 from . import utils
 from .utils.logutil import log_start_finish
-from resource_logger import ResourceLogger
+from .resource_logger import ResourceLogger
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 logger = logging.getLogger(__name__)
