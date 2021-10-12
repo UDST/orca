@@ -58,7 +58,7 @@ from pdb import set_trace as st
 '''
 class ResourceLogger:
     def __init__(self,
-        memory_poll_interval=0.5,
+        resource_poll_interval=0.5,
         name='unnamed_log',
         resources_to_poll=['ram'],
         log_filepath=None,
@@ -71,7 +71,7 @@ class ResourceLogger:
             'At least one resource must be polled.'
         assert set(resources_to_poll).issubset({'ram', 'gpu', 'cpu'}), \
             'Resource list is invalid'
-        assert memory_poll_interval and memory_poll_interval > 0, \
+        assert resource_poll_interval and resource_poll_interval > 0, \
             'Memory poll interval should be positive'
 
         self.resources = dict()
@@ -98,12 +98,12 @@ class ResourceLogger:
         self.poll_count = 0
         self.name = name
         self.ended = False
-        self.memory_poll_interval = memory_poll_interval
+        self.resource_poll_interval = resource_poll_interval
         self.log_filepath = log_filepath
         self.log_write_interval = log_write_interval
 
         starting_message = 'Starting poll of process {}, an interval of {} secs. Polling the following resources: {}.' \
-            .format(self.current_process, memory_poll_interval, self.resources_to_poll)
+            .format(self.current_process, resource_poll_interval, self.resources_to_poll)
         
         if log_filepath == 'auto':
             now = datetime.now()
@@ -248,7 +248,7 @@ def memory_polling_thread(a_memlog, resources_to_poll):
                     log_file.write(','.join(line_for_csv) + '\n')
                 a_memlog.accumulated_logs = []
 
-        time.sleep(a_memlog.memory_poll_interval)
+        time.sleep(a_memlog.resource_poll_interval)
         if a_memlog.ended:
             break
 

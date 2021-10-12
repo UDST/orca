@@ -2181,7 +2181,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
 
                 if memory_poll_interval != None and memory_poll_interval != 0:
                     log_results = resource_logger.ResourceLogger(
-                        memory_poll_interval = memory_poll_interval,
+                        resource_poll_interval = memory_poll_interval,
                         name = step_name,
                         log_filepath=memory_poll_filepath)
                     step()
