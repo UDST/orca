@@ -28,7 +28,7 @@ import tlz as tz
 
 from . import utils
 from .utils.logutil import log_start_finish
-from . import resource_logger
+from resource_logger import ResourceLogger
 
 warnings.filterwarnings('ignore', category=tables.NaturalNameWarning)
 logger = logging.getLogger(__name__)
@@ -2180,7 +2180,7 @@ def run(steps, iter_vars=None, data_out=None, out_interval=1,
                 t2 = time.time()
 
                 if memory_poll_interval != None and memory_poll_interval != 0:
-                    log_results = resource_logger.ResourceLogger(
+                    log_results = ResourceLogger(
                         resource_poll_interval = memory_poll_interval,
                         name = step_name,
                         log_filepath=memory_poll_filepath)
