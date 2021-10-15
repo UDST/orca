@@ -1,7 +1,7 @@
 import threading
 import psutil
-import time
 import os
+import time
 import subprocess
 from datetime import datetime
 from pdb import set_trace as st
@@ -43,7 +43,7 @@ from pdb import set_trace as st
 
     Parameters
     ----------
-    * memory poll interval: Float. Number of seconds between each poll. Default: .5
+    * resource_poll_interval: Float. Number of seconds between each poll. Default: .5
     * name: String that identifies the poll. Default: "unnamed_log"
     * resources to poll: List of strings of the resources to poll. Can only contain 'ram'
     'gpu' and/or 'cpu'. Default: ['ram']
@@ -130,127 +130,128 @@ class ResourceLogger:
                 with open(log_filepath, 'w') as log_file:
                     log_file.write(','.join(title_for_csv)+'\n')
         print(starting_message)
-
-        t = threading.Thread(target=memory_polling_thread,
+        
+        polling_thread = threading.Thread(target=memory_polling_thread,
                              args=(self, resources_to_poll))
-        t.start()
+        polling_thread.daemon = True
+        polling_thread.start()
 
-    def print_final_report(self, result):
-        print('Ending memory poll {}. Results:\n{}'.format(
-            self.name, result))
+    def print_final_report(self, summary):
+        print('Ending memory poll {}. Summary:\n{}'.format(
+            self.name, summary))
+
+    def calculate_summary(self):
+        summary = {}
+        if 'ram' in self.resources_to_poll:
+            summary['process_memory_used_avg_GB'] = round(
+                self.resources['process_used_memory_sum'] / self.poll_count, 2)
+            summary['process_memory_used_peak_GB'] = round(
+                self.resources['process_used_memory_peak'], 2)
+            summary['process_memory_virtual_avg_GB'] = round(
+                self.resources['process_virtual_memory_sum'] / self.poll_count, 2)
+            summary['process_memory_virtual_peak_GB'] = round(
+                self.resources['process_virtual_memory_peak'], 2)
+            summary['global_memory_used_avg_GB'] = round(
+                self.resources['global_used_memory_sum'] / self.poll_count, 2)
+            summary['global_memory_used_peak_GB'] = round(
+                self.resources['global_used_memory_peak'], 2)
+            summary['global_memory_virtual_avg_GB'] = round(
+                self.resources['global_virtual_memory_sum'] / self.poll_count, 2)
+            summary['global_memory_virtual_peak_GB'] = round(
+                self.resources['global_virtual_memory_peak'], 2)
+            summary['total_physical_memory_GB'] = round(
+                psutil.virtual_memory().total / 2**30, 2)
+            summary['total_swap_memory_GB'] = round(
+                psutil.swap_memory().total / 2**30, 2)
+        
+        if 'gpu' in self.resources_to_poll:
+            summary['global_gpu_memory_avg_GB'] = round(
+                self.resources['global_gpu_memory_sum'] / self.poll_count, 2)
+            summary['global_gpu_memory_peak_GB'] = round(
+                self.resources['global_gpu_memory_peak'], 2)
+            summary['total_gpu_memory_GB'] = obtain_gpu_memory_in_GB('total')
+        
+        if 'cpu' in self.resources_to_poll:
+            summary['global_gpu_memory_avg_%'] = round(
+                self.resources['global_gpu_memory_sum'] / self.poll_count, 2)
+            summary['global_gpu_memory_peak_%'] = round(
+                self.resources['global_gpu_memory_peak'], 2)
+        return summary
 
     def end(self):
-        self.ended = True
+        print('final res_logger.poll_count {}'.format(self.poll_count))
 
         if self.poll_count == 0:
             print("Log {} finished too quickly "
                 "so the system virtual memory usage could not be polled".format(self.name))
             return None
 
-        result = {}
-        if 'ram' in self.resources_to_poll:
-            result['process_memory_used_avg_GB'] = round(
-                self.resources['process_used_memory_sum'] / self.poll_count, 2)
-            result['process_memory_used_peak_GB'] = round(
-                self.resources['process_used_memory_peak'], 2)
-            result['process_memory_virtual_avg_GB'] = round(
-                self.resources['process_virtual_memory_sum'] / self.poll_count, 2)
-            result['process_memory_virtual_peak_GB'] = round(
-                self.resources['process_virtual_memory_peak'], 2)
-            result['global_memory_used_avg_GB'] = round(
-                self.resources['global_used_memory_sum'] / self.poll_count, 2)
-            result['global_memory_used_peak_GB'] = round(
-                self.resources['global_used_memory_peak'], 2)
-            result['global_memory_virtual_avg_GB'] = round(
-                self.resources['global_virtual_memory_sum'] / self.poll_count, 2)
-            result['global_memory_virtual_peak_GB'] = round(
-                self.resources['global_virtual_memory_peak'], 2)
-            result['total_physical_memory_GB'] = round(
-                psutil.virtual_memory().total / 2**30, 2)
-            result['total_swap_memory_GB'] = round(
-                psutil.swap_memory().total / 2**30, 2)
-        
-        if 'gpu' in self.resources_to_poll:
-            result['global_gpu_memory_avg_GB'] = round(
-                self.resources['global_gpu_memory_sum'] / self.poll_count, 2)
-            result['global_gpu_memory_peak_GB'] = round(
-                self.resources['global_gpu_memory_peak'], 2)
-            result['total_gpu_memory_GB'] = obtain_gpu_memory_in_GB('total')
-        
-        if 'cpu' in self.resources_to_poll:
-            result['global_gpu_memory_avg_%'] = round(
-                self.resources['global_gpu_memory_sum'] / self.poll_count, 2)
-            result['global_gpu_memory_peak_%'] = round(
-                self.resources['global_gpu_memory_peak'], 2)
-
-        self.print_final_report(result)
-
-        return result
+        summary = self.calculate_summary()
+        self.print_final_report(summary)
+        self.ended = True
+        return summary
 
 
-def memory_polling_thread(a_memlog, resources_to_poll):
-    while True:
-        a_memlog.poll_count += 1
+def memory_polling_thread(res_logger, resources_to_poll):
+    while not res_logger.ended:
+        res_logger.poll_count += 1
         line_for_csv = []
         if 'ram' in resources_to_poll:
-            rss = a_memlog.current_process.memory_full_info().rss / float(2 ** 30)
-            swap = a_memlog.current_process.memory_full_info().swap / float(2 ** 30)
+            rss = res_logger.current_process.memory_full_info().rss / float(2 ** 30)
+            swap = res_logger.current_process.memory_full_info().swap / float(2 ** 30)
             process_used_memory = rss + swap
-            a_memlog.resources['process_used_memory_sum'] += process_used_memory
-            a_memlog.resources['process_used_memory_peak'] = max(
-                a_memlog.resources['process_used_memory_peak'], process_used_memory)
+            res_logger.resources['process_used_memory_sum'] += process_used_memory
+            res_logger.resources['process_used_memory_peak'] = max(
+                res_logger.resources['process_used_memory_peak'], process_used_memory)
 
-            process_virtual_memory = a_memlog.current_process.memory_full_info().vms / \
+            process_virtual_memory = res_logger.current_process.memory_full_info().vms / \
                 float(2 ** 30)
-            a_memlog.resources['process_virtual_memory_sum'] += process_virtual_memory
-            a_memlog.resources['process_virtual_memory_peak'] = max(
-                a_memlog.resources['process_virtual_memory_peak'], process_virtual_memory)
+            res_logger.resources['process_virtual_memory_sum'] += process_virtual_memory
+            res_logger.resources['process_virtual_memory_peak'] = max(
+                res_logger.resources['process_virtual_memory_peak'], process_virtual_memory)
 
             global_used_memory = psutil.virtual_memory()._asdict()["used"] / 2**30
-            a_memlog.resources['global_used_memory_sum'] += global_used_memory
-            a_memlog.resources['global_used_memory_peak'] = max(
-                global_used_memory, a_memlog.resources['global_used_memory_peak'])
+            res_logger.resources['global_used_memory_sum'] += global_used_memory
+            res_logger.resources['global_used_memory_peak'] = max(
+                global_used_memory, res_logger.resources['global_used_memory_peak'])
 
             global_virtual_memory = (psutil.virtual_memory()._asdict(
             )["total"] - psutil.virtual_memory()._asdict()["available"]) / 2**30
-            a_memlog.resources['global_virtual_memory_sum'] += global_virtual_memory
-            a_memlog.resources['global_virtual_memory_peak'] = max(
-                global_virtual_memory, a_memlog.resources['global_virtual_memory_peak'])
+            res_logger.resources['global_virtual_memory_sum'] += global_virtual_memory
+            res_logger.resources['global_virtual_memory_peak'] = max(
+                global_virtual_memory, res_logger.resources['global_virtual_memory_peak'])
             line_for_csv += [process_used_memory,process_virtual_memory,
                             global_used_memory,global_virtual_memory]
 
         if 'gpu' in resources_to_poll:
             global_gpu_mem = obtain_gpu_memory_in_GB('used')
-            a_memlog.resources['global_gpu_memory_sum'] += global_gpu_mem
-            a_memlog.resources['global_gpu_memory_peak'] = max(
-                a_memlog.resources['global_gpu_memory_peak'], global_gpu_mem)
+            res_logger.resources['global_gpu_memory_sum'] += global_gpu_mem
+            res_logger.resources['global_gpu_memory_peak'] = max(
+                res_logger.resources['global_gpu_memory_peak'], global_gpu_mem)
             line_for_csv += [global_gpu_mem]
 
         if 'cpu' in resources_to_poll:
             process_cpu_usage = psutil.Process(os.getpid()).cpu_percent()
             global_cpu_usage = psutil.cpu_percent()
-            a_memlog.resources['process_cpu_sum'] += process_cpu_usage
-            a_memlog.resources['process_cpu_peak'] = max(
-                a_memlog.resources['process_cpu_peak'], process_cpu_usage)
-            a_memlog.resources['global_cpu_sum'] += global_cpu_usage
-            a_memlog.resources['global_cpu_peak'] = max(
-                a_memlog.resources['global_cpu_peak'], global_cpu_usage)
+            res_logger.resources['process_cpu_sum'] += process_cpu_usage
+            res_logger.resources['process_cpu_peak'] = max(
+                res_logger.resources['process_cpu_peak'], process_cpu_usage)
+            res_logger.resources['global_cpu_sum'] += global_cpu_usage
+            res_logger.resources['global_cpu_peak'] = max(
+                res_logger.resources['global_cpu_peak'], global_cpu_usage)
             line_for_csv += [process_cpu_usage, global_cpu_usage]
 
-        if a_memlog.log_filepath:
+        if res_logger.log_filepath:
             now = datetime.now()
             time_string = now.strftime("%H:%M:%S") # YY_mm_dd__H:M:S
             line_for_csv = list(map((lambda word: str(round(word, 2))), line_for_csv))
-            line_for_csv = [a_memlog.name] + line_for_csv + [time_string]
-            a_memlog.accumulated_logs.append(a_memlog.resources)
-            if a_memlog.poll_count % a_memlog.log_write_interval == 0:
-                with open(a_memlog.log_filepath, 'a') as log_file:
+            line_for_csv = [res_logger.name] + line_for_csv + [time_string]
+            res_logger.accumulated_logs.append(res_logger.resources)
+            if res_logger.poll_count % res_logger.log_write_interval == 0:
+                with open(res_logger.log_filepath, 'a') as log_file:
                     log_file.write(','.join(line_for_csv) + '\n')
-                a_memlog.accumulated_logs = []
-
-        time.sleep(a_memlog.resource_poll_interval)
-        if a_memlog.ended:
-            break
+                res_logger.accumulated_logs = []
+        time.sleep(res_logger.resource_poll_interval)
 
 def obtain_gpu_memory_in_GB(used_or_total):
     assert used_or_total == 'used' or used_or_total == 'total'
