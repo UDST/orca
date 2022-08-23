@@ -1,3 +1,3 @@
 from .orca import *
 
-version = __version__ = '1.6.1'
+version = __version__ = '1.7'

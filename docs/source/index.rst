@@ -130,10 +130,6 @@ Or with conda::
 
     conda install orca --channel conda-forge
 
-Add the server option to include the optional server dependencies::
-
-    pip install orca[server]
-
 
 Links
 -----
@@ -149,7 +145,6 @@ Contents
 
    example
    core
-   server
    utils
 
 Indices and tables
