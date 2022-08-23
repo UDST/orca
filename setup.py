@@ -38,7 +38,7 @@ with open('README.rst', 'r') as f:
 
 setup(
     name='orca',
-    version='1.6',
+    version='1.6.1',
     description='Python library for task orchestration',
     long_description=long_description,
     author='UrbanSim Inc.',
@@ -52,6 +52,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'License :: OSI Approved :: BSD License'
     ],
     packages=find_packages(exclude=['*.tests']),
@@ -61,12 +62,9 @@ setup(
             'server/static/js/dist/*',
             'server/templates/*']
     },
-    # New versions of PyTables ("tables" on pypi) often fail to install correctly, so we
-    # are being conservative here and disallowing them until tested
     install_requires=[
         'pandas >= 0.15.0',
-        'tables >=3.1, <3.6; python_version <"3.6"',
-        'tables >=3.1, <3.7; python_version >="3.6"',
+        'tables >= 3.1',
         'toolz >= 0.8.1'
     ],
     extras_require={
