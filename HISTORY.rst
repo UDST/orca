@@ -1,8 +1,9 @@
-v1.6.1
-======
+v1.7
+====
 
 * Support for PyTables 3.7+
 * Tested against Python 3.9 and 3.10
+* Removes server module
 
 v1.6
 ====
