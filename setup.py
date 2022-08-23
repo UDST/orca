@@ -52,6 +52,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'License :: OSI Approved :: BSD License'
     ],
     packages=find_packages(exclude=['*.tests']),
@@ -65,8 +66,9 @@ setup(
     # are being conservative here and disallowing them until tested
     install_requires=[
         'pandas >= 0.15.0',
-        'tables >=3.1, <3.6; python_version <"3.6"',
-        'tables >=3.1, <3.7; python_version >="3.6"',
+        'tables >= 3.1',
+#         'tables >=3.1, <3.6; python_version <"3.6"',
+#         'tables >=3.1, <3.7; python_version >="3.6"',
         'toolz >= 0.8.1'
     ],
     extras_require={
