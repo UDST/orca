@@ -1,7 +1,8 @@
 v1.6.1
 ======
 
-* Allow PyTables 3.7+
+* Support for PyTables 3.7+
+* Tested against Python 3.9 and 3.10
 
 v1.6
 ====
