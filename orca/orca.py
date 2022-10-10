@@ -2039,7 +2039,8 @@ def get_step_table_names(steps):
     return list(table_names)
 
 
-def write_tables(fname, table_names=None, prefix=None, compress=False, local=False):
+def write_tables(fname, table_names=None, prefix=None, compress=False, local=False,
+        table_names_columns=None):
     """
     Writes tables to a pandas.HDFStore file.
 
@@ -2048,21 +2049,33 @@ def write_tables(fname, table_names=None, prefix=None, compress=False, local=Fal
     fname : str
         File name for HDFStore. Will be opened in append mode and closed
         at the end of this function.
-    table_names: list of str, optional, default None
-        List of tables to write. If None, all registered tables will
-        be written.
-    prefix: str
+    table_names : list of str, optional, default None
+        List of tables to write. See also 'table_names_columns' for an alternate
+        way to provide this information. If both arguments are None, all
+        registered tables will be written.
+    prefix : str, optional, default None
         If not None, used to prefix the output table names so that
         multiple iterations can go in the same file.
-    compress: boolean
+    compress : boolean, optional default False
         Whether to compress output file using standard HDF5-readable
         zlib compression, default False.
+    local : boolean, optional, default False
+        Whether to limit output to local columns.
+    table_names_columns : dict, optional, default None
+        Dictionary where keys are table names and values are the column names
+        to write for each table. {str: [str] or None}. If provided, this 
+        overrides the 'table_names' and 'local' arguments.
 
     """
-    if table_names is None:
-        table_names = list_tables()
-
-    tables = (get_table(t) for t in table_names)
+    if table_names_columns is None:
+        if table_names is None:
+            table_names = list_tables()
+        
+        table_names_columns = {t: None for t in table_names}
+        
+        if local is True:
+            table_names_columns = {t: get_table(t).local_columns for t in table_names}
+        
     key_template = '{}/{{}}'.format(prefix) if prefix is not None else '{}'
 
     # set compression options to zlib level-1 if compress arg is True
@@ -2070,12 +2083,8 @@ def write_tables(fname, table_names=None, prefix=None, compress=False, local=Fal
     complevel = compress and 1 or 0
 
     with pd.HDFStore(fname, mode='a', complib=complib, complevel=complevel) as store:
-        for t in tables:
-            # if local arg is True, store only local columns
-            columns = None
-            if local is True:
-                columns = t.local_columns
-            store[key_template.format(t.name)] = t.to_frame(columns=columns)
+        for t, c in table_names_columns.items():
+            store[key_template.format(t)] = get_table(t).to_frame(columns=c)
 
 
 iter_step = namedtuple('iter_step', 'step_num,step_name')
