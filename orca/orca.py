@@ -2040,7 +2040,7 @@ def get_step_table_names(steps):
 
 
 def write_tables(fname, table_names=None, prefix=None, compress=False, local=False,
-            table_names_columns=None):
+                 table_names_columns=None):
     """
     Writes tables to a pandas.HDFStore file.
 
