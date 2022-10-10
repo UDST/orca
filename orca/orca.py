@@ -2056,7 +2056,7 @@ def write_tables(fname, table_names=None, prefix=None, compress=False, local=Fal
     prefix : str, optional, default None
         If not None, used to prefix the output table names so that
         multiple iterations can go in the same file.
-    compress : boolean, optional default False
+    compress : boolean, optional, default False
         Whether to compress output file using standard HDF5-readable
         zlib compression, default False.
     local : boolean, optional, default False
