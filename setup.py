@@ -6,7 +6,7 @@ with open('README.rst', 'r') as f:
 
 setup(
     name='orca',
-    version='1.7',
+    version='1.8',
     description='Python library for task orchestration',
     long_description=long_description,
     author='UrbanSim Inc.',
