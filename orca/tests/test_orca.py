@@ -1096,6 +1096,32 @@ def test_run_and_write_tables_out_tables_provided(df, store_name):
         assert '0/table3' not in store
 
 
+def test_run_and_write_tables_out_columns_provided(df, store_name):
+    table_names = ['table', 'table2']
+    for t in table_names:
+        orca.add_table(t, df)
+
+    @orca.step()
+    def step(iter_var, table, table2):
+        d = {'table': ['a']}
+        orca.write_tables(
+            fname=store_name,
+            table_names_columns=d)
+        return
+
+    orca.run(
+        ['step'],
+        iter_vars=range(1))
+
+    with pd.HDFStore(store_name, mode='r') as store:
+        assert 'table' in store
+        assert 'table2' not in store
+
+        t = store.get('table')
+        assert 'a' in t.columns
+        assert 'b' not in t.columns
+
+
 def test_get_raw_table(df):
     orca.add_table('table1', df)
 

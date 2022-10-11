@@ -1,3 +1,8 @@
+v1.8
+====
+
+* Adds granular column specification to `write_tables`.
+
 v1.7
 ====
 
