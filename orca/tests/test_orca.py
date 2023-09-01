@@ -5,6 +5,7 @@
 import os
 import tempfile
 
+import numpy as np
 import pandas as pd
 import pandas.testing as pdt
 import pytest
@@ -477,6 +478,48 @@ def test_update_col(df):
     wrapped.update_col_from_series('a', pd.Series([99], index=['y']))
     pdt.assert_series_equal(
         wrapped['a'], pd.Series([1, 99, 3], index=df.index, name='a'))
+
+
+def test_table_view():
+    # register a table
+    orca.add_table(
+        'test_tab',
+        pd.DataFrame({
+            'a': [1, 2],
+            'b': [3, 4]
+        })
+    )
+
+    # attach columns
+    @orca.column('test_tab')
+    def c():
+        return pd.Series([5, 6])
+
+    @orca.column('test_tab')
+    def d():
+        return pd.Series([7, 8])
+
+    # test 1 - all columns
+    tv1 = orca.get_table_view('test_tab')
+    assert (tv1.values.flatten() == [1, 3, 5, 7, 2, 4, 6, 8]).all()
+
+    # test 2 - just local
+    tv2 = orca.get_table_view('test_tab', 'local')
+    assert (tv2.values.flatten() == [1, 3, 2, 4]).all()
+
+    # test 3 - specific columns
+    tv3 = orca.get_table_view('test_tab', ['a', 'c'])
+    assert (tv3.values.flatten() == [1, 5, 2, 6]).all()
+
+    # test 4 - local + specific extra cols
+    tv4 = orca.get_table_view('test_tab', ['local', 'd'])
+    assert (tv4.values.flatten() == [1, 3, 7, 2, 4, 8]).all()
+
+    # test updating the wrapper's data
+    tv4.update_col('a', 0)
+    tv4.update_col_from_series('b', pd.Series([-1], index=pd.Index([1])))
+    tv5 = orca.get_table_view('test_tab', 'local')
+    assert (tv5.values.flatten() == [0, 3, 0, -1]).all()
 
 
 class _FakeTable(object):
@@ -1386,3 +1429,49 @@ def test_get_injectable_func_source_data():
     assert filename.endswith('test_orca.py')
     assert isinstance(lineno, int)
     assert 'def inj2()' in source
+
+
+def test_table_view_expressions():
+
+    # define a data frame and add some columns to it
+    orca.add_table(
+        'my_df',
+        pd.DataFrame(
+            {
+                'a': [1, 1, 1],
+                'b': [2, 2, 2]
+            }
+        )
+    )
+
+    @orca.column('my_df')
+    def c():
+        return pd.Series([3, 3, 3])
+
+    @orca.column('my_df')
+    def d():
+        return pd.Series([4, 4, 4])
+
+    # case 1 -- evaluate all columns
+    @orca.table()
+    def test1(df='my_df.*'):
+        return df * -1
+
+    assert (orca.get_table_view('test1').values.flatten() ==
+            np.tile([-1, -2, -3, -4], 3)).all()
+
+    # case 2 -- just local
+    @orca.table()
+    def test2(df='my_df.local'):
+        return df * -1
+
+    assert (orca.get_table_view('test2').values.flatten() ==
+            np.tile([-1, -2], 3)).all()
+
+    # case 3 -- specific columns
+    @orca.table()
+    def test3(df='my_df[a, d]'):
+        return df * -1
+
+    assert (orca.get_table_view('test3').values.flatten() ==
+            np.tile([-1, -4], 3)).all()
