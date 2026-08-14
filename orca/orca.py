@@ -2,22 +2,14 @@
 # Copyright (C) 2022 UrbanSim Inc.
 # See full license in LICENSE.
 
-from __future__ import print_function
-
-try:
-    from inspect import getfullargspec as getargspec
-except ImportError:
-    from inspect import getargspec
 import logging
 import time
 import warnings
 from collections import namedtuple
-try:
-    from collections.abc import Callable
-except ImportError:  # Python 2.7
-    from collections import Callable
+from collections.abc import Callable
 from contextlib import contextmanager
 from functools import wraps
+from inspect import getfullargspec as getargspec
 
 
 import pandas as pd
@@ -191,7 +183,6 @@ def _update_scope(wrapper, new_scope=None):
         raise ValueError(msg)
 
     # update the cache properties
-    curr_cache = wrapper.cache
     curr_scope = wrapper.cache_scope
     if new_scope is None:
         # set to defaults, i.e. no caching

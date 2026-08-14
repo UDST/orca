@@ -1,3 +1,10 @@
+Next release
+============
+
+* Require Python 3.10 or newer.
+* Support current releases of pandas, NumPy, and PyTables.
+* Modernize Python packaging and continuous integration.
+
 v1.8
 ====
 
