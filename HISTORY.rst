@@ -1,3 +1,15 @@
+Next release
+============
+
+* Require Python 3.10 or newer.
+* Support pandas 2 and 3, NumPy 2, and current PyTables, with minimum
+  versions of pandas 1.5, NumPy 1.21, PyTables 3.8, and PyToolz 0.12.
+* Behavior change under pandas 3: with ``copy_col=False``, pandas's
+  mandatory copy-on-write means that modifying a column returned from a
+  table no longer writes through to the table's underlying DataFrame.
+  Use ``update_col`` or ``update_col_from_series`` to change table values.
+* Modernize Python packaging and continuous integration.
+
 v1.8
 ====
 

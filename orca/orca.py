@@ -2,22 +2,14 @@
 # Copyright (C) 2022 UrbanSim Inc.
 # See full license in LICENSE.
 
-from __future__ import print_function
-
-try:
-    from inspect import getfullargspec as getargspec
-except ImportError:
-    from inspect import getargspec
 import logging
 import time
 import warnings
 from collections import namedtuple
-try:
-    from collections.abc import Callable
-except ImportError:  # Python 2.7
-    from collections import Callable
+from collections.abc import Callable
 from contextlib import contextmanager
 from functools import wraps
+from inspect import getfullargspec
 
 
 import pandas as pd
@@ -191,7 +183,6 @@ def _update_scope(wrapper, new_scope=None):
         raise ValueError(msg)
 
     # update the cache properties
-    curr_cache = wrapper.cache
     curr_scope = wrapper.cache_scope
     if new_scope is None:
         # set to defaults, i.e. no caching
@@ -328,7 +319,10 @@ class DataFrameWrapper(object):
         Name for the table.
     frame : pandas.DataFrame
     copy_col : bool, optional
-        Whether to return copies when evaluating columns.
+        Whether to return copies when evaluating columns. When False,
+        returned columns share memory with the underlying DataFrame;
+        note that under pandas 3's copy-on-write behavior, modifying
+        such a column no longer writes through to the table.
 
     Attributes
     ----------
@@ -558,7 +552,10 @@ class TableFuncWrapper(object):
         complete iteration of the pipeline, 'step' caches data for
         a single step of the pipeline.
     copy_col : bool, optional
-        Whether to return copies when evaluating columns.
+        Whether to return copies when evaluating columns. When False,
+        returned columns share memory with the underlying DataFrame;
+        note that under pandas 3's copy-on-write behavior, modifying
+        such a column no longer writes through to the table.
 
     Attributes
     ----------
@@ -575,7 +572,7 @@ class TableFuncWrapper(object):
             copy_col=True):
         self.name = name
         self._func = func
-        self._argspec = getargspec(func)
+        self._argspec = getfullargspec(func)
         self.cache = cache
         self.cache_scope = cache_scope
         self.copy_col = copy_col
@@ -790,7 +787,7 @@ class _ColumnFuncWrapper(object):
         self.table_name = table_name
         self.name = column_name
         self._func = func
-        self._argspec = getargspec(func)
+        self._argspec = getfullargspec(func)
         self.cache = cache
         self.cache_scope = cache_scope
 
@@ -912,7 +909,7 @@ class _InjectableFuncWrapper(object):
     def __init__(self, name, func, cache=False, cache_scope=_CS_FOREVER):
         self.name = name
         self._func = func
-        self._argspec = getargspec(func)
+        self._argspec = getfullargspec(func)
         self.cache = cache
         self.cache_scope = cache_scope
 
@@ -964,7 +961,7 @@ class _StepFuncWrapper(object):
     def __init__(self, step_name, func):
         self.name = step_name
         self._func = func
-        self._argspec = getargspec(func)
+        self._argspec = getfullargspec(func)
 
     def __call__(self):
         with log_start_finish('calling step {!r}'.format(self.name), logger):
@@ -1162,7 +1159,10 @@ def add_table(
         complete iteration of the pipeline, 'step' caches data for
         a single step of the pipeline.
     copy_col : bool, optional
-        Whether to return copies when evaluating columns.
+        Whether to return copies when evaluating columns. When False,
+        returned columns share memory with the underlying DataFrame;
+        note that under pandas 3's copy-on-write behavior, modifying
+        such a column no longer writes through to the table.
 
     Returns
     -------

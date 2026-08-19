@@ -5,6 +5,7 @@
 import os
 import tempfile
 
+import numpy as np
 import pandas as pd
 import pandas.testing as pdt
 import pytest
@@ -55,7 +56,7 @@ def test_tables(df):
     table = orca._TABLES['test_func']
     assert table.index is None
     assert table.columns == []
-    assert len(table) is 0
+    assert len(table) == 0
     pdt.assert_frame_equal(table.to_frame(), df / 2)
     pdt.assert_frame_equal(table.to_frame([]), df[[]])
     pdt.assert_frame_equal(table.to_frame(columns=['a']), df[['a']] / 2)
@@ -195,14 +196,18 @@ def test_table_copy(df):
 
         if 'uncopied' in name:
             pdt.assert_series_equal(table['a'], df['a'])
-            assert table['a'] is df['a']
+            assert np.shares_memory(
+                table['a'].to_numpy(), df['a'].to_numpy())
             pdt.assert_series_equal(table['a'], table2['a'])
-            assert table['a'] is table2['a']
+            assert np.shares_memory(
+                table['a'].to_numpy(), table2['a'].to_numpy())
         else:
             pdt.assert_series_equal(table['a'], df['a'])
-            assert table['a'] is not df['a']
+            assert not np.shares_memory(
+                table['a'].to_numpy(), df['a'].to_numpy())
             pdt.assert_series_equal(table['a'], table2['a'])
-            assert table['a'] is not table2['a']
+            assert not np.shares_memory(
+                table['a'].to_numpy(), table2['a'].to_numpy())
 
 
 def test_columns_for_table():

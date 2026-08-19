@@ -43,13 +43,10 @@ def test_frames_equal_mismatched_items():
     with pytest.raises(AssertionError) as info:
         testing.assert_frames_equal(actual, expected)
 
-    assert ("""
-Items are not equal:
- ACTUAL: 2
- DESIRED: 1
-
-Column: 'a'
-Row: 0""" in str(info.value))
+    message = str(info.value)
+    assert "Items are not equal" in message
+    assert "Column: 'a'" in message
+    assert "Row: 0" in message
 
 
 def test_frames_equal():
