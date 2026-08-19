@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "orca"
-version = "1.8"
+dynamic = ["version"]
 description = "Python library for task orchestration"
 readme = "README.rst"
 requires-python = ">=3.10"
@@ -22,6 +22,7 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
+    "numpy>=1.21",
     "pandas>=1.5,<4",
     "tables>=3.8",
     "toolz>=0.12",
@@ -46,6 +47,9 @@ Issues = "https://github.com/UDST/orca/issues"
 [tool.setuptools]
 include-package-data = false
 
+[tool.setuptools.dynamic]
+version = {attr = "orca.__version__"}
+
 [tool.setuptools.packages.find]
 include = ["orca", "orca.*"]
 exclude = ["orca.tests", "orca.tests.*", "orca.utils.tests", "orca.utils.tests.*"]
@@ -68,5 +72,7 @@ line-length = 100
 target-version = "py310"
 
 [tool.ruff.lint]
-select = ["E4", "E7", "E9", "F"]
-ignore = ["F401", "F403"]
+select = ["E4", "E5", "E7", "E9", "F"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = ["F401", "F403"]

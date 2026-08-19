@@ -1,5 +1,5 @@
-from importlib.metadata import version as _distribution_version
+__version__ = "1.9.dev0"
 
 from .orca import *
 
-version = __version__ = _distribution_version("orca")
+version = __version__

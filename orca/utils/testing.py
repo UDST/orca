@@ -6,7 +6,6 @@
 Utilities used in testing of Orca.
 
 """
-import numpy as np
 import numpy.testing as npt
 import pandas as pd
 
