@@ -1,5 +1,5 @@
-Next release
-============
+v1.9
+====
 
 * Require Python 3.10 or newer.
 * Support pandas 2 and 3, NumPy 2, and current PyTables, with minimum
