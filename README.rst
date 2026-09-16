@@ -10,6 +10,35 @@ The building blocks of a workflow are "steps", Python functions that can be asse
 
 Orca is used in `UrbanSim <https://github.com/udst/urbansim>`__ and other projects.
 
+Project scope
+-------------
+
+**Status:** Active
+
+**Mission:** Orca provides lightweight Python orchestration for data-intensive
+analytical and simulation workflows.
+
+**Architecture:** Orca's reference architecture targets dependency-managed
+analytical computation within a Python process.
+
+The project maintains and develops:
+
+* registration and execution of workflow steps;
+* managed tables, columns, and other injectable resources;
+* dependency tracking and lazy evaluation;
+* iterative and cyclical simulation pipelines;
+* caching and lifecycle management within a Python process; and
+* reusable APIs for composing model workflows.
+
+Development that improves reliability, composability, performance, and
+developer usability is welcome within this mission and architecture. Material
+changes to the project's mission or execution architecture are considered
+through UDST's organization-level governance process.
+
+See the `UDST Project Directory
+<https://github.com/UDST/.github/blob/main/PROJECTS.md>`__ for
+organization-wide project status and policy.
+
 Documentation
 -------------
 
