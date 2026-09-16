@@ -501,7 +501,7 @@ class DataFrameWrapper(object):
         casts data type to match the existing column.
 
         Parameters
-        ---------------
+        ----------
         column_name : str
         series : panas.Series
         cast: bool, optional, default False

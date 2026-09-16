@@ -16,7 +16,7 @@ permissions:
 jobs:
   tests:
     name: ${{ matrix.name }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -25,17 +25,29 @@ jobs:
           # Lower support boundary: oldest Python plus the minimum
           # supported versions of the core dependencies
           - name: Python 3.10 + minimum deps
+            os: ubuntu-latest
             python-version: "3.10"
             pip-args: -c requirements-min.txt
           # Forward boundary: newest supported Python plus current
-          # versions of all dependencies
+          # versions of all dependencies, on each operating system
           - name: Python 3.14 + latest deps
+            os: ubuntu-latest
+            python-version: "3.14"
+            pip-args: ""
+          - name: Python 3.14 + latest deps (macOS)
+            os: macos-latest
+            python-version: "3.14"
+            pip-args: ""
+          - name: Python 3.14 + latest deps (Windows)
+            os: windows-latest
             python-version: "3.14"
             pip-args: ""
 
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
@@ -49,6 +61,9 @@ jobs:
       - name: Install package and test dependencies
         run: python -m pip install ".[test]" ${{ matrix.pip-args }}
 
+      - name: Show dependency versions
+        run: python -c "import numpy, pandas, tables, toolz; print('numpy', numpy.__version__); print('pandas', pandas.__version__); print('tables', tables.__version__); print('toolz', toolz.__version__)"
+
       - name: Run tests
         run: python -m pytest --cov
 
@@ -60,6 +75,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
@@ -73,3 +90,56 @@ jobs:
 
       - name: Check source
         run: ruff check orca
+
+  build:
+    name: Package build and install
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.14"
+
+      - name: Build distributions
+        run: |
+          python -m pip install build twine
+          python -m build
+          python -m twine check --strict dist/*
+
+      - name: Install and import wheel
+        run: |
+          python -m pip install dist/*.whl
+          python -m pip check
+          cd /tmp
+          python -c "import orca; print(orca.__version__)"
+
+  docs:
+    name: Documentation build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.14"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install package and documentation tools
+        run: python -m pip install ".[docs]"
+
+      - name: Build documentation (warnings are errors)
+        run: python -m sphinx -E -W --keep-going -b html docs/source docs/build/html

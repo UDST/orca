@@ -1,5 +1,6 @@
-.. image:: https://img.shields.io/badge/coverage-97%25-green
-  :alt: Coverage
+.. image:: https://github.com/UDST/orca/actions/workflows/ci.yml/badge.svg
+  :target: https://github.com/UDST/orca/actions/workflows/ci.yml
+  :alt: CI
 
 Orca
 ====

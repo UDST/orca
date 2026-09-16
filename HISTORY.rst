@@ -8,7 +8,9 @@ Next release
   mandatory copy-on-write means that modifying a column returned from a
   table no longer writes through to the table's underlying DataFrame.
   Use ``update_col`` or ``update_col_from_series`` to change table values.
-* Modernize Python packaging and continuous integration.
+* Modernize Python packaging and continuous integration: tests run on
+  Linux, macOS, and Windows, and every pull request also builds and
+  installs the package and builds the documentation.
 
 v1.8
 ====
