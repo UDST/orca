@@ -393,8 +393,12 @@ class DataFrameWrapper(object):
                           if c in self.local.columns and c not in extra_cols]
             df = self.local[local_cols].copy()
             extra_cols = {c: extra_cols[c] for c in columns if c in extra_cols}
+            # final column order; inserting each registered column at its
+            # position avoids copying the frame again to reorder it
+            order = [c for c in columns if c in local_cols or c in extra_cols]
         else:
             df = self.local.copy()
+            order = None
 
         with log_start_finish(
                 'computing {!r} columns for table {!r}'.format(
@@ -405,11 +409,10 @@ class DataFrameWrapper(object):
                         'computing column {!r} for table {!r}'.format(
                             name, self.name),
                         logger):
-                    df[name] = col()
-
-        if columns is not None:
-            # put local and registered columns in the requested order
-            df = df[[c for c in columns if c in df.columns]]
+                    if order is None:
+                        df[name] = col()
+                    else:
+                        df.insert(order.index(name), name, col())
 
         return df
 
