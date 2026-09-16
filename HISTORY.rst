@@ -1,12 +1,11 @@
-v1.9rc1
-=======
+v1.9
+====
 
 2026/09/16
 
-Release candidate for v1.9, the first release since v1.8 in October 2022.
-It restores compatibility with current versions of Python, Pandas, and
-NumPy, modernizes the packaging and continuous integration, and fixes two
-long-standing issues.
+First release since v1.8 in October 2022. It restores compatibility with
+current versions of Python, Pandas, and NumPy, modernizes the packaging and
+continuous integration, and fixes two long-standing issues.
 
 * Requires Python 3.10 or later, and is tested on Python 3.10 through 3.14
   with NumPy 1.21 through 2.x, Pandas 1.5 through 3.x, PyTables 3.8+, and

@@ -1,4 +1,4 @@
-__version__ = "1.9rc1"
+__version__ = "1.9"
 
 from .orca import *
 
