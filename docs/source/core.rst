@@ -113,7 +113,7 @@ to register those relationships::
     orca.broadcast(cast='c', onto='d', cast_index=True, onto_on='c_id')
 
 The syntax is similar to that of the
-`pandas merge function <http://pandas.pydata.org/pandas-docs/stable/generated/pandas.merge.html#pandas.merge>`__,
+`pandas merge function <https://pandas.pydata.org/docs/reference/api/pandas.merge.html>`__,
 and indeed ``merge`` is used behind the scenes.
 Once the broadcasts are defined, use the
 :py:func:`~orca.orca.merge_tables` function to get a
@@ -153,7 +153,7 @@ going into the merge so you can limit which columns end up in the final table.
 they are in the ``columns=`` list.)
 
 .. note:: :py:func:`~orca.orca.merge_tables` calls
-   `pandas.merge <http://pandas.pydata.org/pandas-docs/stable/generated/pandas.merge.html#pandas.merge>`__
+   `pandas.merge <https://pandas.pydata.org/docs/reference/api/pandas.merge.html>`__
    with ``how='inner'``, meaning that only items that
    appear in both tables are kept in the merged table.
 
@@ -435,7 +435,7 @@ You start pipelines by calling the :py:func:`~orca.orca.run` function and
 listing which steps you want to run.
 Calling :py:func:`~orca.orca.run` with just a list of steps,
 as in the above example, will run through the steps once.
-To run the pipeline over some a sequence, provide those values as a sequence
+To run the pipeline over a sequence, provide those values as a sequence
 to :py:func:`~orca.orca.run` using the ``iter_vars`` argument.
 
 The ``iter_var`` injectable stores the current value from the ``iter_vars`` argument to :py:func:`~orca.orca.run` function. 
@@ -447,8 +447,8 @@ stored in that order.
 
     In [77]: @orca.step()
        ....: def print_year(iter_var,iter_step):
-       ....:         print '*** the iteration value is {} ***'.format(iter_var)
-       ....:         print '*** step number {0} is named {1} ***'.format(iter_step.step_num, iter_step.step_name)
+       ....:         print('*** the iteration value is {} ***'.format(iter_var))
+       ....:         print('*** step number {0} is named {1} ***'.format(iter_step.step_num, iter_step.step_name))
        ....:
 
     In [78]: orca.run(['print_year'], iter_vars=range(2010, 2015))
@@ -570,7 +570,7 @@ Archiving Data
 An option to the :py:func:`~orca.orca.run` function is to have
 it save table data at set intervals.
 Tables (and only tables) are saved as DataFrames_ to an HDF5 file via pandas'
-`HDFStore <http://pandas.pydata.org/pandas-docs/stable/io.html#hdf5-pytables>`__
+`HDFStore <https://pandas.pydata.org/docs/user_guide/io.html#hdf5-pytables>`__
 feature. If Orca is running only one loop the tables are stored
 under their registered names. If it is running multiple iterations the tables are
 stored under names like ``'<iter_var>/<table name>'``.
@@ -590,7 +590,7 @@ the names of registered variables in order to
 inject variables when evaluating functions.
 For that reason, it's important that variables be registered with names
 that are also
-`valid Python variables <http://en.wikibooks.org/wiki/Python_Beginner_to_Expert/Native_Types>`__.
+`valid Python variables <https://en.wikibooks.org/wiki/Python_Beginner_to_Expert/Native_Types>`__.
 
 Variable Expressions
 ~~~~~~~~~~~~~~~~~~~~
@@ -712,6 +712,6 @@ API Docs
 .. automodule:: orca.orca
    :members:
 
-.. _DataFrame: http://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe
-.. _DataFrames: http://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe
-.. _Series: http://pandas.pydata.org/pandas-docs/stable/dsintro.html#series
+.. _DataFrame: https://pandas.pydata.org/docs/user_guide/dsintro.html#dataframe
+.. _DataFrames: https://pandas.pydata.org/docs/user_guide/dsintro.html#dataframe
+.. _Series: https://pandas.pydata.org/docs/user_guide/dsintro.html#series
