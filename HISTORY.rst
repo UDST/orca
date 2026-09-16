@@ -11,6 +11,8 @@ Next release
 * Modernize Python packaging and continuous integration: tests run on
   Linux, macOS, and Windows, and every pull request also builds and
   installs the package and builds the documentation.
+* Automate publishing to PyPI from GitHub releases using Trusted
+  Publishing, and document the contribution and release process.
 
 v1.8
 ====
