@@ -6,25 +6,23 @@ HTML files are generated using [Sphinx](http://sphinx-doc.org) and hosted with G
 
 ### Editing the documentation
 
-The files in `docs/source`, along with docstrings in the source code, determine what appears in the rendered documentation. Here's a [good tutorial](https://pythonhosted.org/an_example_pypi_project/sphinx.html) for Sphinx.
+The files in `docs/source`, along with docstrings in the source code, determine what appears in the rendered documentation. The [Sphinx getting-started guide](https://www.sphinx-doc.org/en/master/usage/quickstart.html) covers the reStructuredText syntax and directives.
 
 ### Previewing changes locally
 
-Install the copy of Orca that the documentation is meant to reflect. Install the documentation tools.
+From the repository root, install the copy of Orca that the documentation is meant to reflect, along with the documentation tools.
 
 ```
-pip install . 
-pip install sphinx sphinx_rtd_theme numpydoc
+pip install ".[docs]"
 ```
 
-Build the documentation. There should be status messages and warnings, but no errors.
+Build the documentation, also from the repository root. Warnings are treated as errors, matching the check that runs in CI.
 
 ```
-cd docs
-sphinx-build -b html source build
+sphinx-build -E -W --keep-going -b html docs/source docs/build/html
 ```
 
-The HTML files will show up in `docs/build/`. 
+The HTML files will show up in `docs/build/html/`. 
 
 ### Uploading changes
 
