@@ -69,6 +69,49 @@ def test_tables(df):
     assert table.columns == ['a', 'b']
 
 
+def test_to_frame_column_order(df):
+    orca.add_table('test_frame', df)
+
+    @orca.column('test_frame')
+    def c(test_frame):
+        return test_frame.a + test_frame.b
+
+    @orca.column('test_frame')
+    def d(test_frame):
+        return test_frame.a * 2
+
+    table = orca.get_table('test_frame')
+
+    # requested columns come back in the requested order, whether they
+    # are local or registered columns, and no matter how many times
+    # the frame is built
+    for _ in range(5):
+        assert list(table.to_frame(['d', 'a', 'c', 'b']).columns) == \
+            ['d', 'a', 'c', 'b']
+        assert list(table.to_frame(['c', 'd']).columns) == ['c', 'd']
+        assert list(table.to_frame(['b', 'a']).columns) == ['b', 'a']
+
+    # duplicates are dropped, missing columns are ignored
+    assert list(table.to_frame(['b', 'b', 'a', 'nope']).columns) == \
+        ['b', 'a']
+
+    # with no columns given, local columns come first, then registered
+    # columns in the order they were registered
+    assert list(table.to_frame().columns) == ['a', 'b', 'c', 'd']
+
+    # function tables behave the same way
+    @orca.table()
+    def test_func(test_frame):
+        return test_frame.to_frame(['a', 'b'])
+
+    @orca.column('test_func')
+    def e(test_func):
+        return test_func.a
+
+    assert list(orca.get_table('test_func').to_frame(['e', 'b']).columns) \
+        == ['e', 'b']
+
+
 def test_table_func_cache(df):
     orca.add_injectable('x', 2)
 
@@ -512,11 +555,18 @@ def test_column_map_none(fta, ftb):
 def test_column_map(fta, ftb):
     result = orca.column_map([fta, ftb], ['aa', 'by', 'bz'])
     assert result['a'] == ['aa']
-    assert sorted(result['b']) == ['by', 'bz']
+    assert result['b'] == ['by', 'bz']
 
     result = orca.column_map([fta, ftb], ['by', 'bz'])
     assert result['a'] == []
-    assert sorted(result['b']) == ['by', 'bz']
+    assert result['b'] == ['by', 'bz']
+
+
+def test_column_map_order(fta, ftb):
+    # columns come back in the order requested, without duplicates
+    result = orca.column_map([fta, ftb], ['bz', 'aa', 'by', 'bz'])
+    assert result['a'] == ['aa']
+    assert result['b'] == ['bz', 'by']
 
 
 def test_is_step():

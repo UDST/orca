@@ -372,9 +372,10 @@ class DataFrameWrapper(object):
         Parameters
         ----------
         columns : sequence or string, optional
-            Sequence of the column names desired in the DataFrame. A string
-            can also be passed if only one column is desired.
-            If None all columns are returned, including registered columns.
+            Sequence of the column names desired in the DataFrame, which
+            are returned in the order given. A string can also be passed
+            if only one column is desired. If None all columns are
+            returned, including registered columns.
 
         Returns
         -------
@@ -385,13 +386,19 @@ class DataFrameWrapper(object):
 
         if columns is not None:
             columns = [columns] if isinstance(columns, str) else columns
-            columns = set(columns)
-            set_extra_cols = set(extra_cols)
-            local_cols = set(self.local.columns) & columns - set_extra_cols
-            df = self.local[list(local_cols)].copy()
-            extra_cols = {k: extra_cols[k] for k in (columns & set_extra_cols)}
+            # keep the requested order (dropping any duplicates) so that
+            # the columns of the result are in a predictable order
+            columns = list(dict.fromkeys(columns))
+            local_cols = [c for c in columns
+                          if c in self.local.columns and c not in extra_cols]
+            df = self.local[local_cols].copy()
+            extra_cols = {c: extra_cols[c] for c in columns if c in extra_cols}
+            # final column order; inserting each registered column at its
+            # position avoids copying the frame again to reorder it
+            order = [c for c in columns if c in local_cols or c in extra_cols]
         else:
             df = self.local.copy()
+            order = None
 
         with log_start_finish(
                 'computing {!r} columns for table {!r}'.format(
@@ -402,7 +409,10 @@ class DataFrameWrapper(object):
                         'computing column {!r} for table {!r}'.format(
                             name, self.name),
                         logger):
-                    df[name] = col()
+                    if order is None:
+                        df[name] = col()
+                    else:
+                        df.insert(order.index(name), name, col())
 
         return df
 
@@ -1401,14 +1411,17 @@ def column_map(tables, columns):
     if not columns:
         return {t.name: None for t in tables}
 
-    columns = set(columns)
-    colmap = {
-        t.name: list(set(t.columns).intersection(columns)) for t in tables}
+    columns = list(dict.fromkeys(columns))
+    colmap = {}
+    for t in tables:
+        table_cols = set(t.columns)
+        colmap[t.name] = [c for c in columns if c in table_cols]
     foundcols = tz.reduce(
         lambda x, y: x.union(y), (set(v) for v in colmap.values()))
-    if foundcols != columns:
+    if foundcols != set(columns):
         raise RuntimeError('Not all required columns were found. '
-                           'Missing: {}'.format(list(columns - foundcols)))
+                           'Missing: {}'.format(
+                               [c for c in columns if c not in foundcols]))
     return colmap
 
 
@@ -1739,8 +1752,8 @@ def broadcast(cast, onto, cast_on=None, onto_on=None,
     ----------
     cast, onto : str
         Names of registered tables.
-    cast_on, onto_on : str, optional
-        Column names used for merge, equivalent of ``left_on``/``right_on``
+    cast_on, onto_on : str or list of str, optional
+        Column name(s) used for merge, equivalent of ``left_on``/``right_on``
         parameters of pandas.merge.
     cast_index, onto_index : bool, optional
         Whether to use table indexes for merge. Equivalent of
@@ -1751,6 +1764,19 @@ def broadcast(cast, onto, cast_on=None, onto_on=None,
         'registering broadcast of table {!r} onto {!r}'.format(cast, onto))
     _BROADCASTS[(cast, onto)] = \
         Broadcast(cast, onto, cast_on, onto_on, cast_index, onto_index)
+
+
+def _join_columns(key):
+    """
+    Return the column name(s) in a broadcast's ``cast_on`` or ``onto_on``
+    as a list, which is empty if the join uses the table index instead.
+
+    """
+    if key is None:
+        return []
+    if isinstance(key, str):
+        return [key]
+    return list(key)
 
 
 def _get_broadcasts(tables):
@@ -1794,10 +1820,10 @@ def get_broadcast(cast_name, onto_name):
 
         - cast: the name of the table being broadcast
         - onto: the name of the table onto which "cast" is broadcast
-        - cast_on: The optional name of a column on which to join.
-          None if the table index will be used instead.
-        - onto_on: The optional name of a column on which to join.
-          None if the table index will be used instead.
+        - cast_on: The optional name (or list of names) of a column on
+          which to join. None if the table index will be used instead.
+        - onto_on: The optional name (or list of names) of a column on
+          which to join. None if the table index will be used instead.
         - cast_index: True if the table index should be used for the join.
         - onto_index: True if the table index should be used for the join.
 
@@ -1949,10 +1975,8 @@ def merge_tables(target, tables, columns=None, drop_intersection=True):
     if columns:
         columns = list(columns)
         for c in casts.values():
-            if c.onto_on:
-                columns.append(c.onto_on)
-            if c.cast_on:
-                columns.append(c.cast_on)
+            columns.extend(_join_columns(c.onto_on))
+            columns.extend(_join_columns(c.cast_on))
 
     # get column map for which columns go with which table
     colmap = column_map(tables.values(), columns)
@@ -1981,8 +2005,8 @@ def merge_tables(target, tables, columns=None, drop_intersection=True):
                 intersection = set(onto_table.columns).\
                     intersection(cast_table.columns)
                 # intersection is ok if it's the join key
-                intersection.discard(bc.onto_on)
-                intersection.discard(bc.cast_on)
+                intersection.difference_update(_join_columns(bc.onto_on))
+                intersection.difference_update(_join_columns(bc.cast_on))
                 # otherwise drop so as not to create conflicts
                 if drop_intersection:
                     cast_table = cast_table.drop(intersection, axis=1)

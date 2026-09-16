@@ -13,6 +13,12 @@ Next release
   installs the package and builds the documentation.
 * Automate publishing to PyPI from GitHub releases using Trusted
   Publishing, and document the contribution and release process.
+* ``to_frame(columns)`` now returns columns in the order requested,
+  whether they are local or registered columns (previously the order
+  of registered columns varied from call to call), and
+  ``merge_tables(columns=...)`` resolves columns in the order given.
+* ``broadcast`` accepts lists of column names for ``cast_on`` and
+  ``onto_on``, for merges on multiple columns, as ``pandas.merge`` does.
 
 v1.8
 ====
