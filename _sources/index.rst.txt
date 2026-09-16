@@ -20,7 +20,7 @@ over a set of input data.
 Goals
 ~~~~~
 
-Orca has explit goals of flexibility, transparency, lazy execution,
+Orca has explicit goals of flexibility, transparency, lazy execution,
 and encouraging good practices. Those goals are achieved by:
 
 * Flexibility
@@ -49,7 +49,7 @@ via decorators.
 Orca calls these functions by matching their arguments to other registered
 data.
 (This format is heavily inspired by
-`pytest's fixtures <http://pytest.org/latest/fixture.html#fixture>`__.)
+`pytest's fixtures <https://docs.pytest.org/en/stable/how-to/fixtures.html>`__.)
 The main components of a pipeline include:
 
 * Steps
@@ -119,7 +119,7 @@ Orca offers some conveniences for streamlining the construction of pipelines:
 Installation
 ------------
 
-Orca requires Pandas, PyTables, and PyToolz, which will be installed automatically if they are not already present in your Python environment.
+Orca requires Python 3.10 or later, and depends on Pandas, PyTables, and PyToolz, which will be installed automatically if they are not already present in your Python environment.
 
 
 You can install Orca with pip::
@@ -130,16 +130,12 @@ Or with conda::
 
     conda install orca --channel conda-forge
 
-Add the server option to include the optional server dependencies::
-
-    pip install orca[server]
-
 
 Links
 -----
 
 * `GitHub <https://github.com/udst/orca>`__
-* `PyPi <https://pypi.python.org/pypi/orca>`__
+* `PyPI <https://pypi.org/project/orca/>`__
 
 Contents
 --------
@@ -149,7 +145,6 @@ Contents
 
    example
    core
-   server
    utils
 
 Indices and tables
@@ -159,8 +154,8 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-.. _Pandas: http://pandas.pydata.org/
-.. _UrbanSim: http://udst.github.io/urbansim/
-.. _DataFrame: http://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe
-.. _DataFrames: http://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe
-.. _Series: http://pandas.pydata.org/pandas-docs/stable/dsintro.html#series
+.. _Pandas: https://pandas.pydata.org/
+.. _UrbanSim: https://udst.github.io/urbansim/
+.. _DataFrame: https://pandas.pydata.org/docs/user_guide/dsintro.html#dataframe
+.. _DataFrames: https://pandas.pydata.org/docs/user_guide/dsintro.html#dataframe
+.. _Series: https://pandas.pydata.org/docs/user_guide/dsintro.html#series
