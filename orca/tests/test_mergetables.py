@@ -255,3 +255,35 @@ def test_merge_tables_dup_columns():
         'zone_id': [1, 1, 2]
     })
     assert_frames_equal(df, expected)
+
+
+def test_merge_tables_multi_column_join():
+    # cast_on / onto_on may be lists of column names, as in pandas.merge
+    df_hh = pd.DataFrame(
+        {'hh_id': [1, 1, 2],
+         'person_num': [1, 2, 1],
+         'age': [40, 38, 65]},
+        index=['pa', 'pb', 'pc'])
+    df_trips = pd.DataFrame(
+        {'hh_id': [1, 1, 2, 2, 1],
+         'person_num': [2, 1, 1, 1, 2],
+         'mode': ['walk', 'bike', 'car', 'walk', 'car']},
+        index=['ta', 'tb', 'tc', 'td', 'te'])
+
+    orca.add_table('persons', df_hh)
+    orca.add_table('trips', df_trips)
+    orca.broadcast(
+        'persons', 'trips',
+        cast_on=['hh_id', 'person_num'], onto_on=['hh_id', 'person_num'])
+
+    merged = orca.merge_tables('trips', ['persons', 'trips'])
+    expected = pd.merge(
+        df_trips, df_hh, on=['hh_id', 'person_num'], how='inner')
+    assert_frames_equal(merged, expected)
+
+    # the join columns are added automatically when a column list is given
+    merged = orca.merge_tables(
+        'trips', ['persons', 'trips'], columns=['mode', 'age'])
+    assert list(merged.columns) == ['mode', 'hh_id', 'person_num', 'age']
+    assert_frames_equal(
+        merged, expected[['mode', 'hh_id', 'person_num', 'age']])
